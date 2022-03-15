@@ -49,7 +49,7 @@
             </div>
          </div>
          <div class="new-post-button tw-mt-6 tw-ml-4">
-            <v-btn dark flat rounded small class="tw-p-2"
+            <v-btn dark  rounded small class="tw-p-2"
                ><img
                   src="../assets/Logo/Vector (2).svg"
                   class="tw-h-5 tw-mr-2"

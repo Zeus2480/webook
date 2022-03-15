@@ -72,7 +72,7 @@
                <v-col cols="3">
                   <div class="tw-flex tw-flex-row-reverse">
                      <div>
-                        <v-menu transition="slide-y-transition" bottom>
+                        <v-menu left transition="slide-y-transition" >
                            <template v-slot:activator="{ on, attrs }">
                               <v-btn right icon v-bind="attrs" v-on="on">
                                  <v-icon>mdi-dots-vertical</v-icon>
@@ -81,29 +81,46 @@
                            <v-list>
                               <v-list-item>
                                  <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" class="tw-h-6 tw-w-6" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-gray-400"><p>Edit</p></v-col>
+                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" alt=""></v-col>
+                                    <v-col cols="4" class="tw-bg-b"><p>Edit</p></v-col>
                                  </v-row>
                               </v-list-item>
                               <v-list-item>
                                  <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (9).svg" class="tw-h-6 tw-w-6" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-gray-400"><p>Move</p></v-col>
+                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" alt=""></v-col>
+                                    <v-col cols="4" class="tw-bg-b"><p class="tw-text-sm">Move to draft</p></v-col>
                                  </v-row>
                               </v-list-item>
                               <v-list-item>
                                  <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" class="tw-h-6 tw-w-6" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-gray-400"><p>Editfdf</p></v-col>
+                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" alt=""></v-col>
+                                    <v-col cols="4" class="tw-bg-b"><p>Ediccccccct</p></v-col>
                                  </v-row>
                               </v-list-item>
                               <v-list-item>
-                                 <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" class="tw-h-6 tw-w-6" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-gray-400"><p>Edit</p></v-col>
-                                 </v-row>
+                                 <v-list-item-action>
+                                    <v-icon>mdi-file</v-icon>
+                                 </v-list-item-action>
+                                 <v-list-item-content>
+                                    <v-list-item-title>Posts</v-list-item-title>
+                                 </v-list-item-content>
                               </v-list-item>
-                              
+                              <v-list-item>
+                                 <v-list-item-action>
+                                    <v-icon>mdi-file</v-icon>
+                                 </v-list-item-action>
+                                 <v-list-item-content>
+                                    <v-list-item-title>Posts</v-list-item-title>
+                                 </v-list-item-content>
+                              </v-list-item>
+                              <v-list-item>
+                                 <v-list-item-action>
+                                    <v-icon>mdi-file</v-icon>
+                                 </v-list-item-action>
+                                 <v-list-item-content>
+                                    <v-list-item-title>Posts</v-list-item-title>
+                                 </v-list-item-content>
+                              </v-list-item>
                            </v-list>
                         </v-menu>
                      </div>

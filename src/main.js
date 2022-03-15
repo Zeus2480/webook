@@ -4,6 +4,10 @@ import router from './router'
 import store from './store'
 import './assets/tailwind.css'
 import vuetify from './plugins/vuetify'
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apex-chart', VueApexCharts)
 
 Vue.config.productionTip = false
 
