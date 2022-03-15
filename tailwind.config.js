@@ -7,7 +7,8 @@ module.exports = {
       colors:{
         'navy-blue':'#10131d',
         'nav-sec':'#222531',
-        'nav-sec-hover':'#333644'
+        'nav-sec-hover':'#333644',
+        'secondary-background':'#F0F0F0'
 
       },
       height:{
@@ -25,5 +26,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp'),],
 }
