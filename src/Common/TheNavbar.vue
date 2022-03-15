@@ -84,7 +84,7 @@
                      <v-list-item-title>Comments</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
-               <v-list-item class="tw-my-2">
+               <v-list-item class="tw-my-2" router to="/dashboard/profile">
                   <v-list-item-action>
                      <v-icon>mdi-account</v-icon>
                   </v-list-item-action>

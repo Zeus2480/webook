@@ -7,6 +7,7 @@ import DashboardPosts from '../views/DashboardPosts.vue'
 // import Dashboard from '../components/DashboardPost.vue'
 // import AdminPost from '../components/DashboardPost.vue'
 import DashboardStats from '../views/DashboardStats.vue'
+import DashboardProfile from '../views/DashboardProfile.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -45,6 +46,12 @@ const routes = [
     path:'/dashboard/stats',
     name:DashboardStats,
     component:DashboardStats
+
+  },
+  {
+    path:'/dashboard/profile',
+    name:DashboardProfile,
+    component:DashboardProfile
 
   }
 

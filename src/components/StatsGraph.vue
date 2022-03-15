@@ -23,11 +23,12 @@
                   </div>
                </v-col>
             </v-row>
-            <p class="tw-my-3 tw-text-sm tw-opacity-70">Views</p>
+           
             <v-row>
                 <!-- <v-col cols="1"></v-col> -->
-               <v-col cols="7">
+               <v-col cols="6">
                   <div>
+                       <p class="tw-my-3 tw-text-sm tw-opacity-70">Views</p>
                      <!-- <line-chart :dates="dates" :options="chartOptions" :views="views"></line-chart> -->
                      <apex-chart
                         width="100%"
@@ -38,21 +39,21 @@
                      ></apex-chart>
                   </div>
                </v-col>
-               <v-col cols="2"></v-col>
-               <v-col cols="3" align-self="center">
-                   <div class="tw-mb-12">
-                       <div>
-                           <div class="tw-flex">
-                               <img src="../assets/Logo/Vector (10).svg" alt="">
-                               <p class="tw-mx-4">123</p>
-                           </div>
-                           <div class="tw-flex tw-mt-4">
-                               <img src="../assets/Logo/Vector (11).svg" alt="">
-                               <p class="tw-mx-4">123</p>
-                           </div>
-                       </div>
-                   </div>
+               <v-col cols="6">
+                  <div>
+                       <p class="tw-my-3 tw-text-sm tw-opacity-70">Comments</p>
+                     <!-- <line-chart :dates="dates" :options="chartOptions" :views="views"></line-chart> -->
+                     <apex-chart
+                        width="100%"
+                        heigth="100"
+                        type="line"
+                        :options="options"
+                        :series="series"
+                     ></apex-chart>
+                  </div>
                </v-col>
+               
+               
             </v-row>
          </div>
       </v-card>
