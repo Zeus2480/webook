@@ -25,17 +25,19 @@
                   <div class="tw-px-20">
                      <v-row>
                         <v-col cols="2">
-                           <v-select v-bind="selected" :items="items">
+                           <v-select v-model="selected" :items="items">
                            </v-select>
                         </v-col>
                      </v-row>
-                     <div v-if="showSkeletonLoading">
+                     <div v-if="!showSkeletonLoading">
+                        <post-card-skeleton></post-card-skeleton>
+                        <post-card-skeleton></post-card-skeleton>
                         <post-card-skeleton></post-card-skeleton>
                         <post-card-skeleton></post-card-skeleton>
                         <post-card-skeleton></post-card-skeleton>
                         <post-card-skeleton></post-card-skeleton>
                      </div>
-                     <div v-if="!showSkeletonLoading">
+                     <div v-if="showSkeletonLoading">
                         <post-card></post-card>
                         <post-card></post-card>
                         <post-card></post-card>
@@ -66,7 +68,20 @@ export default {
       return {
          items: ["All", "Published", "Archived", "Draft"],
          selected: "All",
+         showSkeletonLoading:false,
+         emptyState:false
       };
+   },
+   watch:{
+      selected(newV){
+         console.log(newV);
+         
+      }
+   },
+   created(){
+      setTimeout(()=>{
+         this.showSkeletonLoading=true;
+      },3000)
    },
    components: {
       "the-navbar": TheNavbar,

@@ -30,12 +30,49 @@
             </div>
          </div>
          <v-spacer></v-spacer>
-         <v-btn icon>
-            <img class="tw-h-5" src="../assets/Logo/Vector (4).svg" alt="">
-         </v-btn>
-         <v-btn class="ma-2" icon
-            ><v-icon >mdi-account-circle</v-icon></v-btn
-         >
+         <v-menu  nudge-bottom allow-overflow max-height="600">
+            <template v-slot:activator="{ on: menu, attrs }">
+               <v-tooltip bottom>
+                  <template v-slot:activator="{ on: tooltip }">
+                     <v-btn
+                        color="primary"
+                        dark
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                        icon
+                     >
+                        <img
+                           class="tw-h-5"
+                           src="../assets/Logo/Vector (4).svg"
+                           alt=""
+                        />
+                     </v-btn>
+                  </template>
+                  <span>Notifications</span>
+               </v-tooltip>
+            </template>
+           <v-card width="500">
+              <div class="tw-p-3">
+                 <h2 class="tw-text-2xl tw-font-medium tw-p-3">Notifications</h2>
+                 <div>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                    <notification-bar-card></notification-bar-card>
+                 </div>
+              </div>
+           </v-card>
+         </v-menu>
+         
+         <v-btn class="ma-2" icon><v-icon>mdi-account-circle</v-icon></v-btn>
          <v-icon>mdi-notifications</v-icon>
       </v-app-bar>
 
@@ -49,7 +86,7 @@
             </div>
          </div>
          <div class="new-post-button tw-mt-6 tw-ml-4">
-            <v-btn dark  rounded small class="tw-p-2"
+            <v-btn dark rounded small class="tw-p-2"
                ><img
                   src="../assets/Logo/Vector (2).svg"
                   class="tw-h-5 tw-mr-2"
@@ -113,7 +150,11 @@
    </div>
 </template>
 <script>
+import NotificationBarCard from "../components/NotificationBarCard.vue"
 export default {
+   components:{
+      'notification-bar-card':NotificationBarCard
+   },
    data() {
       return {
          drawer: true,
@@ -127,8 +168,8 @@ export default {
 };
 </script>
 <style scoped>
-.v-list-item--active{
-   background-color: #E1B413;
+.v-list-item--active {
+   background-color: #e1b413;
    color: #fff !important;
    border-radius: 1rem;
 }
