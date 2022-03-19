@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import RegisterUserDetails from '../views/RegisterUserDetails.vue'
-import RegisterDomain from '../views/RegisterDomain.vue'
+
 import DashboardPosts from '../views/DashboardPosts.vue'
 // import Dashboard from '../components/DashboardPost.vue'
 // import AdminPost from '../components/DashboardPost.vue'
@@ -11,6 +11,10 @@ import DashboardProfile from '../views/DashboardProfile.vue'
 import EditProfile from "../views/EditProfile.vue"
 import ViewBLog from "../views/Frontend/ViewBlog.vue"
 import ViewAllBLogs from "../views/Frontend/ViewAllBLogs.vue"
+import TagsPage from "../views/Frontend/TagsPage.vue"
+import LoginPage from "../views/LoginPage.vue"
+import CreatePost from "../views/CreatePost.vue"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,15 +24,16 @@ const routes = [
 
   },
   {
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage
+  },
+  {
     path: '/register-userdetails',
     name: 'RegisterUserDetails',
     component: RegisterUserDetails
   },
-  {
-    path: '/register-domain',
-    name: 'RegisterDomain',
-    component: RegisterDomain
-  },
+  
   {
     path: '/dashboard/post',
     name: 'DashboardPosts',
@@ -43,6 +48,12 @@ const routes = [
     //   adminPanel:AdminPost
     // }
 
+
+  },
+  {
+    path:'/dashboard/create-post',
+    name:CreatePost,
+    component:CreatePost
 
   },
   {
@@ -63,7 +74,7 @@ const routes = [
     component:EditProfile
   },
   {
-    path:'/view/:userId/',
+    path:'/view/:userId',
     name:ViewAllBLogs,
     component:ViewAllBLogs,
     props:true
@@ -72,6 +83,12 @@ const routes = [
     path:'/view/:userId/:blogId',
     name:ViewBLog,
     component:ViewBLog,
+    props:true
+  },
+  {
+    path:'/view/:userId/tags/:tagName',
+    name:TagsPage,
+    component:TagsPage,
     props:true
   }
 

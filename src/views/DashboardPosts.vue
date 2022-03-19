@@ -1,6 +1,6 @@
 <template>
    <div>
-      <the-navbar></the-navbar>
+      <the-navbar :isSearchVisible="true"></the-navbar>
       <v-main class="tw-bg-secondary-background tw-min-h-screen">
          <v-container class="tw-h-full">
             <div class="tw-h-full tw-w-full">

@@ -18,7 +18,7 @@
             >
          </div> -->
          <v-spacer></v-spacer>
-         <div class="tw-h-full">
+         <div v-if="isSearchVisible" class="tw-h-full">
             <div class="tw-mb-3 tw-my-auto xl:tw-w-96">
                <input
                   type="search"
@@ -86,7 +86,7 @@
             </div>
          </div>
          <div class="new-post-button tw-mt-6 tw-ml-4">
-            <v-btn dark rounded small class="tw-p-2"
+            <v-btn dark rounded small @click="newPost" class="tw-p-2"
                ><img
                   src="../assets/Logo/Vector (2).svg"
                   class="tw-h-5 tw-mr-2"
@@ -121,15 +121,15 @@
                      <v-list-item-title>Comments</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
-               <v-list-item class="tw-my-2" router to="/dashboard/profile">
+               <v-list-item class="tw-my-2 tw-rounded-xl" router to="/dashboard/profile">
                   <v-list-item-action>
                      <v-icon>mdi-account</v-icon>
                   </v-list-item-action>
-                  <v-list-item-content>
+                  <v-list-item-content class="">
                      <v-list-item-title>Profile</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
-               <v-list-item class="tw-my-2">
+               <v-list-item class="tw-my-2 tw-rounded-xl">
                   <v-list-item-action>
                      <v-icon>mdi-logout</v-icon>
                   </v-list-item-action>
@@ -152,18 +152,24 @@
 <script>
 import NotificationBarCard from "../components/NotificationBarCard.vue"
 export default {
+   props:['isSearchVisible','notOpenNavigation'],
    components:{
       'notification-bar-card':NotificationBarCard
    },
+   
    data() {
       return {
          drawer: true,
+         
       };
    },
    methods: {
       toogleNavigationDrawer() {
          this.drawer = !this.drawer;
       },
+      newPost(){
+         this.$router.push('/dashboard/create-post');
+      }
    },
 };
 </script>
@@ -171,6 +177,6 @@ export default {
 .v-list-item--active {
    background-color: #e1b413;
    color: #fff !important;
-   border-radius: 1rem;
+   border-radius: .6rem;
 }
 </style>

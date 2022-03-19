@@ -16,7 +16,7 @@
                      <v-container
                         class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
                      >
-                        <v-btn icon dark
+                        <v-btn icon dark @click="backNavigate"
                            ><img src="../../assets/Logo/WhiteBack.svg" alt=""
                         /></v-btn>
                         <div class="tw-flex tw-justify-center tw-w-full">
@@ -280,6 +280,9 @@ export default {
       };
    },
    methods: {
+      backNavigate(){
+           this.$router.push(`/view/${this.userId}`)
+       },
       likeUnlike() {
          if (this.isLiked) {
             this.btnColor = "black";
