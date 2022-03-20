@@ -78,14 +78,14 @@
 
       <v-navigation-drawer v-model="drawer" app>
          <div class=" ">
-            <div class="logo tw-flex tw-w-full tw-justify-center tw-mt-10">
+            <div class="logo tw-flex tw-w-full tw-justify-center tw-mt-4">
                <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
                <h2 class="tw-my-auto tw-font-medium tw-text-2xl tw-ml-3">
                   Webook
                </h2>
             </div>
          </div>
-         <div class="new-post-button tw-mt-6 tw-ml-4">
+         <div class="new-post-button tw-mt-8 tw-ml-6">
             <v-btn dark rounded small @click="newPost" class="tw-p-2"
                ><img
                   src="../assets/Logo/Vector (2).svg"
@@ -95,7 +95,7 @@
                New Post</v-btn
             >
          </div>
-         <div class="tw-mx-6 tw-mt-12">
+         <div class="tw-mx-6 tw-mt-6">
             <v-list>
                <v-list-item class="tw-my-2" router to="/dashboard/post">
                   <v-list-item-action>
@@ -113,8 +113,8 @@
                      <v-list-item-title>Stats</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
-               <v-list-item class="tw-my-2">
-                  <v-list-item-action>
+               <v-list-item class="tw-my-2" router to="/dashboard/comments">
+                  <v-list-item-action >
                      <v-icon>mdi-comment</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>

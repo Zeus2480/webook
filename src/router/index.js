@@ -8,6 +8,7 @@ import DashboardPosts from '../views/DashboardPosts.vue'
 // import AdminPost from '../components/DashboardPost.vue'
 import DashboardStats from '../views/DashboardStats.vue'
 import DashboardProfile from '../views/DashboardProfile.vue'
+import DashboardComments from "../views/DashboardComments.vue"
 import EditProfile from "../views/EditProfile.vue"
 import ViewBLog from "../views/Frontend/ViewBlog.vue"
 import ViewAllBLogs from "../views/Frontend/ViewAllBLogs.vue"
@@ -66,6 +67,12 @@ const routes = [
     path:'/dashboard/profile',
     name:DashboardProfile,
     component:DashboardProfile
+
+  },
+  {
+    path:'/dashboard/comments',
+    name:DashboardComments,
+    component:DashboardComments
 
   },
   {

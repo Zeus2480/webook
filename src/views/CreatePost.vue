@@ -1,5 +1,14 @@
 <template>
    <div>
+      <v-snackbar v-model="snackbar">
+         {{ text }}
+
+         <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+               Close
+            </v-btn>
+         </template>
+      </v-snackbar>
       <the-navbar></the-navbar>
 
       <v-main class="tw-bg-secondary-background tw-min-h-screen">
@@ -20,7 +29,7 @@
                         </div>
                         <div class="puplish-preview">
                            <v-btn outlined color="primary">Preview</v-btn>
-                           <v-btn color="primary" class="tw-ml-4"
+                           <v-btn color="primary" @click="snackbar=true" class="tw-ml-4"
                               >Publish</v-btn
                            >
                         </div>
@@ -52,7 +61,7 @@
                            <input
                               type="text"
                               v-model="inputTag"
-                              placeholder="Summary"
+                              placeholder="Tags"
                               @keyup.enter="onEnter"
                               class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-1 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
                            />
@@ -63,11 +72,13 @@
                                  :key="index"
                                  link
                                  close
-                                 
                               >
                                  {{ tag }}
                               </v-chip>
                            </v-chip-group>
+                        </div>
+                        <div class="tw-my-4">
+                           <VueEditor />
                         </div>
                      </div>
                   </div>
@@ -79,16 +90,19 @@
 </template>
 <script>
 import TheNav from "../Common/TheNavbar.vue";
+import { VueEditor } from "vue2-editor";
 export default {
-    watch:{
-        selection(newValue){
-            let  temp=this.tagsArray.filter(val=>{
-                val!=newValue;
-            })
-            this.tagsArray=temp;
-        }
-        
-    },
+   watch: {
+      selection(newValue) {
+         console.log(newValue);
+         console.log(this.tagsArray);
+         let temp = this.tagsArray.filter((val) => {
+            val !== newValue;
+         });
+         this.tagsArray = temp;
+         console.log(temp);
+      },
+   },
    data() {
       return {
          isLoadingCompleted: false,
@@ -96,8 +110,9 @@ export default {
          inputTag: "",
          tagsArray: [],
          selection: "",
-         removeValue:"",
-
+         removeValue: "",
+         snackbar: false,
+         text: `Hello, I'm a snackbar`,
       };
    },
    beforeRouteEnter(to, from, next) {
@@ -113,6 +128,7 @@ export default {
    },
    components: {
       "the-navbar": TheNav,
+      VueEditor,
    },
    methods: {
       back() {
@@ -121,11 +137,11 @@ export default {
       onEnter() {
          this.tagsArray.push(this.inputTag);
       },
-      remove(){
-        //   console.log(123);
-        //   console.log(this.selection);
-        //   console.log(this.s);
-      }
+      remove() {
+         //   console.log(123);
+         //   console.log(this.selection);
+         //   console.log(this.s);
+      },
    },
 };
 </script>
