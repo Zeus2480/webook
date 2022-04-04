@@ -94,11 +94,11 @@ import { VueEditor } from "vue2-editor";
 export default {
    watch: {
       selection(newValue) {
-         console.log(newValue);
-         console.log(this.tagsArray);
+
          let temp = this.tagsArray.filter((val) => {
-            val !== newValue;
+            return val !== newValue;
          });
+
          this.tagsArray = temp;
          console.log(temp);
       },

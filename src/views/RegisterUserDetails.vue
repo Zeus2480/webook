@@ -27,8 +27,8 @@
             </div>
 
             <!-- //Form -->
-            <user-details v-if="!isStepOneCompleted" @status="checkStatus"></user-details>
-            <user-domain v-if="isStepOneCompleted" ></user-domain>
+            <user-details v-if="!isStepOneCompleted" @userData="userData"></user-details>
+            <user-domain :userData="formData" v-if="isStepOneCompleted" ></user-domain>
          </div>
       </div>
    </div>
@@ -51,17 +51,20 @@ export default {
             progress:50,
             step:1,
             isStepOneCompleted:false,
+            formData:null,
+            domainName:null,
 
 
         }
     },
     methods:{
-       checkStatus(status){
-          if(status){
+       userData(data){
+         //  console.log(123);
+            this.formData=data;
              this.progress=100;
              this.step=2;
              this.isStepOneCompleted=true;
-          }
+          
          },
         
         showPasswordFunctions(){

@@ -17,8 +17,12 @@
                <img src="../assets/Logo/WebookLogo.svg" alt="" />
             </div>
          </div>
-         <div class="form tw-w-3/5 tw-h-screen tw-px-24 tw-py-10 tw-flex tw-flex-col">
-            <div class="tw-flex tw-mb-8 tw-border-b-2 tw-border-gray-300 tw-pb-4">
+         <div
+            class="form tw-w-3/5 tw-h-screen tw-px-24 tw-py-10 tw-flex tw-flex-col"
+         >
+            <div
+               class="tw-flex tw-mb-8 tw-border-b-2 tw-border-gray-900 tw-pb-4"
+            >
                <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
                <div class="tw-my-auto tw-mx-6">
                   <h1 class="tw-font-medium tw-text-xl">
@@ -28,21 +32,22 @@
             </div>
 
             <!-- //Form -->
-            <div class=" tw-h-full   ">
-               <div class="form tw-px-3    ">
+            <div class="tw-h-full tw-px-20">
+               <div class="form tw-px-3">
                   <div class="email tw-mb-3 tw-mt-12">
                      <div class="">
                         <input
-                           type="text"
+                           type="email"
                            placeholder="Email"
+                           v-model="inputEmail"
                            class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
                         />
                      </div>
                      <p
                         :class="{ opacity: !showEmailMessage }"
-                        class="tw-text-red-600 tw-text-sm tw-mt-1 tw-px-4"
+                        class="tw-text-red-600 tw-text-sm tw-mt-1"
                      >
-                        Email already exists.
+                        {{ emailMessage }}
                      </p>
                   </div>
                   <div class="password tw-mb-3">
@@ -66,7 +71,7 @@
                         :class="{ opacity: !showPasswordMessage }"
                         class="tw-text-red-600 tw-text-sm tw-mt-1"
                      >
-                        Invalid Credentails
+                        {{ passwordMessage }}
                      </p>
                   </div>
                   <div class="show-password tw-px-2 tw-flex">
@@ -78,7 +83,12 @@
                      <label for="" class="tw-text-sm">Show password</label>
                   </div>
                   <div class="sign-up-button tw-mt-10">
-                     <v-btn block color="black" dark @click="Login"
+                     <v-btn
+                        block
+                        color="black"
+                        dark
+                        @click="Login"
+                        :loading="showButtonLoading"
                         >Login</v-btn
                      >
                   </div>
@@ -97,28 +107,67 @@
    </div>
 </template>
 <script>
+import axios from "axios";
 export default {
    computed: {},
    components: {},
    data() {
       return {
-         progress: 100,
-         step: 1,
-         isStepOneCompleted: false,
          showPassword: false,
          overlay: false,
+         inputEmail: "",
+         inputPassword: "",
+         showPasswordMessage: false,
+         showEmailMessage: false,
+         formIsValid: true,
+         emailMessage: "ww",
+         passwordMessage: "ww",
+         showButtonLoading: false,
       };
    },
    methods: {
       showPasswordFunctions() {
          this.showPassword = !this.showPassword;
       },
+      validate() {
+         this.showPasswordMessage = false;
+         this.showEmailMessage = false;
+         this.formIsValid = true;
+         if (this.inputPassword == "") {
+            this.passwordMessage = "Required";
+            this.showPasswordMessage = true;
+            this.formIsValid = false;
+         }
+         if (this.inputEmail == "") {
+            this.emailMessage = "Required";
+            this.showEmailMessage = true;
+            this.formIsValid = false;
+         }
+      },
       Login() {
-         this.overlay = true;
-         setTimeout(() => {
-            this.overlay = false;
-            this.$router.push("/dashboard/post");
-         },3000);
+         this.showButtonLoading = true;
+         this.validate();
+         if (this.formIsValid) {
+            axios
+               .post("/login", {
+                  email: this.inputEmail,
+                  password: this.inputPassword,
+               })
+               .then((res) => {
+                  localStorage.setItem("token", res.data.access_token);
+                  this.$router.push("/dashboard/post");
+               })
+               .catch((err) => {
+                  console.log(err);
+                  this.passwordMessage = "Invalid Credentials";
+                  this.showPasswordMessage = true;
+               })
+               .finally(() => {
+                  this.showButtonLoading = false;
+               });
+         } else {
+            this.showButtonLoading = false;
+         }
       },
    },
 };

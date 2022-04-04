@@ -78,50 +78,9 @@
                                  <v-icon>mdi-dots-vertical</v-icon>
                               </v-btn>
                            </template>
-                           <v-list>
-                              <v-list-item>
-                                 <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-b"><p>Edit</p></v-col>
-                                 </v-row>
-                              </v-list-item>
-                              <v-list-item>
-                                 <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-b"><p class="tw-text-sm">Move to draft</p></v-col>
-                                 </v-row>
-                              </v-list-item>
-                              <v-list-item>
-                                 <v-row>
-                                    <v-col cols="4"><img src="../assets/Logo/Vector (7).svg" alt=""></v-col>
-                                    <v-col cols="4" class="tw-bg-b"><p>Ediccccccct</p></v-col>
-                                 </v-row>
-                              </v-list-item>
-                              <v-list-item>
-                                 <v-list-item-action>
-                                    <v-icon>mdi-file</v-icon>
-                                 </v-list-item-action>
-                                 <v-list-item-content>
-                                    <v-list-item-title>Posts</v-list-item-title>
-                                 </v-list-item-content>
-                              </v-list-item>
-                              <v-list-item>
-                                 <v-list-item-action>
-                                    <v-icon>mdi-file</v-icon>
-                                 </v-list-item-action>
-                                 <v-list-item-content>
-                                    <v-list-item-title>Posts</v-list-item-title>
-                                 </v-list-item-content>
-                              </v-list-item>
-                              <v-list-item>
-                                 <v-list-item-action>
-                                    <v-icon>mdi-file</v-icon>
-                                 </v-list-item-action>
-                                 <v-list-item-content>
-                                    <v-list-item-title>Posts</v-list-item-title>
-                                 </v-list-item-content>
-                              </v-list-item>
-                           </v-list>
+                           <div>
+                              <h1>Hello</h1>
+                           </div>
                         </v-menu>
                      </div>
                      <div>

@@ -30,7 +30,7 @@
             </div>
          </div>
          <v-spacer></v-spacer>
-         <v-menu  nudge-bottom allow-overflow max-height="600">
+         <v-menu nudge-bottom allow-overflow max-height="600">
             <template v-slot:activator="{ on: menu, attrs }">
                <v-tooltip bottom>
                   <template v-slot:activator="{ on: tooltip }">
@@ -51,28 +51,38 @@
                   <span>Notifications</span>
                </v-tooltip>
             </template>
-           <v-card width="500">
-              <div class="tw-p-3">
-                 <h2 class="tw-text-2xl tw-font-medium tw-p-3">Notifications</h2>
-                 <div>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                    <notification-bar-card></notification-bar-card>
-                 </div>
-              </div>
-           </v-card>
+            <v-card width="500">
+               <div class="tw-p-3">
+                  <h2 class="tw-text-2xl tw-font-medium tw-p-3">
+                     Notifications
+                  </h2>
+                  <div>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                     <notification-bar-card></notification-bar-card>
+                  </div>
+               </div>
+            </v-card>
          </v-menu>
-         
-         <v-btn class="ma-2" icon><v-icon>mdi-account-circle</v-icon></v-btn>
+
+         <v-btn v-if="isProfilePictureAvailable" class="ma-2" icon
+            ><v-icon>mdi-account-circle</v-icon></v-btn
+         >
+         <v-btn v-if="!isProfilePictureAvailable" class="ma-2" icon
+            ><img
+               src="../assets/Images/profilepicture.jpg"
+               class="tw-h-6 tw-w-6 tw-rounded-full"
+               alt=""
+         /></v-btn>
          <v-icon>mdi-notifications</v-icon>
       </v-app-bar>
 
@@ -96,7 +106,7 @@
             >
          </div>
          <div class="tw-mx-6 tw-mt-6">
-            <v-list>
+            <v-list nav>
                <v-list-item class="tw-my-2" router to="/dashboard/post">
                   <v-list-item-action>
                      <v-icon>mdi-file</v-icon>
@@ -114,14 +124,18 @@
                   </v-list-item-content>
                </v-list-item>
                <v-list-item class="tw-my-2" router to="/dashboard/comments">
-                  <v-list-item-action >
+                  <v-list-item-action>
                      <v-icon>mdi-comment</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
                      <v-list-item-title>Comments</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
-               <v-list-item class="tw-my-2 tw-rounded-xl" router to="/dashboard/profile">
+               <v-list-item
+                  class="tw-my-2 tw-rounded-xl"
+                  router
+                  to="/dashboard/profile"
+               >
                   <v-list-item-action>
                      <v-icon>mdi-account</v-icon>
                   </v-list-item-action>
@@ -129,7 +143,11 @@
                      <v-list-item-title>Profile</v-list-item-title>
                   </v-list-item-content>
                </v-list-item>
-               <v-list-item class="tw-my-2 tw-rounded-xl">
+               <v-list-item
+                  class="tw-my-2 tw-rounded-xl"
+                  v-ripple
+                  @click="logout"
+               >
                   <v-list-item-action>
                      <v-icon>mdi-logout</v-icon>
                   </v-list-item-action>
@@ -150,26 +168,74 @@
    </div>
 </template>
 <script>
-import NotificationBarCard from "../components/NotificationBarCard.vue"
+import axios from "axios";
+import NotificationBarCard from "../components/NotificationBarCard.vue";
 export default {
-   props:['isSearchVisible','notOpenNavigation'],
-   components:{
-      'notification-bar-card':NotificationBarCard
+   props: ["isSearchVisible", "notOpenNavigation"],
+   components: {
+      "notification-bar-card": NotificationBarCard,
    },
-   
+
    data() {
       return {
          drawer: true,
-         
+         // isProfilePictureAvailable: false,
+         imagePath:""
       };
    },
+   created() {
+      this.getProfile();
+   },
+   computed:{
+      isProfilePictureAvailable(){
+        if (this.$store.getters.getUserProfilePicture) {
+           return false
+        }
+        else {
+           return true;
+        }
+      }
+   },
    methods: {
+      getProfile() {
+         if (this.$store.getters.getUserName == "") {
+            axios
+               .get("/profile", {
+                  headers: {
+                     Authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+               })
+               .then((res) => {
+                  console.log(res.data);
+
+                  this.$store.dispatch("setUserProfile", res.data);
+               });
+         }
+      },
       toogleNavigationDrawer() {
          this.drawer = !this.drawer;
       },
-      newPost(){
-         this.$router.push('/dashboard/create-post');
-      }
+      newPost() {
+         this.$router.push("/dashboard/create-post");
+      },
+      logout() {
+         axios
+            .post(
+               "/logout",
+               {},
+               {
+                  headers: {
+                     Authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+               }
+            )
+            .then(() => {
+               // this.loggedOut=true;
+               localStorage.removeItem("token");
+
+               this.$router.push("/login");
+            });
+      },
    },
 };
 </script>
@@ -177,6 +243,6 @@ export default {
 .v-list-item--active {
    background-color: #e1b413;
    color: #fff !important;
-   border-radius: .6rem;
+   border-radius: 0.6rem;
 }
 </style>

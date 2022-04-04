@@ -7,6 +7,7 @@
                   <input
                      type="text"
                      placeholder="First Name"
+                     v-model="inputFirstName"
                      class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 tw-rounded-md focus:tw-outline-none focus:tw-border-gray-500"
                   />
                </div>
@@ -14,6 +15,7 @@
                   <input
                      type="text"
                      placeholder="Last Name"
+                     v-model="inputLastName"
                      class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 tw-rounded-md focus:tw-outline-none focus:tw-border-gray-500"
                   />
                </div>
@@ -30,6 +32,7 @@
                <input
                   type="text"
                   placeholder="Email"
+                  v-model="inputEmail"
                   class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
                />
             </div>
@@ -37,7 +40,7 @@
                :class="{ opacity: !showEmailMessage }"
                class="tw-text-red-600 tw-text-sm tw-mt-1 tw-px-4"
             >
-               Email already exists.
+               {{ emailMessage }}
             </p>
          </div>
          <div class="password tw-mb-3">
@@ -79,8 +82,9 @@
                :class="{ opacity: !showPasswordMessage }"
                class="tw-text-red-600 tw-text-sm tw-mt-1 tw-px-4"
             >
-               Password dosen't match.
+               {{ passwordMessage }}
             </p>
+
             <p class="tw-text-gray-600 tw-text-sm tw-mt-1 tw-px-4">
                Use 8 or more characters with a mix of letters, numbers & symbols
             </p>
@@ -94,7 +98,14 @@
             <label for="" class="tw-text-sm">Show password</label>
          </div>
          <div class="sign-up-button tw-px-2 tw-mt-10">
-            <v-btn block color="black" dark @click="next">Next</v-btn>
+            <v-btn
+               block
+               :loading="buttonLoading"
+               color="black"
+               dark
+               @click="next"
+               >Next</v-btn
+            >
          </div>
          <div class="login tw-px-2 tw-mt-4">
             <p class="tw-text-sm">
@@ -112,16 +123,69 @@ export default {
          showNameMessage: false,
          showEmailMessage: false,
          showPasswordMessage: false,
+         showPasswordEmptyMessage: false,
+         inputFirstName: "",
+         inputLastName: "",
+         inputEmail: "",
          inputPassword: "",
          inputConfirmPassword: "",
+         isFormValid: true,
+         emailMessage: "ss",
+         passwordMessage: "ss",
+         buttonLoading: false,
+
          showPassword: false,
       };
    },
    methods: {
       next() {
-         this.$emit('status',true);
+         this.buttonLoading = true;
+         this.validation();
+         if (this.isFormValid) {
+            let data = {
+               name: this.inputFirstName + " " + this.inputLastName,
+               email: this.inputEmail,
+               password: this.inputPassword,
+               password_confirmation: this.inputConfirmPassword,
+               site: "",
+            };
+            this.buttonLoading = false;
+
+            this.$emit("userData", data);
+         } else {
+            this.buttonLoading = false;
+         }
+
+         // this.$emit('status',true);
 
          // this.$router.push('/register-domain')
+      },
+      validation() {
+         this.isFormValid = true;
+         this.showNameMessage = false;
+         this.showEmailMessage = false;
+         this.showPasswordMessage = false;
+         if (this.inputFirstName == "" && this.inputLastName == "") {
+            this.isFormValid = false;
+            this.showNameMessage = true;
+         }
+         if (this.inputEmail == "") {
+            this.isFormValid = false;
+            this.emailMessage = "Email is mandatory.";
+            this.showEmailMessage = true;
+         }
+         if (this.inputPassword == "" && this.inputConfirmPassword == "") {
+            this.isFormValid = false;
+            this.passwordMessage = "Password is mandatory";
+            this.showPasswordMessage = true;
+         }
+         if (this.inputPassword != this.inputConfirmPassword) {
+            console.log(123);
+            this.isFormValid = false;
+            this.passwordMessage =
+               "Password and confirm password are not same.";
+            this.showPasswordMessage = true;
+         }
       },
       showPasswordFunctions() {
          this.showPassword = !this.showPassword;
