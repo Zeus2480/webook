@@ -58,13 +58,13 @@
                                              <img
                                                 v-if="!preview"
                                                 :src="priflePicturePath"
-                                                class="tw-h-20 tw-w-20 tw-rounded-full"
+                                                class="tw-h-20 tw-w-20 tw-rounded-full tw-object-cover"
                                                 alt=""
                                              />
                                              <img
                                                 v-if="preview"
                                                 :src="image"
-                                                class="tw-h-20 tw-w-20 tw-rounded-full"
+                                                class="tw-h-20 tw-w-20 tw-rounded-full tw-object-cover"
                                                 alt=""
                                              />
                                           </div>
@@ -157,7 +157,12 @@
                         </v-row>
                         <v-row class="tw-mb-1"
                            ><v-col
-                              ><v-btn block color="primary" @click="upodateProfile">Update</v-btn>
+                              ><v-btn
+                                 block
+                                 color="primary"
+                                 @click="upodateProfile"
+                                 >Update</v-btn
+                              >
                            </v-col>
                         </v-row>
                      </div>
@@ -190,7 +195,7 @@ export default {
          upadeProfileLoading: false,
          snackbar: false,
          text: "",
-         profileCard:null
+         profileCard: null,
       };
    },
    computed: {
@@ -212,7 +217,7 @@ export default {
       upodateProfile() {
          this.upadeProfileLoading = true;
          const formData = new FormData();
-         this.userName=this.firstName+" "+this.lastName
+         this.userName = this.firstName + " " + this.lastName;
          formData.append("name", this.userName);
          if (this.bio) {
             formData.append("bio", this.bio);
@@ -221,10 +226,10 @@ export default {
             // console.log(this.instagram)
             formData.append("instagram", this.instagram);
          }
-         if (!this.facebook) {
+         if (this.facebook) {
             formData.append("facebook", this.facebook);
          }
-         if (!this.twitter) {
+         if (this.twitter) {
             formData.append("youtube", this.twitter);
          }
          axios
@@ -235,7 +240,7 @@ export default {
             })
             .then((res) => {
                console.log(res.data);
-               this.$store.dispatch("updateUserProfile",res.data);
+               this.$store.dispatch("updateUserProfile", res.data);
                this.text = "Profile updated sucessfully!";
                this.snackbar = true;
             })
@@ -256,10 +261,10 @@ export default {
                // console.log(this.instagram)
                formData.append("instagram", this.instagram);
             }
-            if (!this.facebook) {
+            if (this.facebook) {
                formData.append("facebook", this.facebook);
             }
-            if (!this.twitter) {
+            if (this.twitter) {
                formData.append("youtube", this.twitter);
             }
             axios
@@ -270,11 +275,16 @@ export default {
                })
                .then((res) => {
                   console.log(res);
-                  this.profileCard=false
+                  this.$store.dispatch("updateUserProfile", res.data);
+                  this.text = "Profile Picture updated sucessfully!";
+                  this.snackbar = true;
+                  this.profileCard = false;
+
                   this.text = "Profile updated sucessfully!";
                   this.snackbar = true;
-
-
+               })
+               .finally(() => {
+                  this.uploadProfilePictureLoading = false;
                });
          }
       },
@@ -292,16 +302,48 @@ export default {
          }
       },
       getData() {
-         let data = this.$store.getters.getUserProfile;
-         this.userName = data.name;
-         this.firstName = this.userName.split(" ").slice(0, -1).join(" ");
-         this.lastName = this.userName.split(" ").slice(-1).join(" ");
-         this.createdDate = data.createdAt;
-         this.bio = data.bio;
-         this.instagram = data.instagram;
-         this.facebook = data.facebook;
-         this.twitter = data.twitter;
-         this.imagePath = data.imagePath;
+         // let data = this.$store.getters.getUserProfile;
+         // this.userName = this.$store.getters.getUserName;
+         // this.firstName = this.userName.split(" ").slice(0, -1).join(" ");
+         // this.lastName = this.userName.split(" ").slice(-1).join(" ");
+         // this.createdDate = data.createdAt;
+         // this.bio = this.$store.getters.getBio;
+         // // this.instagram = data.instagram;
+         // // this.facebook = data.facebook;
+         // // this.twitter = data.twitter;
+         // this.imagePath = data.imagePath;
+         axios
+            .get("/profile", {
+               headers: {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+               },
+            })
+            .then((res) => {
+               // console.log(res.data);
+               this.userName = res.data.name;
+               this.firstName = this.userName.split(" ").slice(0, -1).join(" ");
+               this.lastName = this.userName.split(" ").slice(-1).join(" ");
+               this.bio = res.data.bio;
+               this.instagram = res.data.instagram;
+
+               this.twitter = res.data.youtube;
+
+               if (!res.data.facebook) {
+                  this.facebook = "";
+               } else {
+                  this.facebook = res.data.facebook;
+               }
+               if (!res.data.instagram) {
+                  this.instagram = "";
+               } else {
+                  this.instagram = res.data.instagram;
+               }
+               if (!res.data.youtube) {
+                  this.twitter = "";
+               } else {
+                  this.twitter = res.data.youtube;
+               }
+            });
       },
       backToProfile() {
          this.$router.push("/dashboard/profile");

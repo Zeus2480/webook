@@ -15,6 +15,7 @@ import ViewAllBLogs from "../views/Frontend/ViewAllBLogs.vue"
 import TagsPage from "../views/Frontend/TagsPage.vue"
 import LoginPage from "../views/LoginPage.vue"
 import CreatePost from "../views/CreatePost.vue"
+import EditPost from "../views/EditPost.vue"
 
 Vue.use(VueRouter)
 
@@ -55,6 +56,13 @@ const routes = [
     path:'/dashboard/create-post',
     name:CreatePost,
     component:CreatePost
+
+  },
+  {
+    path:'/dashboard/edit-post/:postId',
+    name:EditPost,
+    component:EditPost,
+    props:true
 
   },
   {

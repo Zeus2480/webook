@@ -26,6 +26,21 @@ export default new Vuex.Store({
     },
     getUserProfilePicture(state){
       return state.userProfile.imagePath;
+    },
+    getBio(state){
+      return state.userProfile.bio;
+    },
+    getTwitter(state){  //getters are used to access the state
+      return state.userProfile.twitter;
+    },
+    getInstagram(state){
+      return state.userProfile.instagram;
+    },
+    getFacebook(state){
+      return state.userProfile.facebook;
+    },
+    getSlug(state){
+      return state.userProfile.slug;
     }
   },
   mutations: {

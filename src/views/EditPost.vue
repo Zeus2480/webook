@@ -24,16 +24,16 @@
                                  alt=""
                            /></v-btn>
                            <h1 class="tw-my-auto tw-mx-2 tw-text-xl">
-                              Create Post
+                              Edit Post
                            </h1>
                         </div>
                         <div class="puplish-preview">
                            <v-btn outlined color="primary">Preview</v-btn>
                            <v-btn
                               color="primary"
-                              @click="publish"
+                              @click="update"
                               class="tw-ml-4"
-                              >Publish</v-btn
+                              >Update</v-btn
                            >
                         </div>
                      </div>
@@ -97,6 +97,7 @@ import TheNav from "../Common/TheNavbar.vue";
 import { VueEditor } from "vue2-editor";
 import axios from "axios";
 export default {
+    props:['postId'],
    watch: {
       selection(newValue) {
          let temp = this.tagsArray.filter((val) => {
@@ -128,6 +129,7 @@ export default {
             //    (v && v.length <= 10) || "Name must be less than 10 characters",
          ],
          summaryRules: [(v) => !!v || "Summary is required"],
+
       };
    },
    beforeRouteEnter(to, from, next) {
@@ -137,15 +139,24 @@ export default {
       });
    },
    created() {
-      setTimeout(() => {
-         this.isLoadingCompleted = true;
-      }, 2000);
+     this.getData();
    },
    components: {
       "the-navbar": TheNav,
       VueEditor,
    },
    methods: {
+       getData(){
+           let slug=this.$store.getters.getSlug;
+              axios.get(`/user/${slug}/post/${this.postId}`).then(res=>{
+              console.log(res.data);
+              this.title=res.data.name;
+                this.summary=res.data.excerpt;
+                this.body=res.data.body;
+                this.tagsArray=JSON.parse(res.data.tags);
+              })
+         },
+      
       onFileSelected(event) {
          // console.log(event);
          if (event) {
@@ -169,24 +180,26 @@ export default {
       validate() {
          this.valid = this.$refs.form.validate();
       },
-      publish() {
+      update() {
          if (this.valid) {
-            console.log(this.tagsArray);
             let formData = new FormData();
             formData.append("name", this.title);
             formData.append("excerpt", this.summary);
             formData.append("body", this.body);
-            formData.append("tags",JSON.stringify( this.tagsArray));
-            formData.append("image", this.selectedFile);
+            formData.append("tags", this.tagsArray);
+            if(this.selectedFile){
+                formData.append("image", this.selectedFile);
+
+            }
             console.log(formData);
             axios
-               .post("/post/create", formData, {
+               .post(`/post/${this.postId}/update`, formData, {
                   headers: {
                      Authorization: "Bearer " + localStorage.getItem("token"),
                   },
                })
                .then((res) => {
-                  console.log(JSON.parse(res.data.tags));
+                  console.log(res);
                   this.snackbar = true;
                   this.text = "Post Created Successfully";
                });

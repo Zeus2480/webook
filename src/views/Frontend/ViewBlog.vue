@@ -40,7 +40,7 @@
                                        <h1
                                           class="tw-text-2xl tw-font-medium tw-line-clamp-2"
                                        >
-                                          This is the title of the blog
+                                          {{ title }}
                                        </h1>
                                        <div class="tw-flex tw-mt-3">
                                           <div class="tw-flex tw-my-auto">
@@ -79,113 +79,7 @@
                                  alt=""
                               />
                            </div>
-                           <div class="content tw-mt-5">
-                              <p>
-                                 Chrome 100 ships in late March (2022), and
-                                 Firefox 100 ships shortly after in early May.
-                                 Both of these are a major version number
-                                 milestone and roll over to three digits. But,
-                                 if your code is expecting two digits, the new
-                                 version number could cause issues for you.
-                              </p>
-                              <p>
-                                 Any code that checks version numbers, or parses
-                                 the user agent string should be checked to make
-                                 sure it won't have any issues.
-                              </p>
-                              <p>
-                                 Chrome flags page highlighting the new
-                                 #force-major-version-to-100 option In Chrome,
-                                 the #force-major-version-to-100 flag will
-                                 change the current version number to 100.
-                              </p>
-                              <p>
-                                 And in Firefox Nightly's Settings menu, you can
-                                 enable the "Firefox 100 User-Agent String"
-                                 option. It's a good idea to test your site so
-                                 that you can make sure everything works as
-                                 expected.
-                              </p>
-                              <p>
-                                 #CSS Cascasde Layers Support for CSS Cascade
-                                 Layers and the CSS @layer rule is landing in
-                                 Chrome 99. They provide more explicit control
-                                 of your CSS files to prevent style-specificity
-                                 conflicts. This is especially useful for large
-                                 codebases, design systems, and when managing
-                                 third party styles in applications.
-                              </p>
-                              <p>
-                                 Chrome 100 ships in late March (2022), and
-                                 Firefox 100 ships shortly after in early May.
-                                 Both of these are a major version number
-                                 milestone and roll over to three digits. But,
-                                 if your code is expecting two digits, the new
-                                 version number could cause issues for you.
-                              </p>
-                              <p>
-                                 Any code that checks version numbers, or parses
-                                 the user agent string should be checked to make
-                                 sure it won't have any issues.
-                              </p>
-                              <p>
-                                 Chrome flags page highlighting the new
-                                 #force-major-version-to-100 option In Chrome,
-                                 the #force-major-version-to-100 flag will
-                                 change the current version number to 100.
-                              </p>
-                              <p>
-                                 And in Firefox Nightly's Settings menu, you can
-                                 enable the "Firefox 100 User-Agent String"
-                                 option. It's a good idea to test your site so
-                                 that you can make sure everything works as
-                                 expected.
-                              </p>
-                              <p>
-                                 #CSS Cascasde Layers Support for CSS Cascade
-                                 Layers and the CSS @layer rule is landing in
-                                 Chrome 99. They provide more explicit control
-                                 of your CSS files to prevent style-specificity
-                                 conflicts. This is especially useful for large
-                                 codebases, design systems, and when managing
-                                 third party styles in applications.
-                              </p>
-                              <p>
-                                 Chrome 100 ships in late March (2022), and
-                                 Firefox 100 ships shortly after in early May.
-                                 Both of these are a major version number
-                                 milestone and roll over to three digits. But,
-                                 if your code is expecting two digits, the new
-                                 version number could cause issues for you.
-                              </p>
-                              <p>
-                                 Any code that checks version numbers, or parses
-                                 the user agent string should be checked to make
-                                 sure it won't have any issues.
-                              </p>
-                              <p>
-                                 Chrome flags page highlighting the new
-                                 #force-major-version-to-100 option In Chrome,
-                                 the #force-major-version-to-100 flag will
-                                 change the current version number to 100.
-                              </p>
-                              <p>
-                                 And in Firefox Nightly's Settings menu, you can
-                                 enable the "Firefox 100 User-Agent String"
-                                 option. It's a good idea to test your site so
-                                 that you can make sure everything works as
-                                 expected.
-                              </p>
-                              <p>
-                                 #CSS Cascasde Layers Support for CSS Cascade
-                                 Layers and the CSS @layer rule is landing in
-                                 Chrome 99. They provide more explicit control
-                                 of your CSS files to prevent style-specificity
-                                 conflicts. This is especially useful for large
-                                 codebases, design systems, and when managing
-                                 third party styles in applications.
-                              </p>
-                           </div>
+                           <div v-html="body" class="content tw-mt-5"></div>
                            <div
                               class="like-comment-bar tw-flex tw-justify-between"
                            >
@@ -240,11 +134,11 @@
                            <h1 class="tw-text-xl tw-font-medium tw-mb-2">
                               Get an email whenever Faizan Siddiqui Publishes
                            </h1>
-                           <p class="tw-text-sm ">
+                           <p class="tw-text-sm">
                               Subscribe to get latest and important articles
                               from Faizan Siddiqui
                            </p>
-                           <v-btn  class="tw-mt-5" color="#E1B413">
+                           <v-btn class="tw-mt-5" color="#E1B413">
                               <v-icon>mdi-email</v-icon>
                               Subscribe
                            </v-btn>
@@ -255,34 +149,37 @@
             </div>
 
             <div class="tw-w-1/5 tw-bg-white">
-                <div>
-                    <view-blog-sidebar></view-blog-sidebar>
-                </div>
+               <div>
+                  <view-blog-sidebar></view-blog-sidebar>
+               </div>
             </div>
-
-
          </div>
       </div>
    </div>
 </template>
 <script>
-import ViewBLogSidebar from "../../components/ViewBLogSidebar.vue" 
+import ViewBLogSidebar from "../../components/ViewBLogSidebar.vue";
+import axios from "axios";
 export default {
-    components:{
-        'view-blog-sidebar':ViewBLogSidebar,
-    },
+   components: {
+      "view-blog-sidebar": ViewBLogSidebar,
+   },
    data() {
       return {
          btnColor: "black",
          iconColor: "black",
          isLiked: false,
          drawer: false,
+         title: null,
+         body: null,
+         imageUrl: null,
+         createdDate: null,
       };
    },
    methods: {
-      backNavigate(){
-           this.$router.push(`/view/${this.userId}`)
-       },
+      backNavigate() {
+         this.$router.push(`/view/${this.userId}`);
+      },
       likeUnlike() {
          if (this.isLiked) {
             this.btnColor = "black";
@@ -294,12 +191,24 @@ export default {
             this.isLiked = !this.isLiked;
          }
       },
+      getBlogData() {
+         console.log(`user/${this.userId}/post/${this.blogId}`);
+         axios.get(`user/${this.userId}/post/${this.blogId}`).then((res) => {
+            console.log(res.data);
+            this.title = res.data.name;
+            this.body = res.data.body;
+            this.imageUrl = res.data.image_path;
+            this.createdDate = res.data.created_at;
+         });
+      },
    },
    props: ["userId", "blogId"],
    created() {
-    //   console.log(this.userId);
-    //   console.log(this.blogId);
+      //   console.log(this.userId);
+      //   console.log(this.blogId);
+      this.getBlogData();
    },
+   
 };
 </script>
 <style scoped>
