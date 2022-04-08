@@ -47,11 +47,11 @@
                                              <p class="tw-opacity-70">
                                                 29 Feb 2022
                                              </p>
-                                             <p class="tw-mx-5 tw-opacity-70">
+                                             <!-- <p class="tw-mx-5 tw-opacity-70">
                                                 2 min read
-                                             </p>
+                                             </p> -->
                                           </div>
-                                          <v-btn small color="#E1B413">
+                                          <v-btn class="tw-mx-5" small color="#E1B413">
                                              <v-icon>mdi-email</v-icon>
                                              Subscribe
                                           </v-btn>
@@ -74,8 +74,8 @@
                            </div>
                            <div class="image tw-my-4">
                               <img
-                                 class="banner"
-                                 src="../../assets/Images/wallpaperflare.com_wallpaper (17).jpg"
+                                 class="banner tw-object-cover"
+                                 :src="imageUrl"
                                  alt=""
                               />
                            </div>

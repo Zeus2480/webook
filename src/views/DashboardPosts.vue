@@ -1,8 +1,8 @@
 <template>
    <div>
       <the-navbar :isSearchVisible="true"></the-navbar>
-      <v-snackbar v-model="snackbar">
-         Link copied to clipboard
+      <v-snackbar v-model="snackbar" timeout="1000">
+         {{ snackbarText }}
 
          <template v-slot:action="{ attrs }">
             <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
@@ -56,7 +56,8 @@
                         <div>
                            <post-card
                               @showSnackbar="showSnackbar"
-                              v-for="(post, index) in allPosts"
+                              v-for="(post, index) in activePost"
+                              :index="index"
                               :key="index"
                               :title="post.name"
                               :postId="post.id"
@@ -81,6 +82,7 @@ import TheNavbar from "../Common/TheNavbar.vue";
 import PostCard from "../components/PostCard.vue";
 import PostCardSkeleton from "../components/PostCardSkeleton.vue";
 import axios from "axios";
+
 export default {
    computed: {
       // emptyStateCheck() {
@@ -98,13 +100,29 @@ export default {
          selected: "All",
          showSkeletonLoading: true,
          snackbar: false,
-         emptyStateCheck:null,
+         emptyStateCheck: null,
          allPosts: [],
+         publishedPost: [],
+         archivedPost: [],
+         draftPost: [],
+         activePost: [],
+         snackbarText: "",
       };
    },
    watch: {
-      selected(newV) {
-         console.log(newV);
+      selected(value) {
+         console.log(value);
+         // this.filterPost(newV);
+         if (value == "All") {
+            this.activePost = this.allPosts;
+         }
+         if (value == "Published") {
+            this.activePost = this.publishedPost;
+         }
+         if (value == "Archived") {
+            this.activePost = this.archivedPost;
+         }
+         console.log(this.activePost);
       },
    },
    created() {
@@ -120,7 +138,36 @@ export default {
    },
 
    methods: {
-      showSnackbar() {
+      filterPost(value) {
+         // console.log(value);
+         if (value == "All") {
+            this.activePost = this.allPosts;
+         }
+         if (value == "Published") {
+            this.activePost = this.publishedPost;
+         }
+         if (value == "Archived") {
+            this.activePost = this.archivedPost;
+         }
+         console.log(this.activePost);
+      },
+      showSnackbar(text,index,resdata) {
+         console.log("Sss");
+         console.log(text,index,resdata);
+         console.log(this.selected);
+         if(this.selected!="All"){
+            this.activePost.splice(index,1);
+         }
+         // this.activePost.splice(index, 1);
+         let ind=this.allPosts.findIndex(post=>post.id==resdata.id);
+         this.allPosts[ind]=resdata;
+         this.filterPostArray();
+         console.log(this.allPosts);
+         console.log(this.activePost);
+         console.log(this.publishedPost);
+         console.log(this.archivedPost);
+         
+         this.snackbarText = text;
          this.snackbar = true;
       },
       newPost() {
@@ -128,20 +175,37 @@ export default {
       },
       getAllPosts() {
          const slug = this.$store.getters.getSlug;
-         axios
-            .get(`/user/${slug}/posts`)
-            .then((res) => {
-               console.log(res.data[0]);
-               this.allPosts = res.data;
-               if (this.allPosts.length == 0) {
-                  this.emptyStateCheck= true;
-               } else {
-                  this.emptyStateCheck=false;
-               }
-            })
-            .finally(() => {
-               this.showSkeletonLoading = false;
-            });
+         console.log(slug);
+
+         if (this.$store.getters.getSlug) {
+            axios
+               .get(`/user/${slug}/posts`)
+               .then((res) => {
+                  console.log(res.data);
+                  this.allPosts = res.data.reverse();
+                  this.filterPostArray();
+                  this.activePost = this.allPosts;
+                  console.log(this.archivedPost);
+                  console.log(this.publishedPost);
+                  if (this.allPosts.length == 0) {
+                     this.emptyStateCheck = true;
+                  } else {
+                     this.emptyStateCheck = false;
+                  }
+               })
+               .finally(() => {
+                  this.showSkeletonLoading = false;
+               });
+         }
+      },
+      filterPostArray() {
+         this.publishedPost = this.allPosts.filter(
+            (post) => post.status == "published"
+         );
+         this.archivedPost =this.allPosts.filter(
+            (post) => post.status == "Archive"
+         );
+
       },
    },
 };

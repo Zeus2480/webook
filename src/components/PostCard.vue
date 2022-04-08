@@ -28,7 +28,7 @@
       </v-card> -->
       <v-hover v-slot="{ hover }">
          <v-card :elevation="hover ? 3 : 0" :class="{ 'on-hover': hover }">
-            <div class="tw-p-2">
+            <div class="tw-p-2 tw-shadow  ">
                <v-row>
                   <v-col cols="2">
                      <div class="tw-rounded-md">
@@ -55,8 +55,17 @@
                         ></v-skeleton-loader> -->
                         </div>
                         <div class="tw-flex tw-mb-2">
-                           <p class="tw-text-lime-600 tw-text-sm tw-mr-2">
+                           <p
+                              v-if="showPublish"
+                              class="tw-text-lime-600 tw-text-sm tw-mr-2"
+                           >
                               Published
+                           </p>
+                           <p
+                              v-if="showArchive"
+                              class="tw-text-red-600 tw-text-sm tw-mr-2"
+                           >
+                              Archived
                            </p>
                            <p class="tw-ml-2 tw-opacity-80 tw-text-sm">
                               {{ publishedDate }}
@@ -78,11 +87,7 @@
                                  </v-btn>
                               </template>
                               <v-list nav>
-                                 <v-list-item
-                                    v-ripple
-                                    router
-                                    :to="editRoute"
-                                 >
+                                 <v-list-item v-ripple router :to="editRoute">
                                     <v-list-item-action>
                                        <v-icon>mdi-file</v-icon>
                                     </v-list-item-action>
@@ -92,13 +97,31 @@
                                        >
                                     </v-list-item-content>
                                  </v-list-item>
-                                 <v-list-item>
+                                 <v-list-item
+                                    v-if="!showArchive"
+                                    v-ripple
+                                    @click="archivePost"
+                                 >
                                     <v-list-item-action>
                                        <v-icon>mdi-equalizer</v-icon>
                                     </v-list-item-action>
                                     <v-list-item-content>
                                        <v-list-item-title
                                           >Archive</v-list-item-title
+                                       >
+                                    </v-list-item-content>
+                                 </v-list-item>
+                                 <v-list-item
+                                    v-if="!showPublish"
+                                    v-ripple
+                                    @click="publishPost"
+                                 >
+                                    <v-list-item-action>
+                                       <v-icon>mdi-equalizer</v-icon>
+                                    </v-list-item-action>
+                                    <v-list-item-content>
+                                       <v-list-item-title
+                                          >Publish</v-list-item-title
                                        >
                                     </v-list-item-content>
                                  </v-list-item>
@@ -117,7 +140,7 @@
                               </v-list>
                            </v-menu>
                         </div>
-                        <div>
+                        <div v-if="!showArchive">
                            <v-tooltip bottom>
                               <template v-slot:activator="{ on, attrs }">
                                  <v-btn
@@ -179,13 +202,38 @@
    </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-   computed:{
-      editRoute(){
+   data() {
+      return {
+         showPublish: false,
+         showArchive: false,
+         resData:null,
+      };
+   },
+   computed: {
+      editRoute() {
          return `/dashboard/edit-post/${this.postId}`;
       },
    },
+   created() {
+      this.co();
+   },
+   watch: {
+      status(value) {
+         console.log(value);
+         if (this.status == "Archive") {
+            this.showArchive = true;
+            this.showPublish = false;
+         }
+         if (this.status == "published") {
+            this.showPublish = true;
+            this.showArchive=false;
+         }
+      },
+   },
    props: [
+   "index",
       "title",
       "imageUrl",
       "likes",
@@ -196,12 +244,42 @@ export default {
       "status",
    ],
    methods: {
+      co() {
+         console.log(this.status);
+         if (this.status == "Archive") {
+            this.showArchive = true;
+         }
+         if (this.status == "published") {
+            this.showPublish = true;
+         }
+      },
       copyLink() {
          navigator.clipboard.writeText(
             `http://localhost:8080/view/${this.$store.getters.getSlug}/${this.postId}`
          );
-         this.$emit("showSnackbar");
+         this.$emit("showSnackbar", "Link Copied Sucessfully");
       },
+      archivePost() {
+         console.log(123);
+         axios.post(`/post/${this.postId}/update/status_archive`).then((res) => {
+            this.resData=res.data.post;
+            // this.showArchive = !this.showArchive;
+            // this.showPublish = !this.showPublish;
+            this.$emit("showSnackbar", "Post Archived Sucessfully",this.index,this.resData);
+         });
+      },
+      publishPost() {
+         axios.post(`/post/${this.postId}/update/status_archive`).then((res) => {
+            console.log(res.data.post);
+            this.resData=res.data.post;
+            // this.showArchive = !this.showArchive;
+            // this.showPublish = !this.showPublish;
+            this.$emit("showSnackbar", "Post Published Sucessfully",this.index,this.resData);
+         });
+      },
+      deletePost(){
+         this.$emit("showSnackbar", "Post Deleted Sucessfully",this.index,this.postId);
+      }
    },
 };
 </script>
@@ -215,5 +293,8 @@ export default {
 .no-padding {
    padding-left: 0px !important;
    padding-right: 0px !important;
+}
+.Archive {
+   color: #2196f3;
 }
 </style>
