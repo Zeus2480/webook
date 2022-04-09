@@ -56,6 +56,7 @@
                         <div>
                            <post-card
                               @showSnackbar="showSnackbar"
+                              @deletePost="deletePost"
                               v-for="(post, index) in activePost"
                               :index="index"
                               :key="index"
@@ -66,6 +67,7 @@
                               :publishedDate="post.created_at"
                               :likes="post.likes_count"
                               :coments="post.comments_count"
+                              :views="post.views"
                            ></post-card>
                         </div>
                      </div>
@@ -107,6 +109,7 @@ export default {
          draftPost: [],
          activePost: [],
          snackbarText: "",
+         slug:this.$store.getters.getSlug
       };
    },
    watch: {
@@ -123,6 +126,10 @@ export default {
             this.activePost = this.archivedPost;
          }
          console.log(this.activePost);
+      },
+      slug(value) {
+         console.log(value);
+         // this.filterPost(value);
       },
    },
    created() {
@@ -162,10 +169,10 @@ export default {
          let ind=this.allPosts.findIndex(post=>post.id==resdata.id);
          this.allPosts[ind]=resdata;
          this.filterPostArray();
-         console.log(this.allPosts);
-         console.log(this.activePost);
-         console.log(this.publishedPost);
-         console.log(this.archivedPost);
+         // console.log(this.allPosts);
+         // console.log(this.activePost);
+         // console.log(this.publishedPost);
+         // console.log(this.archivedPost);
          
          this.snackbarText = text;
          this.snackbar = true;
@@ -174,12 +181,12 @@ export default {
          this.$router.push("/dashboard/create-post");
       },
       getAllPosts() {
-         const slug = this.$store.getters.getSlug;
-         console.log(slug);
+         this.slug = this.$store.getters.getSlug;
+         
 
          if (this.$store.getters.getSlug) {
             axios
-               .get(`/user/${slug}/posts`)
+               .get(`/user/${this.slug}/posts`)
                .then((res) => {
                   console.log(res.data);
                   this.allPosts = res.data.reverse();
@@ -207,6 +214,17 @@ export default {
          );
 
       },
+      deletePost(text,index,postId){
+         if(this.selected!=="All"){
+            this.activePost.splice(index,1);
+         }
+         let ind=this.allPosts.findIndex(post=>post.id==postId);
+         this.allPosts.splice(ind,1);
+         this.filterPostArray();
+         this.snackbarText = text;
+         this.snackbar = true;
+
+      }
    },
 };
 </script>

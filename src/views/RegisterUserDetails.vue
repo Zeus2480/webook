@@ -17,61 +17,67 @@
                   </h1>
                </div>
             </div>
-            <v-progress-linear
-               :value="progress"
-               color="black"
-               rounded
-            ></v-progress-linear>
-            <div class="tw-flex tw-flex-row-reverse tw-mt-1 tw-mb-4">
-               <p class="tw-opacity-75">{{whichStep}}</p>
+
+            <div>
+               <v-progress-linear
+                  :value="progress"
+                  color="black"
+                  rounded
+               ></v-progress-linear>
+               <div class="tw-flex tw-flex-row-reverse tw-mt-1 tw-mb-4">
+                  <p class="tw-opacity-75">{{ whichStep }}</p>
+               </div>
             </div>
 
             <!-- //Form -->
-            <user-details v-if="!isStepOneCompleted" @userData="userData"></user-details>
-            <user-domain :userData="formData" v-if="isStepOneCompleted" ></user-domain>
+            <user-details
+               v-if="!isStepOneCompleted"
+               @userData="userData"
+            ></user-details>
+            <user-domain
+               :userData="formData"
+               v-if="isStepOneCompleted"
+            ></user-domain>
          </div>
       </div>
    </div>
 </template>
 <script>
-import UserDetails from '../components/UserDetails.vue'
-import UserDOmain from '../components/UserDomian.vue'
+import UserDetails from "../components/UserDetails.vue";
+import UserDOmain from "../components/UserDomian.vue";
 export default {
-   computed:{
-      whichStep(){
-         return`Step ${this.step} of 2`
-      }
+   computed: {
+      whichStep() {
+         return `Step ${this.step} of 2`;
+      },
    },
-   components:{
-      'user-details':UserDetails,
-      'user-domain':UserDOmain,
+   components: {
+      "user-details": UserDetails,
+      "user-domain": UserDOmain,
    },
-    data(){
-        return{
-            progress:50,
-            step:1,
-            isStepOneCompleted:false,
-            formData:null,
-            domainName:null,
-
-
-        }
-    },
-    methods:{
-       userData(data){
+   data() {
+      return {
+         progress: 50,
+         step: 1,
+         isStepOneCompleted: false,
+         formData: null,
+         domainName: null,
+      };
+   },
+   methods: {
+      userData(data) {
          //  console.log(123);
-            this.formData=data;
-             this.progress=100;
-             this.step=2;
-             this.isStepOneCompleted=true;
-          
-         },
-        
-        showPasswordFunctions(){
-           this.showPassword=!this.showPassword;
-        }
-    }
-}
+         this.formData = data;
+         this.progress = 100;
+         this.step = 2;
+         this.isStepOneCompleted = true;
+      },
+
+      showPasswordFunctions() {
+         this.showPassword = !this.showPassword;
+      },
+   },
+};
 </script>
 <style scoped>
 .opacity {

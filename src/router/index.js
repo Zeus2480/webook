@@ -33,7 +33,8 @@ const routes = [
   {
     path: '/register-userdetails',
     name: 'RegisterUserDetails',
-    component: RegisterUserDetails
+    component: RegisterUserDetails,
+    props:true
   },
   
   {

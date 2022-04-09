@@ -42,6 +42,7 @@ export default {
          facebook: null,
          twitter: null,
          imagePath: null,
+         searchQuery:"",
       };
    },
    created() {

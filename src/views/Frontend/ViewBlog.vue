@@ -10,7 +10,7 @@
       </v-navigation-drawer>
       <div class="tw-min-h-screen tw-min-w-full tw-bg-gray-300">
          <div class="tw-flex">
-            <div class="tw-w-4/5 tw-bg-orange-100 tw-min-h-screen">
+            <div class="tw-w-4/5 tw-bg-orange-100 tw-border-r-2 tw-border-gray-200 tw-min-h-screen">
                <div class="backgroundImage">
                   <div class="tw-h-full">
                      <v-container

@@ -28,7 +28,7 @@
       </v-card> -->
       <v-hover v-slot="{ hover }">
          <v-card :elevation="hover ? 3 : 0" :class="{ 'on-hover': hover }">
-            <div class="tw-p-2 tw-shadow  ">
+            <div class="tw-p-2 tw-shadow">
                <v-row>
                   <v-col cols="2">
                      <div class="tw-rounded-md">
@@ -89,7 +89,7 @@
                               <v-list nav>
                                  <v-list-item v-ripple router :to="editRoute">
                                     <v-list-item-action>
-                                       <v-icon>mdi-file</v-icon>
+                                       <v-icon >fas fa-list</v-icon>
                                     </v-list-item-action>
                                     <v-list-item-content>
                                        <v-list-item-title
@@ -117,7 +117,7 @@
                                     @click="publishPost"
                                  >
                                     <v-list-item-action>
-                                       <v-icon>mdi-equalizer</v-icon>
+                                       <v-icon> mdi-cloud-upload</v-icon>
                                     </v-list-item-action>
                                     <v-list-item-content>
                                        <v-list-item-title
@@ -125,7 +125,7 @@
                                        >
                                     </v-list-item-content>
                                  </v-list-item>
-                                 <v-list-item>
+                                 <v-list-item v-ripple @click="deletePost">
                                     <v-list-item-action>
                                        <v-icon>mdi-comment</v-icon>
                                     </v-list-item-action>
@@ -168,7 +168,7 @@
                                     alt=""
                                  />
                                  <p class="tw-ml-1 tw-text-sm tw-opacity-80">
-                                    124
+                                    {{ views }}
                                  </p>
                               </div></v-col
                            >
@@ -208,7 +208,7 @@ export default {
       return {
          showPublish: false,
          showArchive: false,
-         resData:null,
+         resData: null,
       };
    },
    computed: {
@@ -228,12 +228,13 @@ export default {
          }
          if (this.status == "published") {
             this.showPublish = true;
-            this.showArchive=false;
+            this.showArchive = false;
          }
       },
    },
    props: [
-   "index",
+      "views",
+      "index",
       "title",
       "imageUrl",
       "likes",
@@ -261,25 +262,55 @@ export default {
       },
       archivePost() {
          console.log(123);
-         axios.post(`/post/${this.postId}/update/status_archive`).then((res) => {
-            this.resData=res.data.post;
-            // this.showArchive = !this.showArchive;
-            // this.showPublish = !this.showPublish;
-            this.$emit("showSnackbar", "Post Archived Sucessfully",this.index,this.resData);
-         });
+         axios
+            .post(`/post/${this.postId}/update/status_archive`)
+            .then((res) => {
+               this.resData = res.data.post;
+               // this.showArchive = !this.showArchive;
+               // this.showPublish = !this.showPublish;
+               this.$emit(
+                  "showSnackbar",
+                  "Post Archived Sucessfully",
+                  this.index,
+                  this.resData
+               );
+            });
       },
       publishPost() {
-         axios.post(`/post/${this.postId}/update/status_archive`).then((res) => {
-            console.log(res.data.post);
-            this.resData=res.data.post;
-            // this.showArchive = !this.showArchive;
-            // this.showPublish = !this.showPublish;
-            this.$emit("showSnackbar", "Post Published Sucessfully",this.index,this.resData);
-         });
+         axios
+            .post(`/post/${this.postId}/update/status_archive`)
+            .then((res) => {
+               console.log(res.data.post);
+               this.resData = res.data.post;
+               // this.showArchive = !this.showArchive;
+               // this.showPublish = !this.showPublish;
+               this.$emit(
+                  "showSnackbar",
+                  "Post Published Sucessfully",
+                  this.index,
+                  this.resData
+               );
+            });
       },
-      deletePost(){
-         this.$emit("showSnackbar", "Post Deleted Sucessfully",this.index,this.postId);
-      }
+      deletePost() {
+         axios
+            .delete(`/post/${this.postId}/delete`, {
+               headers: {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+               },
+            })
+            .then(() => {
+               // this.resData=res.data.post;
+               // this.showArchive = !this.showArchive;
+               // this.showPublish = !this.showPublish;
+               this.$emit(
+                  "deletePost",
+                  "Post Deleted Sucessfully",
+                  this.index,
+                  this.postId
+               );
+            });
+      },
    },
 };
 </script>

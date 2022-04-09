@@ -21,6 +21,8 @@
          <div v-if="isSearchVisible" class="tw-h-full">
             <div class="tw-mb-3 tw-my-auto xl:tw-w-96">
                <input
+                  v-model="searchQuery"
+
                   type="search"
                   class="tw-form-control tw-block tw-w-full tw-px-3 tw-py-1.5 tw-text-base tw-font-normal tw-text-gray-700 tw-bg-white tw-bg-clip-padding tw-border tw-border-solid tw-border-gray-300 tw-rounded tw-my-auto focus:tw-text-gray-700 focus:tw-bg-white focus:tw-border-blue-600 focus:tw-outline-none"
                   id="exampleSearch"
@@ -180,7 +182,8 @@ export default {
       return {
          drawer: true,
          // isProfilePictureAvailable: false,
-         imagePath:""
+         imagePath:"",
+         searchQuery:"",
       };
    },
    created() {
