@@ -16,7 +16,9 @@ import TagsPage from "../views/Frontend/TagsPage.vue"
 import LoginPage from "../views/LoginPage.vue"
 import CreatePost from "../views/CreatePost.vue"
 import EditPost from "../views/EditPost.vue"
-
+import RegisterReader from "../views/Frontend/RegisterReader.vue"
+import LoginReader from "../views/Frontend/LoginReader.vue"
+import SearchPage from "../views/Frontend/SearchPage.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -31,9 +33,20 @@ const routes = [
     component: LoginPage
   },
   {
+    path: '/login-reader',
+    name: 'LoginReader',
+    component: LoginReader
+  },
+  {
     path: '/register-userdetails',
     name: 'RegisterUserDetails',
     component: RegisterUserDetails,
+    props:true
+  },
+  {
+    path: '/register-reader',
+    name: 'RegisterReader',
+    component: RegisterReader,
     props:true
   },
   
@@ -85,6 +98,13 @@ const routes = [
 
   },
   {
+    path:'/view/:userId/search/:searchTerm',
+    name:SearchPage,
+    component:SearchPage,
+    props:true
+  },
+
+  {
     path:'/dashboard/profile/edit',
     name:EditProfile,
     component:EditProfile
@@ -106,8 +126,8 @@ const routes = [
     name:TagsPage,
     component:TagsPage,
     props:true
-  }
-
+  },
+ 
 ]
 
 const router = new VueRouter({

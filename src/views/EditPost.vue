@@ -150,10 +150,10 @@ export default {
            let slug=this.$store.getters.getSlug;
               axios.get(`/user/${slug}/post/${this.postId}`).then(res=>{
               console.log(res.data);
-              this.title=res.data.name;
-                this.summary=res.data.excerpt;
-                this.body=res.data.body;
-                this.tagsArray=JSON.parse(res.data.tags);
+              this.title=res.data.psot.name;
+                this.summary=res.data.psot.excerpt;
+                this.body=res.data.psot.body;
+                this.tagsArray=JSON.parse(res.data.psot.tags);
               })
          },
       

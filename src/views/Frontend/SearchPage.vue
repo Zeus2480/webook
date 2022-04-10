@@ -7,23 +7,37 @@
                   <div class="tw-h-full">
                      <v-container
                         class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
-                     ><v-btn icon dark @click="backNavigate"
-                           ><img src="../../assets/Logo/WhiteBack.svg" alt=""
-                        /></v-btn>
+                     >
                         <div class="tw-flex tw-justify-center tw-w-full">
                            <h1
                               class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
                            >
-                              <div class="tag-title tw-flex">
-                                  <img src="../../assets/Logo/Tag-icon.svg" alt="">
-                                  <h1 class="tw-mx-3"> {{tagNameEdited}}</h1>
-                              </div>
+                              Search Results
                            </h1>
                         </div>
                      </v-container>
+
                      <div class="tw-bg-orange-100">
-                        <v-container>
-                           <all-blogs-card v-for="(data,index) in tagsDataArray"
+                        <div class="tw-mx-12 tw-my-4 tw-mt-6">
+                           <h1 class="tw-text-3xl tw-font-semibold">
+                              <span class="tw-opacity-60"
+                                 >Search Result for</span
+                              >
+                              {{ searchQueryCapital }}
+                           </h1>
+                        </div>
+                        <div v-if="showEmptyState">
+                           <div
+                              class="emptyState tw-flex tw-justify-center tw-my-10"
+                           >
+                              <img src="../../assets/Images/Image.svg" alt="" />
+                           </div>
+                           <h1 class="tw-flex tw-justify-center tw-text-xl">
+                              No Result Found
+                           </h1>
+                        </div>
+                        <v-container v-if="!showEmptyState">
+                          <all-blogs-card v-for="(data,index) in searchData"
                            :key="index"
                            :title="data.name"
                            :summary="data.excerpt"
@@ -50,49 +64,43 @@
 <script>
 import ViewBLogSidebar from "../../components/ViewBLogSidebar.vue";
 import AllBLogsCard from "../../components/AllBlogsCard.vue";
-import axios from "axios"
+import axios from "axios";
 export default {
-    props: ["userId", "tagName"],
    components: {
       "view-blog-sidebar": ViewBLogSidebar,
       "all-blogs-card": AllBLogsCard,
    },
    data() {
       return {
-         tagsDataArray:[],
-         prevRoute:null
+         searchData: [],
+         showEmptyState: true,
       };
    },
-   beforeRouteEnter(to, from, next) {
-      //   this.prevRoute=from.fullPath;
-      next((vm) => {
-         vm.prevRoute = from.fullPath;
-      });
-   },
-   computed:{
-      tagNameEdited(){
-         //make first letter capital
-         return this.tagName.charAt(0).toUpperCase() + this.tagName.slice(1);
-      }
+   computed: {
+      searchQueryCapital() {
+         return (
+            this.searchTerm.charAt(0).toUpperCase() + this.searchTerm.slice(1)
+         );
+      },
    },
    methods: {
-       backNavigate(){
-           this.$router.push(this.prevRoute);
-       },
-       getTagsData(){
-          axios.post(`/post/tags`,{
-             tags:this.tagName
-          }).then((res)=>{
-               console.log(res.data);
-               this.tagsDataArray=res.data;
+      getSearchData() {
+         axios
+            .post(`/user/${this.userId}/search`, {
+               query: this.searchTerm,
             })
-       }
-     
-      
+            .then((res) => {
+               this.searchData = res.data;
+               if(this.searchData.length > 0) {
+                  this.showEmptyState = false;
+               }
+            });
+      },
    },
-  
+   props: ["userId", "searchTerm"],
    created() {
-      this.getTagsData();
+      console.log(this.userId);
+      this.getSearchData();
       //   console.log(this.userId);
       //   console.log(this.blogId);
    },

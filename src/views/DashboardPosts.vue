@@ -19,7 +19,8 @@
                   <post-card-skeleton></post-card-skeleton>
                   <post-card-skeleton></post-card-skeleton>
                </div>
-               <div v-if="!showSkeletonLoading">
+               <div v-if="!showSkeletonLoading" class="
+                tw-h-full">
                   <div
                      v-if="emptyStateCheck"
                      class="empty-state tw-flex tw-h-full tw-flex-col tw-my-auto tw-justify-center tw-items-center"

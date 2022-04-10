@@ -187,7 +187,7 @@ export default {
       };
    },
    created() {
-      // this.getProfile();
+      this.getProfile();
    },
    computed:{
       isProfilePictureAvailable(){

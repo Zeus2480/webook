@@ -5,12 +5,12 @@
             class="logo-screen tw-w-2/5 tw-bg-black tw-flex tw-justify-center tw-items-center"
          >
             <div class="">
-               <img src="../assets/Logo/WebookLogo.svg" alt="" />
+               <img src="../../assets/Logo/WebookLogo.svg" alt="" />
             </div>
          </div>
          <div class="form tw-w-3/5 tw-px-24 tw-py-10">
             <div class="tw-flex tw-mb-4">
-               <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
+               <img src="../../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
                <div class="tw-my-auto tw-mx-6">
                   <h1 class="tw-font-medium tw-text-xl">
                      Create Your Webook Account
@@ -24,9 +24,6 @@
                   color="black"
                   rounded
                ></v-progress-linear>
-               <div class="tw-flex tw-flex-row-reverse tw-mt-1 tw-mb-4">
-                  <p class="tw-opacity-75">{{ whichStep }}</p>
-               </div>
             </div>
 
             <!-- //Form -->
@@ -135,14 +132,14 @@
                         :loading="buttonLoading"
                         color="black"
                         dark
-                        @click="next"
-                        >Next</v-btn
+                        @click="signUp"
+                        >Sign Up</v-btn
                      >
                   </div>
                   <div class="login tw-px-2 tw-mt-4">
                      <p class="tw-text-sm">
                         Already have an account?
-                        <router-link to="/login">Login</router-link>
+                        <router-link to="/login-reader">Login</router-link>
                      </p>
                   </div>
                </div>
@@ -152,16 +149,12 @@
    </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-   computed: {
-      whichStep() {
-         return `Step ${this.step} of 2`;
-      },
-   },
 
    data() {
       return {
-         progress: 50,
+         progress: 100,
          step: 1,
          isStepOneCompleted: false,
          formData: null,
@@ -179,9 +172,15 @@ export default {
          emailMessage: "ss",
          passwordMessage: "ss",
          buttonLoading: false,
-
+         prevRoute: null,
          showPassword: false,
       };
+   },
+   beforeRouteEnter(to, from, next) {
+      //   this.prevRoute=from.fullPath;
+      next((vm) => {
+         vm.prevRoute = from.fullPath;
+      });
    },
    methods: {
       userData(data) {
@@ -191,7 +190,7 @@ export default {
          this.step = 2;
          this.isStepOneCompleted = true;
       },
-      next() {
+      signUp() {
          this.buttonLoading = true;
          this.validation();
          if (this.isFormValid) {
@@ -200,11 +199,17 @@ export default {
                email: this.inputEmail,
                password: this.inputPassword,
                password_confirmation: this.inputConfirmPassword,
-               site: "",
             };
-            this.buttonLoading = false;
-
-            this.$emit("userData", data);
+            console.log(data);
+            axios
+               .post("/register", data)
+               .then((res) => {
+                  localStorage.setItem("token", res.data.access_token);
+                  this.$router.push(`${this.prevRoute}`);
+               })
+               .finally(() => {
+                  this.buttonLoading = false;
+               });
          } else {
             this.buttonLoading = false;
          }
@@ -218,7 +223,7 @@ export default {
          this.showNameMessage = false;
          this.showEmailMessage = false;
          this.showPasswordMessage = false;
-         if (this.inputFirstName == "" && this.inputLastName == "") {
+         if (this.inputFirstName == "" || this.inputLastName == "") {
             this.isFormValid = false;
             this.showNameMessage = true;
          }
@@ -233,7 +238,7 @@ export default {
             this.showPasswordMessage = true;
          }
          if (this.inputPassword != this.inputConfirmPassword) {
-            console.log(123);
+            // console.log(123);
             this.isFormValid = false;
             this.passwordMessage =
                "Password and confirm password are not same.";

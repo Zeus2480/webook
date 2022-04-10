@@ -89,7 +89,7 @@
                               <v-list nav>
                                  <v-list-item v-ripple router :to="editRoute">
                                     <v-list-item-action>
-                                       <v-icon >fas fa-list</v-icon>
+                                       <v-icon > mdi-pencil </v-icon>
                                     </v-list-item-action>
                                     <v-list-item-content>
                                        <v-list-item-title

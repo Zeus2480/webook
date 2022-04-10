@@ -19,10 +19,10 @@ export default {
   },
   name: 'App',
   created(){
-    console.log(123456);
+    // console.log(123456);
     if(localStorage.getItem("token")){
 
-      this.getProfile();
+      // this.getProfile();
     }
   },
   methods:{
