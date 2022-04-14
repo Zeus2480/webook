@@ -1,6 +1,6 @@
 <template>
    <div>
-      <the-navbar :isSearchVisible="true"></the-navbar>
+      <the-navbar :isSearchVisible="true" @searchQuery="searchQuery"></the-navbar>
       <v-snackbar v-model="snackbar" timeout="1000">
          {{ snackbarText }}
 
@@ -88,6 +88,9 @@ import axios from "axios";
 
 export default {
    computed: {
+      slug(){
+         return this.$store.getters.getSlug;
+      }
       // emptyStateCheck() {
       //    if (this.allPosts.length == 0) {
       //       return true;
@@ -99,7 +102,7 @@ export default {
 
    data() {
       return {
-         items: ["All", "Published", "Archived", "Draft"],
+         items: ["All", "Published", "Archived"],
          selected: "All",
          showSkeletonLoading: true,
          snackbar: false,
@@ -110,7 +113,7 @@ export default {
          draftPost: [],
          activePost: [],
          snackbarText: "",
-         slug:this.$store.getters.getSlug
+         
       };
    },
    watch: {
@@ -129,11 +132,14 @@ export default {
          console.log(this.activePost);
       },
       slug(value) {
+         this.getAllPosts();
          console.log(value);
          // this.filterPost(value);
       },
    },
+   
    created() {
+      // this.slug=this.$store.getters.getSlug;
       this.getAllPosts();
       // setTimeout(()=>{
       //    this.showSkeletonLoading=true;
@@ -146,6 +152,34 @@ export default {
    },
 
    methods: {
+      searchQuery(searchQuery){
+         if(searchQuery!=""){
+            //filter activePost
+            this.activePost = this.activePost.filter(post => {
+               return post.name.toLowerCase().includes(searchQuery.toLowerCase());
+            });
+            console.log(this.activePost);
+            
+         }
+         else{
+            console.log("hello");   
+            
+            this.filterPostArray();
+            if(this.selected=="All"){
+               this.activePost = this.allPosts;
+            }
+            else if(this.selected=="Published"){
+               this.activePost = this.publishedPost;
+            }
+            else if(this.selected=="Archived"){
+               this.activePost = this.archivedPost;
+            }
+            else if(this.selected=="Draft"){
+               this.activePost = this.draftPost;
+            }
+         }
+         console.log(searchQuery);
+      },
       filterPost(value) {
          // console.log(value);
          if (value == "All") {
@@ -182,7 +216,6 @@ export default {
          this.$router.push("/dashboard/create-post");
       },
       getAllPosts() {
-         this.slug = this.$store.getters.getSlug;
          
 
          if (this.$store.getters.getSlug) {

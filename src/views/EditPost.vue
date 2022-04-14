@@ -150,10 +150,10 @@ export default {
            let slug=this.$store.getters.getSlug;
               axios.get(`/user/${slug}/post/${this.postId}`).then(res=>{
               console.log(res.data);
-              this.title=res.data.psot.name;
-                this.summary=res.data.psot.excerpt;
-                this.body=res.data.psot.body;
-                this.tagsArray=JSON.parse(res.data.psot.tags);
+              this.title=res.data.post.name;
+                this.summary=res.data.post.excerpt;
+                this.body=res.data.post.body;
+                this.tagsArray=JSON.parse(res.data.post.tags);
               })
          },
       
@@ -201,10 +201,9 @@ export default {
                .then((res) => {
                   console.log(res);
                   this.snackbar = true;
-                  this.text = "Post Created Successfully";
+                  this.text = "Post Updated Successfully";
                });
-            this.snackbar = true;
-            this.text = `Post published successfully`;
+            
          }
          // this.$router.push(`/`);
       },

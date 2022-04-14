@@ -13,7 +13,7 @@
                            alt=""
                         />
 
-                        <p class="tw-text-sm">123</p>
+                        <p class="tw-text-sm">{{allTimeViews}}</p>
                      </div>
                   </div>
                </v-col>
@@ -27,7 +27,7 @@
                            alt=""
                         />
 
-                        <p class="tw-text-sm">123</p>
+                        <p class="tw-text-sm">{{todayViews}}</p>
                      </div>
                   </div>
                </v-col>
@@ -41,7 +41,7 @@
                            alt=""
                         />
 
-                        <p class="tw-text-sm">123</p>
+                        <p class="tw-text-sm">{{thisWeekViews}}</p>
                      </div>
                   </div>
                </v-col>
@@ -50,3 +50,19 @@
       </v-card>
    </div>
 </template>
+<script>
+import axios from 'axios';
+export default {
+   props:['todayViews','allTimeViews','thisWeekViews'],
+   data(){
+      return{
+
+      }
+   },
+   methods:{
+      getData(){
+         axios.get();
+      }
+   }
+}
+</script>

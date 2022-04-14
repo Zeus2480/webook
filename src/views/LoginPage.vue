@@ -21,7 +21,7 @@
             class="form tw-w-3/5 tw-h-screen tw-px-24 tw-py-10 tw-flex tw-flex-col"
          >
             <div
-               class="tw-flex tw-mb-8 tw-border-b-2 tw-border-gray-900 tw-pb-4"
+               class="tw-flex  tw-pb-4"
             >
                <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
                <div class="tw-my-auto tw-mx-6">
@@ -30,9 +30,9 @@
                   </h1>
                </div>
             </div>
-
+              <v-progress-linear value="100" color="black" rounded class="tw-mb-10"></v-progress-linear>
             <!-- //Form -->
-            <div class="tw-h-full tw-px-20">
+            <div class="tw-h-full tw-px-24">
                <div class="form tw-px-3">
                   <div class="email tw-mb-3 tw-mt-12">
                      <div class="">
@@ -40,7 +40,7 @@
                            type="email"
                            placeholder="Email"
                            v-model="inputEmail"
-                           class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
+                           class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-400 tw-px-3 tw-py-3 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-xl"
                         />
                      </div>
                      <p
@@ -56,15 +56,17 @@
                            v-if="!showPassword"
                            v-model="inputPassword"
                            type="password"
+                           @keyup.enter="Login"
                            placeholder="Password"
-                           class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 tw-rounded-md focus:tw-outline-none focus:tw-border-gray-500"
+                           class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-400 tw-px-3 tw-py-3 tw-rounded-xl focus:tw-outline-none focus:tw-border-gray-500"
                         />
                         <input
                            v-if="showPassword"
                            v-model="inputPassword"
                            type="text"
+                           @keyup.enter="Login"
                            placeholder="Password"
-                           class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 tw-rounded-md focus:tw-outline-none focus:tw-border-gray-500"
+                           class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-400 tw-px-3 tw-py-3 tw-rounded-xl focus:tw-outline-none focus:tw-border-gray-500"
                         />
                      </div>
                      <p
@@ -111,6 +113,9 @@ import axios from "axios";
 export default {
    computed: {},
    components: {},
+   created() {
+      // this.$router.go('/login')
+   },
    data() {
       return {
          showPassword: false,
@@ -129,6 +134,7 @@ export default {
       showPasswordFunctions() {
          this.showPassword = !this.showPassword;
       },
+      reload() {},
       validate() {
          this.showPasswordMessage = false;
          this.showEmailMessage = false;

@@ -1,233 +1,274 @@
 <template>
    <div>
-      <v-row justify="center">
-         <v-dialog v-model="dialog" max-width="400" max-height="1000">
-            <v-card>
-               <v-card-title class="tw-text-center text-h5">
-                  You are not Logged In
-               </v-card-title>
-               <div class="tw-p-4 tw-flex tw-flex-row-reverse">
-                  <v-btn right color="primary" @click="pushLogin">Login</v-btn>
-               </div>
-            </v-card>
-         </v-dialog>
-      </v-row>
-      <v-navigation-drawer
-         v-model="drawer"
-         fixed
-         temporary
-         right
-         width="400px"
-         class="tw-z-40"
-      >
-         <div class="tw-pt-4 tw-w-full tw-z-40 tw-mt-4 tw-px-4">
+      <NavabarFront></NavabarFront>
+      <!-- <div class="md:tw-hidden">
+         <v-navigation-drawer v-model="dr" app>
             <div>
-               <h1 class="tw-text-xl tw-font-semibold tw-px-2">
-                  Responses ({{ commentsArray.length }})
-               </h1>
+               <h1>ffdfdfd</h1>
             </div>
-            <div class="tw-my-4">
-               <textarea
-                  name=""
-                  placeholder="What are your thoughts?"
-                  class="tw-bg-gray-100 tw-py-1 tw-px-2 tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
-                  id=""
-                  cols="39"
-                  rows="4"
-                  v-model="commentBody"
-                  @keyup.13.stop="comment"
-               ></textarea>
-               <div class="tw-flex tw-items-center">
-                  <v-btn
-                     @click="comment"
-                     @keyup.enter="comment"
-                     dark
-                     color="#2A73C5"
-                     block
-                     :loading="loading"
-                     class="loading tw-flex tw-items-center tw-ml-2"
-                     >Comment</v-btn
-                  >
+         </v-navigation-drawer>
+      </div> -->
+      <v-main>
+         <v-overlay :value="showOverlay" opacity=".5">
+            <div class="text-center">
+               <v-progress-circular
+                  indeterminate
+                  color="white"
+                  size="50"
+               ></v-progress-circular>
+            </div>
+         </v-overlay>
+         <v-row justify="center">
+            <v-dialog v-model="dialog" max-width="400" max-height="1000">
+               <v-card>
+                  <v-card-title class="tw-text-center text-h5">
+                     You are not Logged In
+                  </v-card-title>
+                  <div class="tw-p-4 tw-flex tw-flex-row-reverse">
+                     <v-btn right color="primary" @click="pushLogin"
+                        >Login</v-btn
+                     >
+                  </div>
+               </v-card>
+            </v-dialog>
+         </v-row>
+         <v-navigation-drawer
+            v-model="drawer"
+            fixed
+            temporary
+            right
+            width="400px"
+            class="tw-z-40"
+         >
+            <div class="tw-pt-4 tw-w-full tw-z-40 tw-mt-4 tw-px-4">
+               <div>
+                  <h1 class="tw-text-xl tw-font-semibold tw-px-2">
+                     Responses ({{ commentsArray.length }})
+                  </h1>
+               </div>
+               <div class="tw-my-4">
+                  <textarea
+                     name=""
+                     placeholder="What are your thoughts?"
+                     class="tw-bg-gray-100 tw-py-1 tw-px-2 tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
+                     id=""
+                     cols="39"
+                     rows="4"
+                     v-model="commentBody"
+                     @keyup.13.stop="comment"
+                  ></textarea>
+                  <div class="tw-flex tw-items-center">
+                     <v-btn
+                        @click="comment"
+                        @keyup.enter="comment"
+                        dark
+                        color="#2A73C5"
+                        block
+                        :loading="loading"
+                        class="loading tw-flex tw-items-center tw-ml-2"
+                        >Comment</v-btn
+                     >
+                  </div>
+               </div>
+               <div class="tw-mb-16">
+                  <CommentsCard
+                     v-for="(comment, index) in commentsArray"
+                     :key="index"
+                     :body="comment.body"
+                     :userName="comment.users.name"
+                     :userId="comment.user_id"
+                     :date="comment.created_at"
+                     :commentId="comment.id"
+                     :profilePicture="comment.users.image_path"
+                  />
                </div>
             </div>
-            <div class="tw-mb-16">
-               <CommentsCard
-                  v-for="(comment, index) in commentsArray"
-                  :key="index"
-                  :body="comment.body"
-                  :userName="comment.user_name"
-                  :userId="comment.user_id"
-                  :loggedUserId="loggedInUserId"
-                  :date="comment.created_at"
-                  :commentId="comment.id"
-                  :profilePicture="comment.users.image_path"
-                  @delete-comment="deleteComment"
-                  @report="showReportAlert"
-               />
-            </div>
-         </div>
-      </v-navigation-drawer>
-      <div class="tw-min-h-screen tw-min-w-full tw-bg-gray-300">
-         <div class="tw-flex">
-            <div
-               class="tw-w-4/5 tw-bg-orange-100 tw-border-r-2 tw-border-gray-200 tw-min-h-screen"
-            >
-               <div class="backgroundImage">
-                  <div class="tw-h-full">
-                     <v-container
-                        class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
-                     >
-                        <v-btn icon dark @click="backNavigate"
-                           ><img src="../../assets/Logo/WhiteBack.svg" alt=""
-                        /></v-btn>
-                        <div class="tw-flex tw-justify-center tw-w-full">
-                           <h1
-                              class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
-                           >
-                              {{ siteName }}
-                           </h1>
-                        </div>
+         </v-navigation-drawer>
+         <div class="tw-min-h-screen tw-min-w-full tw-bg-gray-300">
+            <div class="tw-flex">
+               <div
+                  class="tw-w-9/12 tw-bg-gray-200 tw-border-r-2 tw-border-gray-200 tw-min-h-screen"
+               >
+                  <div class="backgroundImage">
+                     <div class="tw-h-full">
+                        <v-container
+                           class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
+                        >
+                           <v-btn icon dark @click="backNavigate"
+                              ><img
+                                 src="../../assets/Logo/WhiteBack.svg"
+                                 alt=""
+                           /></v-btn>
+                           <div class="tw-flex tw-justify-center tw-w-full">
+                              <h1
+                                 class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
+                              >
+                                 {{ siteName }}
+                              </h1>
+                           </div>
+                        </v-container>
+                     </div>
+                  </div>
+                  <div class="tw-z-10">
+                     <v-container class="tw-px-10">
+                        <v-card class="">
+                           <div class="tw-p-6 tw-px-10">
+                              <div>
+                                 <v-row>
+                                    <v-col cols="11">
+                                       <div>
+                                          <h1
+                                             class="tw-text-2xl tw-font-medium tw-line-clamp-2"
+                                          >
+                                             {{ title }}
+                                          </h1>
+                                          <div class="tw-flex tw-mt-3">
+                                             <div class="tw-flex tw-my-auto">
+                                                <p
+                                                   class="tw-opacity-70 tw-text-sm"
+                                                >
+                                                   {{ createdDate }}
+                                                </p>
+                                                <!-- <p class="tw-mx-5 tw-opacity-70">
+                                                2 min read
+                                             </p> -->
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </v-col>
+                                    <v-col
+                                       cols="1"
+                                       class="tw-flex tw-justify-center tw-items-center"
+                                    >
+                                       <div class="tw-my-auto">
+                                          <v-btn icon @click="copyLink"
+                                             ><v-icon
+                                                >mdi-share-variant</v-icon
+                                             ></v-btn
+                                          >
+                                       </div>
+                                    </v-col>
+                                 </v-row>
+                              </div>
+                              <div class="image tw-my-4">
+                                 <img
+                                    class="banner tw-object-cover"
+                                    :src="imageUrl"
+                                    alt=""
+                                 />
+                              </div>
+                              <div v-html="body" class="content tw-mt-5"></div>
+                              <div
+                                 class="like-comment-bar tw-flex tw-justify-between"
+                              >
+                                 <div class="tw-flex tw-my-5">
+                                    <div class="tw-flex">
+                                       <v-btn
+                                          @click="likeUnlike"
+                                          icon
+                                          :color="likebtnColor"
+                                       >
+                                          <v-icon :color="likebtnColor">{{
+                                             likeBtnIcon
+                                          }}</v-icon>
+                                       </v-btn>
+                                       <div class="">
+                                          <p class="tw-mt-2 tw-mx-1">
+                                             {{ likeCount }}
+                                          </p>
+                                       </div>
+                                    </div>
+                                    <div class="tw-flex">
+                                       <v-btn
+                                          @click="drawer = !drawer"
+                                          icon
+                                          color="black"
+                                          class="tw-ml-3"
+                                       >
+                                          <img
+                                             src="../../assets/Logo/chat_bubble_outline_black_24dp.svg"
+                                             alt=""
+                                          />
+                                       </v-btn>
+                                       <div>
+                                          <p class="tw-mt-2 tw-mx-1">
+                                             {{ commentsCount }}
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="tw-my-auto">
+                                    <v-btn icon
+                                       ><v-icon>mdi-instagram</v-icon></v-btn
+                                    >
+                                    <v-btn icon
+                                       ><v-icon>mdi-facebook</v-icon></v-btn
+                                    >
+                                    <v-btn icon
+                                       ><v-icon>mdi-twitter</v-icon></v-btn
+                                    >
+                                 </div>
+                              </div>
+                           </div>
+                        </v-card>
+                        <v-card class="tw-my-6 tw-mb-12">
+                           <div class="tw-p-6 tw-px-10">
+                              <h1 class="tw-text-xl tw-font-medium tw-mb-2">
+                                 Get an email whenever Faizan Siddiqui Publishes
+                              </h1>
+                              <p class="tw-text-sm">
+                                 Subscribe to get latest and important articles
+                                 from Faizan Siddiqui
+                              </p>
+                              <v-btn class="tw-mt-5" color="#E1B413">
+                                 <v-icon>mdi-email</v-icon>
+                                 Subscribe
+                              </v-btn>
+                           </div>
+                        </v-card>
                      </v-container>
                   </div>
                </div>
-               <div class="tw-z-10">
-                  <v-container class="tw-px-10">
-                     <v-card class="">
-                        <div class="tw-p-6 tw-px-10">
-                           <div>
-                              <v-row>
-                                 <v-col cols="11">
-                                    <div>
-                                       <h1
-                                          class="tw-text-2xl tw-font-medium tw-line-clamp-2"
-                                       >
-                                          {{ title }}
-                                       </h1>
-                                       <div class="tw-flex tw-mt-3">
-                                          <div class="tw-flex tw-my-auto">
-                                             <p
-                                                class="tw-opacity-70 tw-text-sm"
-                                             >
-                                                {{ createdDate }}
-                                             </p>
-                                             <!-- <p class="tw-mx-5 tw-opacity-70">
-                                                2 min read
-                                             </p> -->
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </v-col>
-                                 <v-col
-                                    cols="1"
-                                    class="tw-flex tw-justify-center tw-items-center"
-                                 >
-                                    <div class="tw-my-auto">
-                                       <v-btn icon
-                                          ><v-icon
-                                             >mdi-share-variant</v-icon
-                                          ></v-btn
-                                       >
-                                    </div>
-                                 </v-col>
-                              </v-row>
-                           </div>
-                           <div class="image tw-my-4">
-                              <img
-                                 class="banner tw-object-cover"
-                                 :src="imageUrl"
-                                 alt=""
-                              />
-                           </div>
-                           <div v-html="body" class="content tw-mt-5"></div>
-                           <div
-                              class="like-comment-bar tw-flex tw-justify-between"
-                           >
-                              <div class="tw-flex tw-my-5">
-                                 <div class="tw-flex">
-                                    <v-btn
-                                       @click="likeUnlike"
-                                       icon
-                                       :color="likebtnColor"
-                                    >
-                                       <v-icon :color="likebtnColor">{{
-                                          likeBtnIcon
-                                       }}</v-icon>
-                                    </v-btn>
-                                    <div class="">
-                                       <p class="tw-mt-2 tw-mx-1">
-                                          {{ likeCount }}
-                                       </p>
-                                    </div>
-                                 </div>
-                                 <div class="tw-flex">
-                                    <v-btn
-                                       @click="drawer = !drawer"
-                                       icon
-                                       color="black"
-                                       class="tw-ml-3"
-                                    >
-                                       <img
-                                          src="../../assets/Logo/chat_bubble_outline_black_24dp.svg"
-                                          alt=""
-                                       />
-                                    </v-btn>
-                                    <div>
-                                       <p class="tw-mt-2 tw-mx-1">123</p>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="tw-my-auto">
-                                 <v-btn icon
-                                    ><v-icon>mdi-instagram</v-icon></v-btn
-                                 >
-                                 <v-btn icon
-                                    ><v-icon>mdi-facebook</v-icon></v-btn
-                                 >
-                                 <v-btn icon
-                                    ><v-icon>mdi-twitter</v-icon></v-btn
-                                 >
-                              </div>
-                           </div>
-                        </div>
-                     </v-card>
-                     <v-card class="tw-my-6 tw-mb-12">
-                        <div class="tw-p-6 tw-px-10">
-                           <h1 class="tw-text-xl tw-font-medium tw-mb-2">
-                              Get an email whenever Faizan Siddiqui Publishes
-                           </h1>
-                           <p class="tw-text-sm">
-                              Subscribe to get latest and important articles
-                              from Faizan Siddiqui
-                           </p>
-                           <v-btn class="tw-mt-5" color="#E1B413">
-                              <v-icon>mdi-email</v-icon>
-                              Subscribe
-                           </v-btn>
-                        </div>
-                     </v-card>
-                  </v-container>
-               </div>
-            </div>
 
-            <div class="tw-w-1/5 tw-bg-white">
-               <div>
-                  <view-blog-sidebar :userId="userId"></view-blog-sidebar>
+               <div
+                  class="tw-w-3/12 tw-bg-white md:tw-block tw-hidden tw-border-l-2 tw-border-gray-200"
+               >
+                  <div>
+                     <view-blog-sidebar :userId="userId"></view-blog-sidebar>
+                  </div>
                </div>
             </div>
          </div>
-      </div>
+      </v-main>
    </div>
 </template>
 <script>
 import ViewBLogSidebar from "../../components/ViewBLogSidebar.vue";
 import CommentsCard from "./CommentsCard.vue";
+import NavabarFront from "./NavbarFornt.vue";
 import axios from "axios";
 export default {
    components: {
       "view-blog-sidebar": ViewBLogSidebar,
       CommentsCard,
+      NavabarFront,
    },
    computed: {
+      getDrawer() {
+         return this.$store.getters.getDrawer;
+      },
+      showOverlay() {
+         if (
+            this.isBLogsDataLoadingCompleted &&
+            this.isCommentsArrayLoadingCompleted &&
+            this.isUserLikedLoadingCompleted &&
+            this.isNoOfLikesLoadingCompleted
+         ) {
+            return false;
+         } else {
+            return true;
+         }
+      },
       likeBtnIcon() {
          if (!this.isLiked) {
             return "mdi-heart-outline";
@@ -242,8 +283,22 @@ export default {
             return "red";
          }
       },
+      commentsCount() {
+         return this.commentsArray.length;
+      },
+   },
+   created() {
+      //   console.log(this.userId);
+      //   console.log(this.blogId);
+      this.getBlogData();
+      this.userLiked();
+      this.noOfLikes();
+      this.getCommentsArray();
    },
    watch: {
+      getDrawer() {
+         this.dr = !this.dr;
+      },
       // siteName() {
       //    console.log(11111);
       //    this.siteNameMethod();
@@ -264,10 +319,20 @@ export default {
          commentBody: "",
          commentsArray: [],
          dialog: false,
-         loading:false
+         loading: false,
+         isBLogsDataLoadingCompleted: false,
+         isUserLikedLoadingCompleted: false,
+         isNoOfLikesLoadingCompleted: false,
+         isCommentsArrayLoadingCompleted: false,
+         dr: false,
       };
    },
    methods: {
+      copyLink() {
+         navigator.clipboard.writeText(
+            `http://localhost:8080/view/${this.userId}/${this.blogId}`
+         );
+      },
       deleteComment(commentId) {
          this.commentsArray = this.commentsArray.filter(
             (comment) => comment.id !== commentId
@@ -275,14 +340,18 @@ export default {
          // console.log(this.commentsArray);
       },
       getCommentsArray() {
-         this.getUserID();
          // console.log(123);
-         axios.get("/comments").then((res) => {
-            this.commentsArray = res.data.filter(
-               (data) => data.post_id == this.id
-            );
-            this.commentsArray = this.commentsArray.reverse();
-         });
+         axios
+            .get(`/comments/${this.blogId}`)
+            .then((res) => {
+               this.commentsArray = res.data;
+               console.log(this.commentsArray);
+
+               this.commentsArray = this.commentsArray.reverse();
+            })
+            .finally(() => {
+               this.isCommentsArrayLoadingCompleted = true;
+            });
       },
       pushLogin() {
          this.$router.push("/login-reader");
@@ -304,17 +373,9 @@ export default {
                   }
                )
                .then((res) => {
-                  if (res.data == "You are blocked") {
-                     this.showAlert = true;
-                     this.alertMessage = "You are blocked";
-                     this.alertType = "warning";
-                     this.alertTimeOut();
-
-                     console.log("blocked");
-                  } else {
-                     this.commentBody = "";
-                     this.commentsArray.unshift(res.data);
-                  }
+                  this.commentBody = "";
+                  this.commentsArray.unshift(res.data);
+                  console.log(this.commentsArray);
                })
                .finally(() => {
                   this.loading = false;
@@ -372,14 +433,19 @@ export default {
       },
       getBlogData() {
          // console.log(`user/${this.userId}/post/${this.blogId}`);
-         axios.get(`user/${this.userId}/post/${this.blogId}`).then((res) => {
-            // console.log(res.data);
-            this.siteName = res.data.siteTitile;
-            this.title = res.data.psot.name;
-            this.body = res.data.psot.body;
-            this.imageUrl = res.data.psot.image_path;
-            this.createdDate = res.data.psot.created_at;
-         });
+         axios
+            .get(`user/${this.userId}/post/${this.blogId}`)
+            .then((res) => {
+               // console.log(res.data);
+               this.siteName = res.data.siteTitile;
+               this.title = res.data.post.name;
+               this.body = res.data.post.body;
+               this.imageUrl = res.data.post.image_path;
+               this.createdDate = res.data.post.created_at;
+            })
+            .finally(() => {
+               this.isBLogsDataLoadingCompleted = true;
+            });
       },
       userLiked() {
          if (localStorage.getItem("token")) {
@@ -397,7 +463,12 @@ export default {
                   } else {
                      this.isLiked = false;
                   }
+               })
+               .finally(() => {
+                  this.isUserLikedLoadingCompleted = true;
                });
+         } else {
+            this.isUserLikedLoadingCompleted = true;
          }
       },
       noOfLikes() {
@@ -411,17 +482,13 @@ export default {
                // console.log(res);
 
                this.likeCount = res.data.like;
+            })
+            .finally(() => {
+               this.isNoOfLikesLoadingCompleted = true;
             });
       },
    },
    props: ["userId", "blogId"],
-   created() {
-      //   console.log(this.userId);
-      //   console.log(this.blogId);
-      this.getBlogData();
-      this.userLiked();
-      this.noOfLikes();
-   },
 };
 </script>
 <style scoped>

@@ -1,84 +1,104 @@
 <template>
-   <div class="tw-bg-orange-100">
-      <div class="tw-min-h-screen tw-min-w-full tw-bg-orange-100">
-         <div class="tw-flex">
-            <div class="md:tw-w-4/5 tw-w-full tw-bg-orange-100 tw-min-h-screen">
-               <div class="backgroundImage">
-                  <div class="tw-h-full">
-                     <v-container
-                        class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
-                     >
-                        <div class="tw-flex tw-justify-center tw-w-full">
-                           <h1
-                              class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
-                           >
-                              This is the name of the BLogsite
-                           </h1>
-                        </div>
-                        <div>
-                           <v-btn large icon color="white"
-                              ><v-icon color="white">mdi-magnify</v-icon></v-btn
-                           >
-                        </div>
-                     </v-container>
-                     <div class="tw-bg-orange-100">
-                        <v-container>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
-                           <all-blogs-card></all-blogs-card>
+   <div class="">
+      <NavabarFront/>
+      <v-main>
+         <div class="tw-min-h-screen tw-min-w-full">
+            <div class="tw-flex">
+               <div
+                  class="md:tw-w-9/12 tw-w-full tw-bg-gray-200 tw-min-h-screen"
+               >
+                  <div class="backgroundImage">
+                     <div class="tw-h-full">
+                        <v-container
+                           class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
+                        >
+                           <div class="tw-flex tw-justify-center tw-w-full">
+                              <h1
+                                 class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
+                              >
+                                 {{ siteName }}
+                              </h1>
+                           </div>
                         </v-container>
+                        <div class="tw-bg-gray-200" v-if="!isLoadingCompleted">
+                           <v-container>
+                              <all-blogs-skeleton></all-blogs-skeleton>
+                              <all-blogs-skeleton></all-blogs-skeleton>
+                           </v-container>
+                        </div>
+                        <div class="tw-bg-gray-200" v-if="isLoadingCompleted">
+                           <v-container>
+                              <all-blogs-card
+                                 v-for="(blog, index) in allBlogs"
+                                 :key="index"
+                                 :title="blog.name"
+                                 :summary="blog.excerpt"
+                                 :createdData="blog.created_at"
+                                 :tags="JSON.parse(blog.tags)"
+                                 :image="blog.image_path"
+                                 :userId="userId"
+                                 :postId="blog.id"
+                              ></all-blogs-card>
+                           </v-container>
+                        </div>
                      </div>
                   </div>
                </div>
-            </div>
 
-            <div class="tw-w-1/5 tw-hidden md:tw-block tw-bg-white">
-               <div>
-                  <view-blog-sidebar></view-blog-sidebar>
+               <div
+                  class="tw-w-3/12 tw-hidden md:tw-block tw-border-l-2 tw-border-gray-200 tw-bg-white"
+               >
+                  <div>
+                     <view-blog-sidebar :userId="userId"></view-blog-sidebar>
+                  </div>
                </div>
             </div>
          </div>
-      </div>
+      </v-main>
    </div>
 </template>
 <script>
 import ViewBLogSidebar from "../../components/ViewBLogSidebar.vue";
 import AllBLogsCard from "../../components/AllBlogsCard.vue";
+import AllBlogsSkeleton from "../../components/AllBlogsSkeleton.vue";
+import axios from "axios";
+import NavabarFront from "./NavbarFornt.vue";
+
 export default {
    components: {
       "view-blog-sidebar": ViewBLogSidebar,
       "all-blogs-card": AllBLogsCard,
+      "all-blogs-skeleton": AllBlogsSkeleton,
+      NavabarFront,
    },
    data() {
       return {
-         btnColor: "black",
-         iconColor: "black",
-         isLiked: false,
-         drawer: false,
+         allBlogs: [],
+         isLoadingCompleted: false,
       };
    },
-   methods: {
-      likeUnlike() {
-         if (this.isLiked) {
-            this.btnColor = "black";
-            this.iconColor = "black";
-            this.isLiked = !this.isLiked;
-         } else {
-            this.btnColor = "pink";
-            this.iconColor = "pink";
-            this.isLiked = !this.isLiked;
-         }
+   computed: {
+      siteName() {
+         return this.$store.getters.getSite;
       },
    },
-   props: ["userId", "blogId"],
+   methods: {
+      getAllBlogs() {
+         axios
+            .get(`user/${this.userId}/publishedPosts`)
+            .then((res) => {
+               this.allBlogs = res.data;
+            })
+            .finally(() => {
+               this.isLoadingCompleted = true;
+            });
+      },
+   },
+   props: ["userId"],
    created() {
       //   console.log(this.userId);
       //   console.log(this.blogId);
+      this.getAllBlogs();
    },
 };
 </script>

@@ -5,10 +5,14 @@
             <div class="tw-p-3">
                <v-row>
                   <v-col cols="9">
-                     <div class="tw-p-2 tw-flex tw-flex-col tw-h-full tw-justify-between">
+                     <div
+                        class="tw-p-2 tw-flex tw-flex-col tw-h-full tw-justify-between"
+                     >
                         <div>
                            <div class="heading tw-mb-2">
-                              <h1 class="tw-text-xl tw-font-medium">
+                              <h1
+                                 class="tw-text-xl tw-font-medium tw-line-clamp-2"
+                              >
                                  {{ title }}
                               </h1>
                               <div class="tw-flex tw-opacity-60 tw-my-1">
@@ -24,6 +28,7 @@
                         <div class="cards">
                            <v-chip-group v-model="selection" column>
                               <v-chip
+                                 
                                  link
                                  v-for="tag in tags"
                                  :value="tag"
@@ -37,6 +42,7 @@
                   </v-col>
                   <v-col cols="3" class="tw-h-full"
                      ><img
+
                         :src="image"
                         style="height: 200px; width: 100%"
                         class="image-fit tw-h-full"
@@ -50,7 +56,15 @@
 </template>
 <script>
 export default {
-   props: ["title", "createdData", "summary", "tags", "image", "userId"],
+   props: [
+      "title",
+      "postId",
+      "createdData",
+      "summary",
+      "tags",
+      "image",
+      "userId",
+   ],
    data() {
       return {
          selection: "",
@@ -58,17 +72,22 @@ export default {
       };
    },
    watch: {
-      selection(val) {
-         this.$router.push(`/view/${this.userId}/tags/${val}`);
-         console.log(val);
+      // selection(val) {
+      //    this.$router.push(`/view/${this.userId}/tags/${val}`);
+      //    console.log(val);
+      // },
+   },
+   methods: {
+      openPost(e) {
+         e.stopPropagation();
+         console.log(e.target);
+         this.$router.push(`/view/${this.userId}/${this.postId}`);
+      },
+      s(e) {
+         e.stopPropagation();
+         console.log(e.target);
       },
    },
-   methods:{
-      openPost(e){
-         console.log(e.target);
-         
-      }
-   }
 };
 </script>
 <style scoped>

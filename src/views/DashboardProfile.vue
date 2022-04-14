@@ -13,6 +13,7 @@
                   :name="userName"
                   :facebook="facebook"
                   :twitter="twitter"
+                  :created="createdDate"
                   v-if="isLoadingCompleted"
                ></profile-card>
                <profile-card-skeleton

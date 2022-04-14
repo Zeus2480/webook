@@ -6,20 +6,16 @@
                <v-col cols="2">
                   <img
                      class="tw-rounded-md tw-h-20 tw-w-full"
-                     src="../assets/Images/wallpaperflare.com_wallpaper (17).jpg"
+                     :src="img"
                      alt=""
                   />
                </v-col>
                <v-col cols="9">
                   <div class="tw-flex tw-justify-between tw-flex-col tw-h-full">
                      <h2 class="tw-line-clamp-2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Repellendus totam error expedita quibusdam pariatur sed
-                        cupiditate unde asperiores, officia optio doloribus
-                        ducimus iure quisquam architecto eos saepe, debitis
-                        corrupti! In!
+                        {{title}}
                      </h2>
-                     <p class="tw-opacity-80 tw-text-sm">22 Feb 2022</p>
+                     <p class="tw-opacity-80 tw-text-sm">{{createdAt}}</p>
                   </div>
                </v-col>
             </v-row>
@@ -34,21 +30,21 @@
                         width="100%"
                         heigth="100"
                         type="line"
-                        :options="options"
-                        :series="series"
+                        :options="optionsViews"
+                        :series="seriesViews"
                      ></apex-chart>
                   </div>
                </v-col>
                <v-col cols="6">
                   <div>
-                       <p class="tw-my-3 tw-text-sm tw-opacity-70">Comments</p>
+                       <p class="tw-my-3 tw-text-sm tw-opacity-70">Likes</p>
                      <!-- <line-chart :dates="dates" :options="chartOptions" :views="views"></line-chart> -->
                      <apex-chart
                         width="100%"
                         heigth="100"
                         type="line"
-                        :options="options"
-                        :series="series"
+                        :options="optionsLikes"
+                        :series="seriesLikes"
                      ></apex-chart>
                   </div>
                </v-col>
@@ -61,30 +57,58 @@
 </template>
 <script>
 export default {
-    props:['views','dates'],
+    props:['views','dates','title','img','createdAt','likesArray','likesDates','viewsArray','viewsDates'],
    components: {},
+   created(){
+      console.log(this.viewsArray);
+      
+   },
+   computed:{
+      seriersLIKES(){
+         return this.viewsArray;
+      },
+   
+   },
    data() {
       return {
-         
+         likes:[],
+         likesData:[],
          chartOptions: {
             responsive: true,
             maintainAspectRatio: false
          },
-         options: {
+         optionsLikes: {
             chart: {
                id: "vuechart-example",
         
                
             },
             xaxis: {
-               categories: this.dates
+               categories: this.likesDates
             },
             
          },
-         series: [
+         optionsViews: {
+            chart: {
+               id: "vuechart-example1",
+        
+               
+            },
+            xaxis: {
+               categories: this.viewsDates
+            },
+            
+         },
+         seriesLikes: [
             {
                name: "series-1",
-               data: this.views
+               data: this.likesArray
+            },
+         ],
+         seriesViews: [
+            {
+               name: "series-11",
+               data: this.viewsArray
             },
          ],
       };
@@ -95,4 +119,13 @@ export default {
        }
        }
 };
+
 </script>
+<style scoped>
+/* .apexcharts-toolbar {
+   display: none !important;
+} */
+.apexcharts-toolbar {
+    z-index: 0 !important;
+}
+</style>

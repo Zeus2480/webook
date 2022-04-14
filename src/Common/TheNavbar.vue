@@ -20,19 +20,22 @@
          <v-spacer></v-spacer>
          <div v-if="isSearchVisible" class="tw-h-full">
             <div class="tw-mb-3 tw-my-auto xl:tw-w-96">
-               <input
-                  v-model="searchQuery"
-
-                  type="search"
-                  class="tw-form-control tw-block tw-w-full tw-px-3 tw-py-1.5 tw-text-base tw-font-normal tw-text-gray-700 tw-bg-white tw-bg-clip-padding tw-border tw-border-solid tw-border-gray-300 tw-rounded tw-my-auto focus:tw-text-gray-700 focus:tw-bg-white focus:tw-border-blue-600 focus:tw-outline-none"
-                  id="exampleSearch"
-                  style="font-family: Arial, 'Font Awesome 5 Free'"
-                  placeholder="&#xF002; Search"
-               />
+               <div
+                  class="tw-border-2  tw-border-gray-300 tw-p-1 tw-px-2 tw-rounded-lg"
+               >
+                  <v-icon>mdi-magnify</v-icon>
+                  <input
+                     type="text"
+                     class="tw-mx-2 tw-outline-none"
+                     placeholder="Search"
+                     v-model="searchQuery"
+                     @input="searchFunctions"
+                  />
+               </div>
             </div>
          </div>
          <v-spacer></v-spacer>
-         <v-menu nudge-bottom allow-overflow max-height="600">
+         <!-- <v-menu nudge-bottom allow-overflow max-height="600">
             <template v-slot:activator="{ on: menu, attrs }">
                <v-tooltip bottom>
                   <template v-slot:activator="{ on: tooltip }">
@@ -74,7 +77,7 @@
                   </div>
                </div>
             </v-card>
-         </v-menu>
+         </v-menu> -->
 
          <v-btn v-if="isProfilePictureAvailable" class="ma-2" icon
             ><v-icon>mdi-account-circle</v-icon></v-btn
@@ -171,35 +174,37 @@
 </template>
 <script>
 import axios from "axios";
-import NotificationBarCard from "../components/NotificationBarCard.vue";
+// import NotificationBarCard from "../components/NotificationBarCard.vue";
 export default {
    props: ["isSearchVisible", "notOpenNavigation"],
    components: {
-      "notification-bar-card": NotificationBarCard,
+      // "notification-bar-card": NotificationBarCard,
    },
 
    data() {
       return {
          drawer: true,
          // isProfilePictureAvailable: false,
-         imagePath:"",
-         searchQuery:"",
+         imagePath: "",
+         searchQuery: "",
       };
    },
    created() {
       this.getProfile();
    },
-   computed:{
-      isProfilePictureAvailable(){
-        if (this.$store.getters.getUserProfilePicture) {
-           return false
-        }
-        else {
-           return true;
-        }
-      }
+   computed: {
+      isProfilePictureAvailable() {
+         if (this.$store.getters.getUserProfilePicture) {
+            return false;
+         } else {
+            return true;
+         }
+      },
    },
    methods: {
+      searchFunctions(){
+         this.$emit('searchQuery', this.searchQuery)
+      },
       getProfile() {
          if (this.$store.getters.getUserName == "") {
             axios
@@ -235,7 +240,18 @@ export default {
             .then(() => {
                // this.loggedOut=true;
                localStorage.removeItem("token");
-
+               let obj={
+                  name:"",
+                  youtube:"",
+                  facebook:"",
+                  instagram:"",
+                  slug:"",
+                  site:"",
+                  image_path:"",
+                  bio:"",
+                  created_at:""
+               }
+               this.$store.dispatch("setUserProfile", obj);
                this.$router.push("/login");
             });
       },

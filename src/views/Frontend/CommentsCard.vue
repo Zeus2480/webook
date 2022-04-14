@@ -1,12 +1,13 @@
 <template>
    <div
-      class="tw-px-3 tw-my-3 tw-border-solid tw-border-t-2 tw-border-gray-500"
+      class="tw-px-3 tw-my-3 "
    >
+   <v-divider></v-divider>
       <div class="tw-flex tw-justify-between tw-mt-2">
          <div class="tw-flex">
             <img
-               :src="profilePictureCheck"
-               class="tw-h-8 tw-my-auto tw-rounded-full"
+               :src="profilePicture"
+               class="tw-h-8 tw-w-8 tw-my-auto  tw-rounded-full"
                alt=""
             />
             <div class="tw-mx-2">
@@ -74,13 +75,13 @@ export default {
       };
    },
    computed: {
-       profilePictureCheck() {
-         if (this.profilePicture) {
-            return `http://localhost/fireblogs-api/public/images/${this.profilePicture}`;
-         } else {
-            return "https://i.ibb.co/TPmLQyP/user.png";
-         }
-      },
+      //  profilePictureCheck() {
+      //    if (this.profilePicture) {
+      //       return `http://localhost/fireblogs-api/public/images/${this.profilePicture}`;
+      //    } else {
+      //       return "https://i.ibb.co/TPmLQyP/user.png";
+      //    }
+      // },
       deleteButtonBoolean() {
          return this.userId == this.$store.getters.userId ? true : false;
       },

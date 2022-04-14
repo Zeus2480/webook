@@ -18,7 +18,7 @@
                </div>
             </div>
             <div class="tw-mt-4">
-               <p>On Webook since 29 Feb</p>
+               <p>On Webook since {{created}}</p>
             </div>
          </div>
       </v-card>
@@ -98,13 +98,31 @@ export default {
          }
       },
       subscribersCount() {
-         return `Subscribers ${this.subscribers}`;
+         if(this.subscribers==null){
+         return `Subscribers 0`;   
+         }
+         else{
+
+            return `Subscribers ${this.subscribers}`;
+         }
       },
       postsCount() {
-         return `Posts ${this.posts}`;
+         if(this.posts==null){   
+         return `Posts 0`;   
+         }
+         else{
+            return `Posts ${this.posts}`;
+         }
+         // return `Posts ${this.posts}`;
       },
       LikesCount() {
-         return `Likes ${this.likes}`;
+         if(this.likes==null){
+         return `Likes 0`;   
+         }
+         else{
+            return `Likes ${this.likes}`;
+         }
+         // return `Likes ${this.likes}`;
       },
       ifShowsocials(){
          if(!this.instagram &&!this.twitter && !this.facebook && !this.bio){

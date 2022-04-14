@@ -189,9 +189,10 @@ export default {
                   console.log(JSON.parse(res.data.tags));
                   this.snackbar = true;
                   this.text = "Post Created Successfully";
+                  this.$router.push(`/dashboard/post`)
                });
-            this.snackbar = true;
-            this.text = `Post published successfully`;
+            // this.snackbar = true;
+            // this.text = `Post published successfully`;
          }
          // this.$router.push(`/`);
       },

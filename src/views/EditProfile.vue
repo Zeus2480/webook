@@ -243,6 +243,7 @@ export default {
                this.$store.dispatch("updateUserProfile", res.data);
                this.text = "Profile updated sucessfully!";
                this.snackbar = true;
+               this.$router.push('/dashboard/profile')
             })
             .finally(() => {
                this.upadeProfileLoading = false;
