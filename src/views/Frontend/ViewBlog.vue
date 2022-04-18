@@ -8,7 +8,7 @@
             </div>
          </v-navigation-drawer>
       </div> -->
-      <v-main>
+      <v-main class="no-padding">
          <v-overlay :value="showOverlay" opacity=".5">
             <div class="text-center">
                <v-progress-circular
@@ -32,67 +32,129 @@
                </v-card>
             </v-dialog>
          </v-row>
-         <v-navigation-drawer
-            v-model="drawer"
-            fixed
-            temporary
-            right
-            width="400px"
-            class="tw-z-40"
-         >
-            <div class="tw-pt-4 tw-w-full tw-z-40 tw-mt-4 tw-px-4">
-               <div>
-                  <h1 class="tw-text-xl tw-font-semibold tw-px-2">
-                     Responses ({{ commentsArray.length }})
-                  </h1>
-               </div>
-               <div class="tw-my-4">
-                  <textarea
-                     name=""
-                     placeholder="What are your thoughts?"
-                     class="tw-bg-gray-100 tw-py-1 tw-px-2 tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
-                     id=""
-                     cols="39"
-                     rows="4"
-                     v-model="commentBody"
-                     @keyup.13.stop="comment"
-                  ></textarea>
-                  <div class="tw-flex tw-items-center">
-                     <v-btn
-                        @click="comment"
-                        @keyup.enter="comment"
-                        dark
-                        color="#2A73C5"
-                        block
-                        :loading="loading"
-                        class="loading tw-flex tw-items-center tw-ml-2"
-                        >Comment</v-btn
-                     >
+         <div class="tw-hidden md:tw-block">
+            <v-navigation-drawer
+               v-model="drawer"
+               fixed
+               temporary
+               right
+               width="400px"
+               class="tw-z-40"
+            >
+               <div class="tw-pt-4 tw-w-full tw-z-40 md:tw-mt-4 tw-px-0 md:tw-px-4">
+                  <div>
+                     <h1 class="tw-text-xl tw-font-semibold tw-px-2">
+                        Responses ({{ commentsArray.length }})
+                     </h1>
+                  </div>
+                  <div class="tw-my-4">
+                     <textarea
+                        name=""
+                        placeholder="What are your thoughts?"
+                        class="tw-bg-gray-100 tw-py-1 tw-px-2  tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
+                        id=""
+                        cols="39"
+                        rows="4"
+                        v-model="commentBody"
+                        @keyup.13.stop="comment"
+                     ></textarea>
+                     <div class="tw-flex tw-items-center">
+                        <v-btn
+                           @click="comment"
+                           @keyup.enter="comment"
+                           dark
+                           color="#2A73C5"
+                           block
+                           :loading="loading"
+                           class="loading tw-flex tw-items-center tw-ml-2"
+                           >Comment</v-btn
+                        >
+                     </div>
+                  </div>
+                  <div class="tw-mb-16">
+                     <CommentsCard
+                        @delete-comment="deleteComment"
+                        v-for="(comment, index) in commentsArray"
+                        :key="index"
+                        :body="comment.body"
+                        :userName="comment.users.name"
+                        :userId="comment.user_id"
+                        :date="comment.created_at"
+                        :commentId="comment.id"
+                        :profilePicture="comment.users.image_path"
+                        :loggedUserId="loggedInUserId"
+                     />
                   </div>
                </div>
-               <div class="tw-mb-16">
-                  <CommentsCard
-                     v-for="(comment, index) in commentsArray"
-                     :key="index"
-                     :body="comment.body"
-                     :userName="comment.users.name"
-                     :userId="comment.user_id"
-                     :date="comment.created_at"
-                     :commentId="comment.id"
-                     :profilePicture="comment.users.image_path"
-                  />
-               </div>
-            </div>
-         </v-navigation-drawer>
+            </v-navigation-drawer>
+         </div>
+         <div class="">
+            <v-bottom-sheet  v-model="drawerMobile">
+               <v-sheet class="text-center" height="90vh">
+                  <div class="tw-pt-4 tw-w-full tw-z-40  md:tw-mt-4 tw-px-4">
+                     <div>
+                        <h1 class="tw-text-xl tw-text-left tw-font-semibold md:tw-px-2">
+                           Responses ({{ commentsArray.length }})
+                        </h1>
+                     </div>
+                     <div class="tw-my-4">
+                        <textarea
+                           name=""
+                           placeholder="What are your thoughts?"
+                           class="tw-bg-gray-100 tw-py-1 tw-px-2 md:tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
+                           id=""
+                           cols="39"
+                           rows="4"
+                           v-model="commentBody"
+                           
+                        ></textarea>
+                        <div class="tw-flex tw-items-center">
+                           <v-btn
+                              @click="comment"
+                              @keyup.enter="comment"
+                              dark
+                              color="#2A73C5"
+                              block
+                              :loading="loading"
+                              class="loading tw-flex tw-items-center md:tw-ml-2"
+                              >Comment</v-btn
+                           >
+                        </div>
+                     </div>
+                     <div class="tw-mb-16">
+                        <CommentsCard
+                           @delete-comment="deleteComment"
+                           v-for="(comment, index) in commentsArray"
+                           :key="index"
+                           :body="comment.body"
+                           :userName="comment.users.name"
+                           :userId="comment.user_id"
+                           :date="comment.created_at"
+                           :commentId="comment.id"
+                           :profilePicture="comment.users.image_path"
+                           :loggedUserId="loggedInUserId"
+                        />
+                     </div>
+                  </div>
+                  <!-- <v-btn class="mt-6" text color="red" @click="sheet = !sheet">
+                  close
+               </v-btn>
+               <div class="py-3">
+                  This is a bottom sheet using the controlled by v-model instead
+                  of activator
+               </div> -->
+               </v-sheet>
+            </v-bottom-sheet>
+         </div>
          <div class="tw-min-h-screen tw-min-w-full tw-bg-gray-300">
             <div class="tw-flex">
                <div
-                  class="tw-w-9/12 tw-bg-gray-200 tw-border-r-2 tw-border-gray-200 tw-min-h-screen"
+                  class="tw-w-full md:tw-w-9/12 tw-bg-secondary-background tw-border-r-2 tw-border-gray-200 tw-min-h-screen"
                >
                   <div class="backgroundImage">
                      <div class="tw-h-full">
                         <v-container
-                           class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
+                           class="tw-flex tw-items-center tw-h-full tw-px-3 md:tw-px-10 tw-w-full"
                         >
                            <v-btn icon dark @click="backNavigate"
                               ><img
@@ -110,9 +172,9 @@
                      </div>
                   </div>
                   <div class="tw-z-10">
-                     <v-container class="tw-px-10">
+                     <v-container class="md:tw-px-10">
                         <v-card class="">
-                           <div class="tw-p-6 tw-px-10">
+                           <div class="tw-p-6 tw-px-4 md:tw-px-10">
                               <div>
                                  <v-row>
                                     <v-col cols="11">
@@ -157,7 +219,7 @@
                                     alt=""
                                  />
                               </div>
-                              <div v-html="body" class="content tw-mt-5"></div>
+                              <div v-html="body" class="content tw-break-words tw-overflow-hidden tw-mt-5" ></div>
                               <div
                                  class="like-comment-bar tw-flex tw-justify-between"
                               >
@@ -183,7 +245,18 @@
                                           @click="drawer = !drawer"
                                           icon
                                           color="black"
-                                          class="tw-ml-3"
+                                          class="tw-ml-3 tw-hidden md:tw-block"
+                                       >
+                                          <img
+                                             src="../../assets/Logo/chat_bubble_outline_black_24dp.svg"
+                                             alt=""
+                                          />
+                                       </v-btn>
+                                       <v-btn
+                                          @click="drawerMobile = !drawerMobile"
+                                          icon
+                                          color="black"
+                                          class="tw-ml-3 md:tw-hidden"
                                        >
                                           <img
                                              src="../../assets/Logo/chat_bubble_outline_black_24dp.svg"
@@ -198,34 +271,44 @@
                                     </div>
                                  </div>
                                  <div class="tw-my-auto">
-                                    <v-btn icon
+                                    <v-btn
+                                       :href="authorInstargram"
+                                       v-if="authorInstargram"
+                                       icon
                                        ><v-icon>mdi-instagram</v-icon></v-btn
                                     >
-                                    <v-btn icon
+                                    <v-btn
+                                       :href="authorFacebook"
+                                       icon
+                                       v-if="authorFacebook"
                                        ><v-icon>mdi-facebook</v-icon></v-btn
                                     >
-                                    <v-btn icon
+                                    <v-btn
+                                       :href="authorTwitter"
+                                       icon
+                                       v-if="authorTwitter"
                                        ><v-icon>mdi-twitter</v-icon></v-btn
                                     >
                                  </div>
                               </div>
                            </div>
                         </v-card>
-                        <v-card class="tw-my-6 tw-mb-12">
-                           <div class="tw-p-6 tw-px-10">
+                        <!-- <v-card class="tw-my-6 tw-mb-12">
+                           <div class="tw-p-6 tw-px-4 md:tw-px-10">
                               <h1 class="tw-text-xl tw-font-medium tw-mb-2">
-                                 Get an email whenever Faizan Siddiqui Publishes
+                                 Get an email whenever
+                                 {{ getAuthorName }} Publishes
                               </h1>
                               <p class="tw-text-sm">
                                  Subscribe to get latest and important articles
-                                 from Faizan Siddiqui
+                                 from {{ getAuthorName }}
                               </p>
                               <v-btn class="tw-mt-5" color="#E1B413">
                                  <v-icon>mdi-email</v-icon>
                                  Subscribe
                               </v-btn>
                            </div>
-                        </v-card>
+                        </v-card> -->
                      </v-container>
                   </div>
                </div>
@@ -254,8 +337,23 @@ export default {
       NavabarFront,
    },
    computed: {
+      loggedInUserId() {
+         return this.$store.getters.getForntLoggedInUserId;
+      },
+      authorInstargram() {
+         return this.$store.getters.getAuthorInstagram;
+      },
+      authorFacebook() {
+         return this.$store.getters.getAuthorFacebook;
+      },
+      authorTwitter() {
+         return this.$store.getters.getAuthorTwitter;
+      },
       getDrawer() {
          return this.$store.getters.getDrawer;
+      },
+      getAuthorName() {
+         return this.$store.getters.getAuthorname;
       },
       showOverlay() {
          if (
@@ -319,6 +417,7 @@ export default {
          commentBody: "",
          commentsArray: [],
          dialog: false,
+         drawerMobile: false,
          loading: false,
          isBLogsDataLoadingCompleted: false,
          isUserLikedLoadingCompleted: false,
@@ -494,12 +593,18 @@ export default {
 <style scoped>
 .backgroundImage {
    background-image: url("../../assets/Images/pexels-johannes-plenio-1435075 1.png");
-   background-size: 100%;
+   /* background-size: 100%; */
    width: 100%;
    height: 190px;
    background-position: center;
    background-repeat: no-repeat;
    object-fit: cover;
+}
+@media screen and (max-width: 768px) {
+   .no-padding{
+      padding-top: 0 !important;
+   
+}
 }
 .overlay {
    position: fixed;
@@ -507,8 +612,8 @@ export default {
    right: 10;
 }
 .banner {
-   height: 300px;
-   width: 100%;
+   /* height: 300px; */
+   max-width: 100%;
    object-fit: cover;
 }
 </style>

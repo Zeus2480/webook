@@ -28,7 +28,7 @@
                            </h1>
                         </div>
                         <div class="puplish-preview">
-                           <v-btn outlined color="primary">Preview</v-btn>
+                           <!-- <v-btn outlined color="primary">Preview</v-btn> -->
                            <v-btn
                               color="primary"
                               @click="publish"
@@ -37,7 +37,7 @@
                            >
                         </div>
                      </div>
-                     <div class="form tw-mt-8 tw-px-2">
+                     <div class="form tw-mt-8 tw-px-4">
                         <v-form ref="form" v-model="valid" lazy-validation>
                            <v-text-field
                               v-model="title"
@@ -54,7 +54,7 @@
                            ></v-text-field>
                         </v-form>
 
-                        <div>
+                        <div class="tw-my-2">
                            <v-file-input
                               label="File input"
                               filled
@@ -107,6 +107,7 @@ export default {
          console.log(temp);
       },
    },
+
    data() {
       return {
          isLoadingCompleted: false,
@@ -145,7 +146,14 @@ export default {
       "the-navbar": TheNav,
       VueEditor,
    },
+   beforeMount() {
+    window.addEventListener("beforeunload", this.myfun)
+  },
    methods: {
+      myfun() {
+         // Write your business logic here
+         console.log("hello");
+      },
       onFileSelected(event) {
          // console.log(event);
          if (event) {
@@ -176,7 +184,7 @@ export default {
             formData.append("name", this.title);
             formData.append("excerpt", this.summary);
             formData.append("body", this.body);
-            formData.append("tags",JSON.stringify( this.tagsArray));
+            formData.append("tags", JSON.stringify(this.tagsArray));
             formData.append("image", this.selectedFile);
             console.log(formData);
             axios
@@ -189,7 +197,7 @@ export default {
                   console.log(JSON.parse(res.data.tags));
                   this.snackbar = true;
                   this.text = "Post Created Successfully";
-                  this.$router.push(`/dashboard/post`)
+                  this.$router.push(`/dashboard/post`);
                });
             // this.snackbar = true;
             // this.text = `Post published successfully`;

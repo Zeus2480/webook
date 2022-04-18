@@ -13,7 +13,7 @@
       <v-main class="tw-bg-secondary-background tw-min-h-screen">
          <v-container class="tw-h-full">
             <div class="tw-h-full tw-w-full">
-               <div v-if="showSkeletonLoading">
+               <div class="md:tw-p-20 " v-if="showSkeletonLoading">
                   <post-card-skeleton></post-card-skeleton>
                   <post-card-skeleton></post-card-skeleton>
                   <post-card-skeleton></post-card-skeleton>
@@ -23,10 +23,10 @@
                 tw-h-full">
                   <div
                      v-if="emptyStateCheck"
-                     class="empty-state tw-flex tw-h-full tw-flex-col tw-my-auto tw-justify-center tw-items-center"
+                     class="empty-state tw-px-6 tw-flex tw-h-full tw-flex-col tw-my-auto tw-justify-center tw-items-center"
                   >
-                     <img src="../assets/Group.svg" alt="" />
-                     <p class="tw-my-6">
+                     <img src="../assets/Logo/nopost.png" class="tw-w-56 md:tw-w-60" alt="" />
+                     <p class="tw-my-6 tw-text-center">
                         Looks like you haven’t written any blogs until now
                      </p>
                      <v-btn
@@ -46,9 +46,9 @@
                   </div>
 
                   <div v-if="!emptyStateCheck">
-                     <div class="tw-px-20">
+                     <div class="tw-px-2 md:tw-px-20">
                         <v-row>
-                           <v-col cols="2">
+                           <v-col md="2" cols="6 md:6 ">
                               <v-select v-model="selected" :items="items">
                               </v-select>
                            </v-col>

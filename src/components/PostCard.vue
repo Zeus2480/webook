@@ -27,10 +27,10 @@
          </div>
       </v-card> -->
       <v-hover v-slot="{ hover }">
-         <v-card :elevation="hover ? 3 : 0" :class="{ 'on-hover': hover }">
+         <v-card :elevation="hover ? 0 : 0" :class="{ 'on-hover': hover }">
             <div class="tw-p-2 tw-shadow">
                <v-row>
-                  <v-col cols="2">
+                  <v-col md="2" cols="3">
                      <div class="tw-rounded-md">
                         <img
                            class="tw-rounded-md tw-h-20 tw-object-cover tw-w-full"
@@ -41,12 +41,12 @@
                      </v-skeleton-loader> -->
                      </div>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col md="7" cols="6">
                      <div
                         class="tw-flex tw-justify-between tw-flex-col tw-h-full"
                      >
                         <div class="tw-mt-1">
-                           <h1 class="tw-line-clamp-2">
+                           <h1 class="tw-text-sm md:tw-text-base tw-line-clamp-2">
                               {{ title }}
                            </h1>
                            <!-- <v-skeleton-loader
@@ -57,17 +57,17 @@
                         <div class="tw-flex tw-mb-2">
                            <p
                               v-if="showPublish"
-                              class="tw-text-lime-600 tw-text-sm tw-mr-2"
+                              class="tw-text-lime-600 tw-text-xs md:tw-text-sm tw-mr-2"
                            >
                               Published
                            </p>
                            <p
                               v-if="showArchive"
-                              class="tw-text-red-600 tw-text-sm tw-mr-2"
+                              class="tw-text-red-600 tw-text-xs md:tw-text-sm tw-mr-2"
                            >
                               Archived
                            </p>
-                           <p class="tw-ml-2 tw-opacity-80 tw-text-sm">
+                           <p class="tw-ml-2 tw-opacity-80 tw-text-xs md:tw-text-sm">
                               {{ publishedDate }}
                            </p>
                         </div>
@@ -83,7 +83,7 @@
                            >
                               <template v-slot:activator="{ on, attrs }">
                                  <v-btn right icon v-bind="attrs" v-on="on">
-                                    <v-icon>mdi-dots-vertical</v-icon>
+                                    <v-icon >mdi-dots-vertical</v-icon>
                                  </v-btn>
                               </template>
                               <v-list nav>
@@ -103,7 +103,7 @@
                                     @click="archivePost"
                                  >
                                     <v-list-item-action>
-                                       <v-icon>mdi-equalizer</v-icon>
+                                       <v-icon>mdi-package-down</v-icon>
                                     </v-list-item-action>
                                     <v-list-item-content>
                                        <v-list-item-title
@@ -127,7 +127,7 @@
                                  </v-list-item>
                                  <v-list-item v-ripple @click="deletePost">
                                     <v-list-item-action>
-                                       <v-icon>mdi-comment</v-icon>
+                                       <v-icon color="red">mdi-delete</v-icon>
                                     </v-list-item-action>
                                     <v-list-item-content>
                                        <v-list-item-title
@@ -149,7 +149,7 @@
                                     v-on="on"
                                     icon
                                  >
-                                    <v-icon>mdi-share-variant</v-icon>
+                                    <v-icon small>mdi-share-variant</v-icon>
                                  </v-btn>
                               </template>
                               <span>Copy link</span>
@@ -157,8 +157,8 @@
                            <!-- <v-btn icon><v-icon>mdi-share-variant</v-icon></v-btn> -->
                         </div>
                      </div>
-                     <div class="tw-mt-2">
-                        <v-row class="tw-mr-3">
+                     <div class="tw-mt-2 tw-hidden md:tw-block">
+                        <v-row class="md:tw-mr-3">
                            <!-- <v-col cols="4"><div class="tw-bg-black">d</div></v-col> -->
 
                            <v-col cols="4"
@@ -166,8 +166,9 @@
                                  <img
                                     src="../assets/Logo/Vector (5).svg"
                                     alt=""
+                                    class=""
                                  />
-                                 <p class="tw-ml-1 tw-text-sm tw-opacity-80">
+                                 <p class="tw-ml-1 tw-text-xs md:tw-text-sm tw-opacity-80">
                                     {{ views }}
                                  </p>
                               </div></v-col

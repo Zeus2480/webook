@@ -18,16 +18,16 @@
                </div>
             </div>
             <div class="tw-mt-4">
-               <p>On Webook since {{created}}</p>
+               <p>On Webook since {{ created }}</p>
             </div>
          </div>
       </v-card>
       <v-card class="tw-mt-6">
          <div class="tw-p-4">
             <v-row justify="center">
-               <v-col cols="4" align-self="center">
+               <v-col md="4" cols="12" align-self="left md:center">
                   <div
-                     class="tw-flex tw-justify-center tw-opacity-80 tw-border-r-2 tw-mx-auto tw-border-gray-400"
+                     class="tw-flex md:tw-justify-center tw-opacity-80 md:tw-border-r-2 tw-mx-auto tw-border-gray-400"
                   >
                      <img
                         src="../assets/Logo/people_black_24dp.svg"
@@ -37,9 +37,9 @@
                      <p class="tw-ml-3">{{ subscribersCount }}</p>
                   </div>
                </v-col>
-               <v-col cols="4" align-self="center">
+               <v-col md="4" cols="12" align-self="center">
                   <div
-                     class="tw-flex tw-justify-center tw-border-r-2 tw-mx-auto tw-opacity-80 tw-border-gray-400"
+                     class="tw-flex md:tw-justify-center md:tw-border-r-2 tw-mx-auto tw-opacity-80 tw-border-gray-400"
                   >
                      <img
                         src="../assets/Logo/description_black_24dp.svg"
@@ -49,8 +49,8 @@
                      <p class="tw-ml-3">{{ postsCount }}</p>
                   </div>
                </v-col>
-               <v-col cols="4" align-self="center">
-                  <div class="tw-flex tw-justify-center tw-opacity-80">
+               <v-col md="4" cols="12 " align-self="">
+                  <div class="tw-flex md:tw-justify-center tw-opacity-80">
                      <!-- <v-icon>mdi-chat-bubble</v-icon> -->
                      <img
                         src="../assets/Logo/favorite_black_24dp.svg"
@@ -65,11 +65,17 @@
       </v-card>
       <v-card v-if="ifShowsocials" class="tw-mt-6">
          <div class="tw-p-4">
-            <p>{{bio}}</p>
+            <p>{{ bio }}</p>
             <div class="tw-mt-2">
-               <v-btn icon><v-icon>mdi-instagram</v-icon></v-btn>
-               <v-btn icon><v-icon>mdi-facebook</v-icon></v-btn>
-               <v-btn icon><v-icon>mdi-twitter</v-icon></v-btn>
+               <v-btn v-if="instagram" :href="instagram" icon
+                  ><v-icon>mdi-instagram</v-icon></v-btn
+               >
+               <v-btn v-if="facebook" :href="facebook" icon
+                  ><v-icon>mdi-facebook</v-icon></v-btn
+               >
+               <v-btn v-if="twitter" :href="twitter" icon
+                  ><v-icon>mdi-twitter</v-icon></v-btn
+               >
             </div>
          </div>
       </v-card>
@@ -87,9 +93,19 @@ export default {
       "instagram",
       "imagePath",
       "facebook",
-      "twitter"
+      "twitter",
    ],
    computed: {
+      align() {
+         switch (this.$vuetify.breakpoint.name) {
+            default:
+               return "center";
+            case "md":
+               return "left";
+            
+         }
+      },
+
       priflePicturePath() {
          if (this.$store.getters.getUserProfilePicture) {
             return this.$store.getters.getUserProfilePicture;
@@ -98,40 +114,35 @@ export default {
          }
       },
       subscribersCount() {
-         if(this.subscribers==null){
-         return `Subscribers 0`;   
-         }
-         else{
-
+         if (this.subscribers == null) {
+            return `Subscribers 0`;
+         } else {
             return `Subscribers ${this.subscribers}`;
          }
       },
       postsCount() {
-         if(this.posts==null){   
-         return `Posts 0`;   
-         }
-         else{
+         if (this.posts == null) {
+            return `Posts 0`;
+         } else {
             return `Posts ${this.posts}`;
          }
          // return `Posts ${this.posts}`;
       },
       LikesCount() {
-         if(this.likes==null){
-         return `Likes 0`;   
-         }
-         else{
+         if (this.likes == null) {
+            return `Likes 0`;
+         } else {
             return `Likes ${this.likes}`;
          }
          // return `Likes ${this.likes}`;
       },
-      ifShowsocials(){
-         if(!this.instagram &&!this.twitter && !this.facebook && !this.bio){
+      ifShowsocials() {
+         if (!this.instagram && !this.twitter && !this.facebook && !this.bio) {
             return false;
-         }
-         else{
+         } else {
             return true;
          }
-      }
+      },
    },
    methods: {
       editProfile() {

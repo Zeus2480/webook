@@ -1,5 +1,5 @@
 <template>
-   <div class="tw-mb-3">
+   <div class="tw-mb-3 tw-shadow">
       <!-- <v-card>
          <div class="tw-p-2">
             <div class="tw-flex">
@@ -34,36 +34,36 @@
                      <div class="tw-p-2">
                         <div class="user-detail">
                            <div class="tw-flex">
-                              <img
+                              <!-- <img
                                  src="../assets/Images/profilepicture.jpg"
                                  class="tw-h-12 tw-rounded-full tw-w-12"
                                  alt=""
-                              />
+                              /> -->
+                              <v-avatar size="38" color="blue">
+                           <span class="white--text  text-h5">{{
+                              initials
+                           }}</span>
+                        </v-avatar>
                               <div class="tw-my-auto">
                                  <h1 class="tw-mx-2 tw-text-base">
-                                    Faizan Siddiqui
+                                    {{commentAuthor}}
                                  </h1>
                                  <div class="tw-flex tw-mx-2">
                                     <p class="tw-text-sm tw-opacity-70">
-                                       18 Feb
+                                       {{commentDate}}
                                     </p>
-                                    <p
+                                    <!-- <p
                                        class="tw-text-sm tw-text-red-700 tw-mx-2"
                                     >
                                        Spam
-                                    </p>
+                                    </p> -->
                                  </div>
                               </div>
                            </div>
                         </div>
                         <div class="comment tw-my-2">
                            <p>
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Pariatur modi dolorem sint autem saepe,
-                              voluptatem quam perspiciatis, laudantium culpa
-                              laboriosam labore accusantium distinctio omnis
-                              numquam, possimus provident. Veniam, suscipit
-                              necessitatibus?
+                              {{commentBody}}
                            </p>
                         </div>
                      </div>
@@ -78,45 +78,18 @@
                                  </v-btn>
                               </template>
                               <v-list>
-                                 <v-list-item>
-                                    <v-row>
-                                       <v-col cols="4"
-                                          ><img
-                                             src="../assets/Logo/Vector (7).svg"
-                                             alt=""
-                                       /></v-col>
-                                       <v-col cols="4" class="tw-bg-b"
-                                          ><p>Edit</p></v-col
+                                 
+                                 <v-list-item @click="deleteComment">
+                                    <v-list-item-action>
+                                       <v-icon color="red">mdi-trash-can</v-icon>
+                                    </v-list-item-action>
+                                    <v-list-item-content>
+                                       <v-list-item-title class="tw-text-red-500"
+                                          >Delete</v-list-item-title
                                        >
-                                    </v-row>
+                                    </v-list-item-content>
                                  </v-list-item>
-                                 <v-list-item>
-                                    <v-row>
-                                       <v-col cols="4"
-                                          ><img
-                                             src="../assets/Logo/Vector (7).svg"
-                                             alt=""
-                                       /></v-col>
-                                       <v-col cols="4" class="tw-bg-b"
-                                          ><p class="tw-text-sm">
-                                             Move to draft
-                                          </p></v-col
-                                       >
-                                    </v-row>
-                                 </v-list-item>
-                                 <v-list-item>
-                                    <v-row>
-                                       <v-col cols="4"
-                                          ><img
-                                             src="../assets/Logo/Vector (7).svg"
-                                             alt=""
-                                       /></v-col>
-                                       <v-col cols="4" class="tw-bg-b"
-                                          ><p>Ediccccccct</p></v-col
-                                       >
-                                    </v-row>
-                                 </v-list-item>
-                                 <v-list-item>
+                                 <!-- <v-list-item>
                                     <v-list-item-action>
                                        <v-icon>mdi-file</v-icon>
                                     </v-list-item-action>
@@ -135,17 +108,7 @@
                                           >Posts</v-list-item-title
                                        >
                                     </v-list-item-content>
-                                 </v-list-item>
-                                 <v-list-item>
-                                    <v-list-item-action>
-                                       <v-icon>mdi-file</v-icon>
-                                    </v-list-item-action>
-                                    <v-list-item-content>
-                                       <v-list-item-title
-                                          >Posts</v-list-item-title
-                                       >
-                                    </v-list-item-content>
-                                 </v-list-item>
+                                 </v-list-item> -->
                               </v-list>
                            </v-menu>
                         </div>
@@ -158,6 +121,42 @@
       </v-hover>
    </div>
 </template>
+<script>
+import axios from "axios"
+export default {
+   data(){
+      return{
+         initials:""
+      }
+   },
+   computed:{
+      // initials(){
+      //    let temp=this.initials;
+      //     return temp.shift().charAt(0) + temp.pop().charAt(0);
+      // }
+   },
+   methods:{
+      deleteComment(){
+         axios.delete(`/comments/${this.commentId}/delete`,{
+            headers:{
+               "Authorization":"Bearer "+localStorage.getItem("token")
+            }
+         }).then(res=>{
+            console.log(res.data)
+            this.$emit("deleteComment",this.commentId,this.postId)
+         }).catch(err=>{
+            console.log(err)
+         })
+      }
+   },
+   props:['commentId','commentBody','commentAuthor','commentDate','postId','commentAuthorId'],
+   created(){
+      // let temp=this.initials;
+      const fullName = this.commentAuthor.split(" ");
+      this.initials=fullName.shift().charAt(0) + fullName.pop().charAt(0);
+   }
+}
+</script>
 <style>
 .v-btn__content {
    text-transform: unset !important;

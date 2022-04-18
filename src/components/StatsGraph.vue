@@ -3,26 +3,26 @@
       <v-card>
          <div class="post-detail tw-p-3">
             <v-row>
-               <v-col cols="2">
+               <v-col md="2" cols="3">
                   <img
-                     class="tw-rounded-md tw-h-20 tw-w-full"
+                     class="tw-rounded-md tw-h-14 md:tw-h-20 tw-w-full"
                      :src="img"
                      alt=""
                   />
                </v-col>
                <v-col cols="9">
                   <div class="tw-flex tw-justify-between tw-flex-col tw-h-full">
-                     <h2 class="tw-line-clamp-2">
+                     <h2 class="tw-line-clamp-2 tw-text-sm md:tw-text-base">
                         {{title}}
                      </h2>
-                     <p class="tw-opacity-80 tw-text-sm">{{createdAt}}</p>
+                     <p class="tw-opacity-80 tw-text-xs md:tw-text-sm">{{createdAt}}</p>
                   </div>
                </v-col>
             </v-row>
            
             <v-row>
                 <!-- <v-col cols="1"></v-col> -->
-               <v-col cols="6">
+               <v-col md="6" cols="12">
                   <div>
                        <p class="tw-my-3 tw-text-sm tw-opacity-70">Views</p>
                      <!-- <line-chart :dates="dates" :options="chartOptions" :views="views"></line-chart> -->
@@ -35,7 +35,7 @@
                      ></apex-chart>
                   </div>
                </v-col>
-               <v-col cols="6">
+               <v-col md="6" cols="12">
                   <div>
                        <p class="tw-my-3 tw-text-sm tw-opacity-70">Likes</p>
                      <!-- <line-chart :dates="dates" :options="chartOptions" :views="views"></line-chart> -->

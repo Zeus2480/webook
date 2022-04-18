@@ -1,31 +1,31 @@
 <template>
-   <div
-      class="tw-px-3 tw-my-3 "
-   >
-   <v-divider></v-divider>
+   <div class="tw-px-3 tw-my-3">
+      <v-divider></v-divider>
       <div class="tw-flex tw-justify-between tw-mt-2">
          <div class="tw-flex">
             <img
                :src="profilePicture"
-               class="tw-h-8 tw-w-8 tw-my-auto  tw-rounded-full"
+               class="tw-h-8 tw-w-8 tw-my-auto tw-rounded-full"
                alt=""
             />
             <div class="tw-mx-2">
                <h1 class="tw-text-base">{{ userName }}</h1>
-               <p class="tw-text-xs tw-opacity-60">{{ dateFormat }}</p>
+               <p class="tw-text-xs  tw-opacity-60">{{ dateFormat }}</p>
             </div>
          </div>
          <div class="tw-my-auto">
             <!-- <button @click.stop="!report"></button> -->
-
-            <v-menu offset-y absolute>
+            <v-btn @click="deleteComment" v-if="deleteButtonBoolean" icon
+               ><v-icon color="red">mdi-trash-can</v-icon></v-btn
+            >
+            <!-- <v-menu offset-y absolute>
                <template v-slot:activator="{ on, attrs }">
                   <v-btn depressed color="#fff" v-bind="attrs" v-on="on">
-                     <!-- <img
+                     <img
                         src="../assets/Logo/3-horizontal-dots.png"
                         class="tw-h-1"
                         alt=""
-                     /> -->
+                     />
                   </v-btn>
                </template>
                <v-list>
@@ -50,11 +50,11 @@
                      >
                   </v-list-item>
                </v-list>
-            </v-menu>
+            </v-menu> -->
          </div>
       </div>
       <div class="tw-my-1">
-         <p v-html="body"></p>
+         <p v-html="body" class="tw-text-left"></p>
       </div>
    </div>
 </template>
@@ -62,7 +62,15 @@
 import moment from "moment";
 import axios from "axios";
 export default {
-   props: ["body", "userName", "userId", "loggedUserId", "date", "commentId","profilePicture"],
+   props: [
+      "body",
+      "userName",
+      "userId",
+      "loggedUserId",
+      "date",
+      "commentId",
+      "profilePicture",
+   ],
    data() {
       return {
          report: null,
@@ -83,7 +91,7 @@ export default {
       //    }
       // },
       deleteButtonBoolean() {
-         return this.userId == this.$store.getters.userId ? true : false;
+         return this.userId == this.loggedUserId ? true : false;
       },
       dateFormat() {
          return moment(this.date).calendar(new Date(), {
@@ -97,16 +105,21 @@ export default {
       },
    },
    methods: {
-      
-      reportComment(){
-         axios.post(`/reported/${this.commentId}`,{},{
-            headers:{
-               Authorization: "Bearer "+localStorage.getItem("token")
-            }
-         }).then((res)=>{
-            console.log(res);
-            this.$emit('report')
-         })
+      reportComment() {
+         axios
+            .post(
+               `/reported/${this.commentId}`,
+               {},
+               {
+                  headers: {
+                     Authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+               }
+            )
+            .then((res) => {
+               console.log(res);
+               this.$emit("report");
+            });
       },
 
       deleteComment() {

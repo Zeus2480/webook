@@ -3,7 +3,7 @@
       <the-navbar></the-navbar>
 
       <v-main class="tw-bg-secondary-background tw-min-h-screen">
-         <v-container class="tw-h-full tw-px-0 xl:tw-px-20">
+         <v-container class="tw-h-full tw-px-4 md:tw-px-0 xl:tw-px-20">
             <div class="view-profile">
                <profile-card
                   :imagePath="imagePath"
@@ -11,9 +11,11 @@
                   :posts="postsCount"
                   :subscribers="subscribersCount"
                   :name="userName"
-                  :facebook="facebook"
-                  :twitter="twitter"
+                  :facebook="userFacebook"
+                  :twitter="userTwitter"
                   :created="createdDate"
+                  :instagram="userInstagram"
+                  :bio="userBio"
                   v-if="isLoadingCompleted"
                ></profile-card>
                <profile-card-skeleton
@@ -43,8 +45,30 @@ export default {
          facebook: null,
          twitter: null,
          imagePath: null,
-         searchQuery:"",
+         searchQuery: "",
       };
+   },
+   computed: {
+      slug() {
+         return this.$store.getters.getSlug;
+      },
+      userBio() {
+         return this.$store.getters.getBio;
+      },
+      userFacebook() {
+         return this.$store.getters.getFacebook;
+      },
+      userTwitter() {
+         return this.$store.getters.getTwitter;
+      },
+      userInstagram() {
+         return this.$store.getters.getInstagram;
+      },
+   },
+   watch: {
+      slug() {
+         this.getCounts();
+      },
    },
    created() {
       let data = this.$store.getters.getUserProfile;
@@ -68,21 +92,23 @@ export default {
          this.$router.push("/dashboard/profile/edit");
       },
       getCounts() {
-         axios
-            .get("/user_details", {
-               headers: {
-                  Authorization: "Bearer " + localStorage.getItem("token"),
-               },
-            })
-            .then((res) => {
-               // console.log(res.data);
-               this.subscribersCount = res.data.Subscriber;
-               this.postsCount = res.data.PostCount;
-               this.likesCount = res.data.LikeCount;
-            })
-            .finally(() => {
-               this.isLoadingCompleted = true;
-            });
+         if (this.slug) {
+            axios
+               .get(`/user/${this.slug}/user_details`, {
+                  headers: {
+                     Authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+               })
+               .then((res) => {
+                  // console.log(res.data);
+                  this.subscribersCount = res.data.subscriber;
+                  this.postsCount = res.data.post;
+                  this.likesCount = res.data.like;
+               })
+               .finally(() => {
+                  this.isLoadingCompleted = true;
+               });
+         }
       },
    },
 };

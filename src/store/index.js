@@ -27,6 +27,9 @@ export default new Vuex.Store({
       authorSite: "",
       authorSubscribers: "",
     },
+    frontLoggedInUser:{
+      id:"",
+    },
     drawer:false
   },
   getters: {
@@ -65,6 +68,21 @@ export default new Vuex.Store({
     },
     getDrawer(state) {
       return state.drawer;
+    },
+    getAuthorname(state) {
+      return state.authorDetails.authorName;
+    },
+    getAuthorInstagram(state) { //getters are used to access the state
+      return state.authorDetails.authorInstagram;
+    },
+    getAuthorTwitter(state) {
+      return state.authorDetails.authorTwitter;
+    },
+    getAuthorFacebook(state) {
+      return state.authorDetails.authorFacebook;
+    },
+    getForntLoggedInUserId(state) {
+      return state.frontLoggedInUser.id;
     }
   },
   mutations: {
@@ -103,6 +121,9 @@ export default new Vuex.Store({
       state.userProfile.twitter = payload.youtube;
 
 
+    },
+    setFrontLoggedInUser(state, payload) {
+      state.frontLoggedInUser.id = payload;
     }
   },
   actions: {
@@ -117,6 +138,9 @@ export default new Vuex.Store({
     },
     setAuthorProfile(context, payload) {
       context.commit('setAuthorProfile', payload);
+    },
+    setFrontLoggedInUser(context, payload) {  
+      context.commit('setFrontLoggedInUser', payload);
     }
   },
   modules: {

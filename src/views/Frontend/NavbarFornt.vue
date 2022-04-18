@@ -1,13 +1,22 @@
 <template>
    <div>
-      <v-app-bar color="black" height="60" app>
+      <!-- <div class="md:tw-hidden">
+         <v-navigation-drawer v-model="drawer" >
+         <div>
+            <h1>ffdfdfd</h1>
+         </div>
+      </v-navigation-drawer>
+      </div> -->
+      <v-app-bar class="tw-hidden md:tw-block" color="black" height="60" app>
          <v-app-bar-nav-icon
-            @click="toogleNavigationDrawer"
+            @click="drawer=!drawer"
             dark
-            class="tw-block md:tw-hidden"
+            class="tw-block md:tw-hidden tw-cursor-pointer"
          ></v-app-bar-nav-icon>
-
-         <v-toolbar-title class="tw-flex" @click="allBlogsPush"
+         <!-- <button class="tw-bg-white" @click="drawer=!drawer">hhh</button> -->
+         <v-toolbar-title
+            class="tw-flex tw-cursor-pointer"
+            @click="allBlogsPush"
             ><img
                src="../../assets/Logo/WebookLogo.svg"
                class="tw-my-auto tw-mr-3 tw-h-6"
@@ -37,30 +46,40 @@
                <v-menu bottom min-width="200px" rounded offset-y>
                   <template v-slot:activator="{ on }">
                      <v-btn icon x-large v-on="on" class="tw-mx-3">
-                        <v-avatar color="brown" size="35">
-                           <img
-                              src="../../assets/Images/profilepicture.jpg"
-                              alt=""
-                           />
+                        <v-avatar size="38" color="blue">
+                           <span class="white--text text-h5">{{
+                              user.initials
+                           }}</span>
                         </v-avatar>
                      </v-btn>
                   </template>
                   <v-card>
                      <v-list-item-content class="justify-center">
                         <div class="mx-auto text-center">
-                           <v-avatar color="brown">
+                           <v-avatar color="blue">
                               <span class="white--text text-h5">{{
                                  user.initials
                               }}</span>
                            </v-avatar>
-                           <h3>{{ user.fullName }}</h3>
+                           <h3 class="tw-truncate tw-my-2">
+                              {{ user.fullName }}
+                           </h3>
                            <p class="text-caption mt-1">
                               {{ user.email }}
                            </p>
                            <v-divider class="my-3"></v-divider>
-                           <v-btn depressed block text> Edit Account </v-btn>
-                           <v-divider class="my-3"></v-divider>
-                           <v-btn depressed block text @click="logout"> Log out </v-btn>
+                           <!-- <v-btn depressed block text> Edit Account </v-btn>
+                           <v-divider class="my-3"></v-divider> -->
+                           <v-btn
+                              depressed
+                              rounded
+                              block
+                              color="red"
+                              text
+                              @click="logout"
+                           >
+                              Log out
+                           </v-btn>
                         </div>
                      </v-list-item-content>
                   </v-card>
@@ -68,13 +87,28 @@
             </v-row>
          </div>
       </v-app-bar>
-      <!-- <div class="md:tw-hidden">
-         <v-navigation-drawer v-model="drawer" >
-         <div>
-            <h1>ffdfdfd</h1>
-         </div>
-      </v-navigation-drawer>
-      </div> -->
+
+      <div class="tw-block md:tw-hidden">
+         <v-bottom-navigation app color="teal" grow>
+            <v-btn to="/view/ggg">
+               <span>Home</span>
+
+               <v-icon>mdi-home</v-icon>
+            </v-btn>
+
+            <v-btn to="/view/ggg/search/test">
+               <span>Search</span>
+
+               <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+
+            <v-btn>
+               <span>Nearby</span>
+
+               <v-icon>mdi-map-marker</v-icon>
+            </v-btn>
+         </v-bottom-navigation>
+      </div>
    </div>
 </template>
 <script>
@@ -82,13 +116,16 @@ import axios from "axios";
 export default {
    data: () => ({
       user: {
-         initials: "JD",
-         fullName: "John Doe",
+         initials: "",
+         fullName: "",
          email: "john.doe@doe.com",
          slug: "",
-         drawer: null,
+         drawer: true,
       },
    }),
+   created() {
+      this.getLoggedInUserData();
+   },
    computed: {
       isUserLoggedIn() {
          if (localStorage.getItem("token")) {
@@ -110,6 +147,25 @@ export default {
       },
    },
    methods: {
+      getLoggedInUserData() {
+         if (localStorage.getItem("token")) {
+            axios
+               .get("/profile", {
+                  headers: {
+                     Authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+               })
+               .then((res) => {
+                  console.log(res.data);
+                  this.user.fullName = res.data.name;
+                  this.user.email = res.data.email;
+                  const fullName = this.user.fullName.split(" ");
+                  this.user.initials =
+                     fullName.shift().charAt(0) + fullName.pop().charAt(0);
+                  this.$store.dispatch("setFrontLoggedInUser", res.data.id);
+               });
+         }
+      },
       toogleNavigationDrawer() {
          // console.log(123);
          console.log(this.drawer);

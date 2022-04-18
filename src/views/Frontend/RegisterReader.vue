@@ -113,10 +113,10 @@
                         {{ passwordMessage }}
                      </p>
 
-                     <p class="tw-text-gray-600 tw-text-sm tw-mt-1 tw-px-4">
+                     <!-- <p class="tw-text-gray-600 tw-text-sm tw-mt-1 tw-px-4">
                         Use 8 or more characters with a mix of letters, numbers
                         & symbols
-                     </p>
+                     </p> -->
                   </div>
                   <div class="show-password tw-px-4 tw-flex">
                      <input

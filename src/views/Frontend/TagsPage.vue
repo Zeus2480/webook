@@ -1,7 +1,7 @@
 <template>
    <div class="tw-bg-gray-100">
       <NavabarFront />
-      <v-main>
+      <v-main class="no-padding">
          <div class="tw-min-h-screen tw-min-w-full tw-bg-gray-100">
             <div class="tw-flex">
                <div
@@ -10,7 +10,7 @@
                   <div class="backgroundImage">
                      <div class="tw-h-full">
                         <v-container
-                           class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
+                           class="tw-flex tw-items-center tw-h-full tw-px-2 md:tw-px-10 tw-w-full"
                            ><v-btn icon dark @click="backNavigate"
                               ><img
                                  src="../../assets/Logo/WhiteBack.svg"
@@ -30,7 +30,7 @@
                               </h1>
                            </div>
                         </v-container>
-                        <div class="tw-bg-gray-200">
+                        <div class="tw-bg-secondary-background">
                            <v-container>
                               <div v-if="isLoadingCompleted">
                                  <all-blogs-card
@@ -42,6 +42,7 @@
                                     :tags="JSON.parse(data.tags)"
                                     :image="data.image_path"
                                     :userId="userId"
+                                    :postId=data.id
                                  ></all-blogs-card>
                               </div>
                               <div v-if="!isLoadingCompleted">
@@ -127,12 +128,18 @@ export default {
 <style scoped>
 .backgroundImage {
    background-image: url("../../assets/Images/pexels-johannes-plenio-1435075 1.png");
-   background-size: 100%;
+   /* background-size: 100%; */
    width: 100%;
    height: 190px;
    background-position: center;
    background-repeat: no-repeat;
    object-fit: cover;
+}
+@media screen and (max-width: 768px) {
+   .no-padding{
+      padding-top: 0 !important;
+   
+}
 }
 .overlay {
    position: fixed;

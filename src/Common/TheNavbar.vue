@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-app-bar flat height="49" app color="white">
+      <v-app-bar flat height="49" class="tw-z-20" app color="white">
          <v-app-bar-nav-icon
             class="tw-ml-6"
             @click="toogleNavigationDrawer"
@@ -82,16 +82,16 @@
          <v-btn v-if="isProfilePictureAvailable" class="ma-2" icon
             ><v-icon>mdi-account-circle</v-icon></v-btn
          >
-         <v-btn v-if="!isProfilePictureAvailable" class="ma-2" icon
+         <v-btn v-if="!isProfilePictureAvailable" @click="pushProfile" class="ma-2" icon
             ><img
-               src="../assets/Images/profilepicture.jpg"
+               :src="profilePicture"
                class="tw-h-6 tw-w-6 tw-rounded-full"
                alt=""
          /></v-btn>
          <v-icon>mdi-notifications</v-icon>
       </v-app-bar>
 
-      <v-navigation-drawer v-model="drawer" app>
+      <v-navigation-drawer v-model="drawer"  app>
          <div class=" ">
             <div class="logo tw-flex tw-w-full tw-justify-center tw-mt-4">
                <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
@@ -101,7 +101,7 @@
             </div>
          </div>
          <div class="new-post-button tw-mt-8 tw-ml-6">
-            <v-btn dark rounded small @click="newPost" class="tw-p-2"
+            <v-btn dark rounded  @click="newPost" class="tw-p-2"
                ><img
                   src="../assets/Logo/Vector (2).svg"
                   class="tw-h-5 tw-mr-2"
@@ -200,8 +200,15 @@ export default {
             return true;
          }
       },
+      profilePicture(){
+         return this.$store.getters.getUserProfilePicture;
+      }
    },
    methods: {
+
+      pushProfile(){
+         this.$router.push(`/dashboard/profile`)
+      },
       searchFunctions(){
          this.$emit('searchQuery', this.searchQuery)
       },

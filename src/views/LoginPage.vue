@@ -9,30 +9,51 @@
             ></v-progress-circular>
          </div>
       </v-overlay>
+      <v-snackbar
+         v-model="snackbar"
+         :timeout="7000"
+         :color="errorColor"
+         absolute
+      >
+         {{ text }}
+
+         <template v-slot:action="{ attrs }">
+            <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+               Close
+            </v-btn>
+         </template>
+      </v-snackbar>
       <div class="tw-min-h-screen tw-min-w-screen tw-flex">
          <div
-            class="logo-screen tw-w-2/5 tw-bg-black tw-flex tw-justify-center tw-items-center"
+            class="logo-screen tw-hidden md:tw-w-2/5 tw-bg-black md:tw-flex tw-justify-center tw-items-center"
          >
             <div class="">
                <img src="../assets/Logo/WebookLogo.svg" alt="" />
             </div>
          </div>
          <div
-            class="form tw-w-3/5 tw-h-screen tw-px-24 tw-py-10 tw-flex tw-flex-col"
+            class="form tw-w-full md:tw-w-3/5 tw-h-screen tw-px-4 md:tw-px-24 tw-py-10 tw-flex tw-flex-col"
          >
-            <div
-               class="tw-flex  tw-pb-4"
-            >
-               <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
+            <div class="tw-flex tw-pb-4">
+               <img
+                  src="../assets/Logo/WebookLogo.svg"
+                  class="tw-h-8 tw-my-auto"
+                  alt=""
+               />
                <div class="tw-my-auto tw-mx-6">
-                  <h1 class="tw-font-medium tw-text-xl">
+                  <h1 class="tw-font-medium tw-text-md md:tw-text-xl">
                      Login into your Webook account.
                   </h1>
                </div>
             </div>
-              <v-progress-linear value="100" color="black" rounded class="tw-mb-10"></v-progress-linear>
+            <v-progress-linear
+               value="100"
+               color="black"
+               rounded
+               class="tw-mb-10"
+            ></v-progress-linear>
             <!-- //Form -->
-            <div class="tw-h-full tw-px-24">
+            <div class="tw-h-full tw-px-6 md:tw-px-24">
                <div class="form tw-px-3">
                   <div class="email tw-mb-3 tw-mt-12">
                      <div class="">
@@ -128,6 +149,9 @@ export default {
          emailMessage: "ww",
          passwordMessage: "ww",
          showButtonLoading: false,
+         text:"",
+         errorColor:null,
+         snackbar:null
       };
    },
    methods: {
@@ -165,8 +189,11 @@ export default {
                })
                .catch((err) => {
                   console.log(err);
-                  this.passwordMessage = "Invalid Credentials";
-                  this.showPasswordMessage = true;
+                  this.text="Invalid Credentials";
+                  this.errorColor="red darken-4";
+                  this.snackbar=true;
+                  // this.passwordMessage = "Invalid Credentials";
+                  // this.showPasswordMessage = true;
                })
                .finally(() => {
                   this.showButtonLoading = false;

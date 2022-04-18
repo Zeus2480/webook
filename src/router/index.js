@@ -19,6 +19,7 @@ import EditPost from "../views/EditPost.vue"
 import RegisterReader from "../views/Frontend/RegisterReader.vue"
 import LoginReader from "../views/Frontend/LoginReader.vue"
 import SearchPage from "../views/Frontend/SearchPage.vue"
+import NotFound from "../views/PageNotFound.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -54,6 +55,14 @@ const routes = [
     path: '/dashboard/post',
     name: 'DashboardPosts',
     component: DashboardPosts,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem('token')) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
+
       // adminPanel: Dashboard
     
     // children:[{
@@ -69,32 +78,67 @@ const routes = [
   {
     path:'/dashboard/create-post',
     name:CreatePost,
-    component:CreatePost
+    component:CreatePost,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem('token')) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
 
   },
   {
     path:'/dashboard/edit-post/:postId',
     name:EditPost,
     component:EditPost,
-    props:true
+    props:true,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem('token')) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
 
   },
   {
     path:'/dashboard/stats',
     name:DashboardStats,
-    component:DashboardStats
+    component:DashboardStats,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem('token')) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
 
   },
   {
     path:'/dashboard/profile',
     name:DashboardProfile,
-    component:DashboardProfile
+    component:DashboardProfile,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem('token')) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
 
   },
   {
     path:'/dashboard/comments',
     name:DashboardComments,
-    component:DashboardComments
+    component:DashboardComments,
+    beforeEnter(to, from, next) {
+      if (localStorage.getItem('token')) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
 
   },
   {
@@ -127,6 +171,10 @@ const routes = [
     component:TagsPage,
     props:true
   },
+  {
+    path:'*',
+    component:NotFound
+  }
  
 ]
 

@@ -28,7 +28,7 @@
                            </h1>
                         </div>
                         <div class="puplish-preview">
-                           <v-btn outlined color="primary">Preview</v-btn>
+                           <!-- <v-btn outlined color="primary">Preview</v-btn> -->
                            <v-btn
                               color="primary"
                               @click="update"

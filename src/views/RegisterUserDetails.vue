@@ -2,15 +2,15 @@
    <div>
       <div class="tw-min-h-screen tw-min-w-screen tw-flex">
          <div
-            class="logo-screen tw-w-2/5 tw-bg-black tw-flex tw-justify-center tw-items-center"
+            class="logo-screen tw-w-2/5 tw-hidden  tw-bg-black md:tw-flex tw-justify-center tw-items-center"
          >
             <div class="">
                <img src="../assets/Logo/WebookLogo.svg" alt="" />
             </div>
          </div>
-         <div class="form tw-w-3/5 tw-px-24 tw-py-10">
+         <div class="form tw-w-full  md:tw-w-3/5 tw-px-5 md:tw-px-24 tw-py-10">
             <div class="tw-flex tw-mb-4">
-               <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8" alt="" />
+               <img src="../assets/Logo/WebookLogo.svg" class="tw-h-8 tw-my-auto" alt="" />
                <div class="tw-my-auto tw-mx-6">
                   <h1 class="tw-font-medium tw-text-xl">
                      Create Your Webook Account
@@ -34,7 +34,7 @@
                v-if="!isStepOneCompleted"
                @userData="userData"
             ></user-details>
-            <user-domain
+            <user-domain 
                :userData="formData"
                v-if="isStepOneCompleted"
             ></user-domain>

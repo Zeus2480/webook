@@ -3,7 +3,7 @@
       <the-navbar></the-navbar>
       <v-main class="tw-bg-secondary-background tw-min-h-screen">
          <v-container class="tw-h-full tw-px-0 xl:tw-px-20">
-            <div>
+            <div class="tw-p-5">
                <stats-view-card :allTimeViews="allTImeViews"
                :thisWeekViews="thisWeekViews"
                :todayViews="todayViews"
@@ -94,7 +94,11 @@ export default {
       getData() {
          if (this.$store.getters.getSlug) {
             console.log();
-            axios.get(`/post/views`).then((res)=>{
+            axios.get(`/post/views`,{
+               headers:{
+                  Authorization:"Bearer "+localStorage.getItem("token")
+               }
+            }).then((res)=>{
                console.log(res.data);
                this.todayViews=res.data.todays_Views;
                this.allTImeViews=res.data.total_Views;

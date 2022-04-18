@@ -1,16 +1,16 @@
 <template>
    <div class="">
       <NavabarFront/>
-      <v-main>
+      <v-main class="no-padding">
          <div class="tw-min-h-screen tw-min-w-full">
             <div class="tw-flex">
                <div
-                  class="md:tw-w-9/12 tw-w-full tw-bg-gray-200 tw-min-h-screen"
+                  class="md:tw-w-9/12 tw-w-full tw-bg-secondary-background tw-min-h-screen"
                >
                   <div class="backgroundImage">
                      <div class="tw-h-full">
                         <v-container
-                           class="tw-flex tw-items-center tw-h-full tw-px-10 tw-w-full"
+                           class="tw-flex tw-items-center tw-h-full  md:tw-px-10 tw-w-full"
                         >
                            <div class="tw-flex tw-justify-center tw-w-full">
                               <h1
@@ -20,13 +20,13 @@
                               </h1>
                            </div>
                         </v-container>
-                        <div class="tw-bg-gray-200" v-if="!isLoadingCompleted">
+                        <div class="tw-bg-secondary-background" v-if="!isLoadingCompleted">
                            <v-container>
                               <all-blogs-skeleton></all-blogs-skeleton>
                               <all-blogs-skeleton></all-blogs-skeleton>
                            </v-container>
                         </div>
-                        <div class="tw-bg-gray-200" v-if="isLoadingCompleted">
+                        <div class="tw-bg-secondary-background" v-if="isLoadingCompleted">
                            <v-container>
                               <all-blogs-card
                                  v-for="(blog, index) in allBlogs"
@@ -105,7 +105,7 @@ export default {
 <style scoped>
 .backgroundImage {
    background-image: url("../../assets/Images/pexels-johannes-plenio-1435075 1.png");
-   background-size: 100%;
+   /* background-size: 100%; */
    width: 100%;
    height: 190px;
    background-position: center;
@@ -122,4 +122,13 @@ export default {
    width: 100%;
    object-fit: cover;
 }
+@media screen and (max-width: 768px) {
+   .no-padding{
+      padding-top: 0 !important;
+   
+}
+}
+   
+
+
 </style>

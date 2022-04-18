@@ -1,5 +1,5 @@
 <template>
-   <div class="tw-py-8 tw-px-7">
+   <div class="tw-py-4 tw-h-full tw-px-7">
       <!-- <div v-if="!isUserLoggedIn" class="login-register-btn"> -->
          <!-- <div class="tw-flex"> -->
             <!-- <div class="tw-p-2 tw-px-3 tw-bg-black tw-rounded-lg">
@@ -90,10 +90,11 @@
          </div> -->
       </div>
       <div class="subscribe-btn tw-mt-6">
-         <v-btn class="" rounded small color="#E1B413">
+         <v-btn @click="subscribe" class=""  rounded small color="#E1B413">
             <v-icon small>mdi-email</v-icon>
-            Subscribe
+            {{isUserSubscribedBtnText}}
          </v-btn>
+        
       </div>
       <div v-if="tags.length" class="recommended-topics tw-mt-8">
          <h1 class="tw-font-medium tw-text-base">Recommended Topics</h1>
@@ -127,8 +128,17 @@ export default {
       authorSubscribers: null,
       siteName: null,
       searchQuery: "",
+      isUserSubscribed:null
    }),
    computed: {
+      isUserSubscribedBtnText() {
+         if(this.isUserSubscribed){
+            return "Unsubscribe"
+         }else{
+            return "Subscribe"
+         }
+         // return this.isUserSubscribed;
+      },
       priflePicturePath() {
          if (this.authorImage) {
             return this.authorImage;
@@ -138,6 +148,7 @@ export default {
       },
    },
    created() {
+      this.checkUserSubscribed();
       this.checkUserLoggedIn();
       this.getAuthorData();
       this.getRecommendedTopics();
@@ -148,11 +159,21 @@ export default {
          // console.log(val);
       },
    },
+ 
    methods: {
-      s() {
-         console.log(this.selection);
+      // s() {
+      //    console.log(this.selection);
+      // },
+      subscribe(){
+         axios.post(`/user/${this.userId}/subscribe`,{},{
+            headers:{
+               'Authorization': `Bearer `+localStorage.getItem('token')
+            }
+         }).then(()=>{
+            this.isUserSubscribed=!this.isUserSubscribed;
+            
+         })
       },
-
       searchFunctions() {
          // console.log(this.searchQuery);
 
@@ -215,11 +236,25 @@ export default {
             console.log(this.tags);
          });
       },
-      tagclick() {},
+     
       checkUserLoggedIn() {
          if (localStorage.getItem("token")) {
             this.isUserLoggedIn = true;
          }
+      },
+      checkUserSubscribed(){
+         axios.get(`/user/${this.userId}/is_subscribe`, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+         }).then((res) => {
+            if (res.data.is_subscribe) {
+               this.isUserSubscribed = true;
+            }
+            else{
+               this.isUserSubscribed = false;
+            }
+         });
       },
 
      
