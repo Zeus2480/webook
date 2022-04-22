@@ -10,16 +10,20 @@ import DashboardStats from '../views/DashboardStats.vue'
 import DashboardProfile from '../views/DashboardProfile.vue'
 import DashboardComments from "../views/DashboardComments.vue"
 import EditProfile from "../views/EditProfile.vue"
-import ViewBLog from "../views/Frontend/ViewBlog.vue"
-import ViewAllBLogs from "../views/Frontend/ViewAllBLogs.vue"
-import TagsPage from "../views/Frontend/TagsPage.vue"
+// import ViewBLog from "../views/Frontend/ViewBlog.vue"
+// import ViewAllBLogs from "../views/Frontend/ViewAllBLogs.vue"
+// import TagsPage from "../views/Frontend/TagsPage.vue"
 import LoginPage from "../views/LoginPage.vue"
 import CreatePost from "../views/CreatePost.vue"
 import EditPost from "../views/EditPost.vue"
 import RegisterReader from "../views/Frontend/RegisterReader.vue"
 import LoginReader from "../views/Frontend/LoginReader.vue"
-import SearchPage from "../views/Frontend/SearchPage.vue"
+// import SearchPage from "../views/Frontend/SearchPage.vue"
 import NotFound from "../views/PageNotFound.vue"
+import ViewBlog from "../views/NewFrontend/ViewBlog.vue"
+import ViewAllBlog from "../views/NewFrontend/ViewAllBlog.vue"
+import TagsPage from "../views/NewFrontend/TagPage.vue"
+import SearchPage from "../views/NewFrontend/SearchPage.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -155,20 +159,26 @@ const routes = [
   },
   {
     path:'/view/:userId',
-    name:ViewAllBLogs,
-    component:ViewAllBLogs,
+    name:ViewAllBlog,
+    component:ViewAllBlog,
     props:true
   },
   {
     path:'/view/:userId/:blogId',
-    name:ViewBLog,
-    component:ViewBLog,
+    name:ViewBlog,
+    component:ViewBlog,
     props:true
   },
   {
     path:'/view/:userId/tags/:tagName',
     name:TagsPage,
     component:TagsPage,
+    props:true
+  },
+  {
+    path:'/notFound',
+    name:NotFound,
+    component:NotFound,
     props:true
   },
   {

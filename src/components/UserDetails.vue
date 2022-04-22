@@ -1,8 +1,8 @@
 <template>
    <div>
-       <v-snackbar
+      <v-snackbar
          v-model="snackbar"
-         :timeout="7000"
+         :timeout="3000"
          :color="errorColor"
          absolute
       >
@@ -131,6 +131,7 @@
    </div>
 </template>
 <script>
+import axios from "axios";
 export default {
    data() {
       return {
@@ -147,10 +148,10 @@ export default {
          emailMessage: "ss",
          passwordMessage: "ss",
          buttonLoading: false,
-         snackbar:null,
-         text:"",
+         snackbar: null,
+         text: "",
          showPassword: false,
-         errorColor:""
+         errorColor: "",
       };
    },
    methods: {
@@ -158,19 +159,49 @@ export default {
          this.buttonLoading = true;
          this.validation();
          if (this.isFormValid) {
-            let data = {
-               name: this.inputFirstName + " " + this.inputLastName,
-               email: this.inputEmail,
-               password: this.inputPassword,
-               password_confirmation: this.inputConfirmPassword,
-               site: "",
-            };
-            this.buttonLoading = false;
+            axios
+               .post("/checkEmail", {
+                  email: this.inputEmail,
+               })
+               .then((res) => {
+                  console.log(res.data);
+                  if (res.data.is_email_taken) {
+                     this.snackbar = true;
+                     this.text = "Email already taken";
+                     this.errorColor = "red darken-4";
+                     this.buttonLoading = false;
+                  } else {
+                     let data = {
+                        name: this.inputFirstName + " " + this.inputLastName,
+                        email: this.inputEmail,
+                        password: this.inputPassword,
+                        password_confirmation: this.inputConfirmPassword,
+                        site: "",
+                     };
+                     this.buttonLoading = false;
 
-            this.$emit("userData", data);
+                     this.$emit("userData", data);
+                  }
+               }).finally(()=>{
+                  this.buttonLoading=false;
+               });
          } else {
             this.buttonLoading = false;
          }
+         // if (this.isFormValid) {
+         //    let data = {
+         //       name: this.inputFirstName + " " + this.inputLastName,
+         //       email: this.inputEmail,
+         //       password: this.inputPassword,
+         //       password_confirmation: this.inputConfirmPassword,
+         //       site: "",
+         //    };
+         //    this.buttonLoading = false;
+
+         //    this.$emit("userData", data);
+         // } else {
+         //    this.buttonLoading = false;
+         // }
 
          // this.$emit('status',true);
 
@@ -195,11 +226,11 @@ export default {
             this.passwordMessage = "Password is mandatory";
             this.showPasswordMessage = true;
          }
-         if (this.inputPassword.length<6  || this.inputConfirmPassword <6) {
+         if (this.inputPassword.length < 6 || this.inputConfirmPassword < 6) {
             this.isFormValid = false;
             this.text = "Minimum 6 characters required";
             this.snackbar = true;
-            this.errorColor="red darken-4"
+            this.errorColor = "red darken-4";
          }
          if (this.inputPassword != this.inputConfirmPassword) {
             console.log(123);

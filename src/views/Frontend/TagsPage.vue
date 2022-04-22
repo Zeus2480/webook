@@ -39,7 +39,7 @@
                                     :title="data.name"
                                     :summary="data.excerpt"
                                     :createdData="data.created_at"
-                                    :tags="JSON.parse(data.tags)"
+                                    :tags="data.tags"
                                     :image="data.image_path"
                                     :userId="userId"
                                     :postId=data.id

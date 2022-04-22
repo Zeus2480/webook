@@ -153,7 +153,7 @@ export default {
               this.title=res.data.post.name;
                 this.summary=res.data.post.excerpt;
                 this.body=res.data.post.body;
-                this.tagsArray=JSON.parse(res.data.post.tags);
+                this.tagsArray=res.data.post.tags;
               })
          },
       
@@ -202,6 +202,7 @@ export default {
                   console.log(res);
                   this.snackbar = true;
                   this.text = "Post Updated Successfully";
+                  this.$router.push("/dashboard/post");
                });
             
          }

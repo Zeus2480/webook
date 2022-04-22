@@ -10,7 +10,7 @@
             />
             <div class="tw-mx-2">
                <h1 class="tw-text-base">{{ userName }}</h1>
-               <p class="tw-text-xs  tw-opacity-60">{{ dateFormat }}</p>
+               <p class="tw-text-xs  tw-opacity-60">{{ date }}</p>
             </div>
          </div>
          <div class="tw-my-auto">

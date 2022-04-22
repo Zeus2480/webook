@@ -41,7 +41,9 @@
                width="400px"
                class="tw-z-40"
             >
-               <div class="tw-pt-4 tw-w-full tw-z-40 md:tw-mt-4 tw-px-0 md:tw-px-4">
+               <div
+                  class="tw-pt-4 tw-w-full tw-z-40 md:tw-mt-4 tw-px-0 md:tw-px-4"
+               >
                   <div>
                      <h1 class="tw-text-xl tw-font-semibold tw-px-2">
                         Responses ({{ commentsArray.length }})
@@ -51,7 +53,7 @@
                      <textarea
                         name=""
                         placeholder="What are your thoughts?"
-                        class="tw-bg-gray-100 tw-py-1 tw-px-2  tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
+                        class="tw-bg-gray-100 tw-py-1 tw-px-2 tw-mx-2 tw-rounded-lg tw-border-2 tw-w-full tw-border-gray-400 tw-border-solid"
                         id=""
                         cols="39"
                         rows="4"
@@ -89,11 +91,13 @@
             </v-navigation-drawer>
          </div>
          <div class="">
-            <v-bottom-sheet  v-model="drawerMobile">
+            <v-bottom-sheet v-model="drawerMobile">
                <v-sheet class="text-center" height="90vh">
-                  <div class="tw-pt-4 tw-w-full tw-z-40  md:tw-mt-4 tw-px-4">
+                  <div class="tw-pt-4 tw-w-full tw-z-40 md:tw-mt-4 tw-px-4">
                      <div>
-                        <h1 class="tw-text-xl tw-text-left tw-font-semibold md:tw-px-2">
+                        <h1
+                           class="tw-text-xl tw-text-left tw-font-semibold md:tw-px-2"
+                        >
                            Responses ({{ commentsArray.length }})
                         </h1>
                      </div>
@@ -106,7 +110,6 @@
                            cols="39"
                            rows="4"
                            v-model="commentBody"
-                           
                         ></textarea>
                         <div class="tw-flex tw-items-center">
                            <v-btn
@@ -151,24 +154,29 @@
                <div
                   class="tw-w-full md:tw-w-9/12 tw-bg-secondary-background tw-border-r-2 tw-border-gray-200 tw-min-h-screen"
                >
-                  <div class="backgroundImage">
-                     <div class="tw-h-full">
-                        <v-container
-                           class="tw-flex tw-items-center tw-h-full tw-px-3 md:tw-px-10 tw-w-full"
-                        >
-                           <v-btn icon dark @click="backNavigate"
-                              ><img
-                                 src="../../assets/Logo/WhiteBack.svg"
-                                 alt=""
-                           /></v-btn>
-                           <div class="tw-flex tw-justify-center tw-w-full">
-                              <h1
-                                 class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
-                              >
-                                 {{ siteName }}
-                              </h1>
-                           </div>
-                        </v-container>
+                  <div
+                     class="backgroundImage  tw-h-48 tw-object-cover"
+                     :style="{ backgroundImage: 'url(' + imageUrl + ')' }"
+                  >
+                     <div class="back-hue tw-h-full">
+                        <div class="tw-h-full">
+                           <v-container
+                              class="tw-flex tw-items-center tw-h-full tw-px-3 md:tw-px-10 tw-w-full"
+                           >
+                              <v-btn icon dark @click="backNavigate"
+                                 ><img
+                                    src="../../assets/Logo/WhiteBack.svg"
+                                    alt=""
+                              /></v-btn>
+                              <div class="tw-flex tw-justify-center tw-w-full">
+                                 <h1
+                                    class="tw-text-white tw-my-auto tw-text-3xl tw-font-medium"
+                                 >
+                                    {{ siteName }}
+                                 </h1>
+                              </div>
+                           </v-container>
+                        </div>
                      </div>
                   </div>
                   <div class="tw-z-10">
@@ -177,28 +185,36 @@
                            <div class="tw-p-6 tw-px-4 md:tw-px-10">
                               <div>
                                  <v-row>
-                                    <v-col cols="11">
-                                       <div>
-                                          <h1
-                                             class="tw-text-2xl tw-font-medium tw-line-clamp-2"
-                                          >
-                                             {{ title }}
-                                          </h1>
-                                          <div class="tw-flex tw-mt-3">
-                                             <div class="tw-flex tw-my-auto">
-                                                <p
-                                                   class="tw-opacity-70 tw-text-sm"
-                                                >
-                                                   {{ createdDate }}
-                                                </p>
-                                                <!-- <p class="tw-mx-5 tw-opacity-70">
+                                    <v-col cols="12">
+                                       <div
+                                          class="tw-h-96 tw-flex back-hue tw-flex-col-reverse  tw-w-full backgroundImage tw-object-contain"
+                                          :style="{
+                                             backgroundImage:
+                                                'url(' + imageUrl + ')',
+                                          }"
+                                       >
+                                          <div class="back-hue">
+                                             <h1
+                                                class="tw-text-3xl tw-text-white tw-font-medium tw-line-clamp-2"
+                                             >
+                                                {{ title }}
+                                             </h1>
+                                             <div class="tw-flex tw-mt-3">
+                                                <div class="tw-flex tw-my-auto">
+                                                   <p
+                                                      class="tw-opacity-70 tw-text-sm"
+                                                   >
+                                                      {{ createdDate }}
+                                                   </p>
+                                                   <!-- <p class="tw-mx-5 tw-opacity-70">
                                                 2 min read
                                              </p> -->
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
                                     </v-col>
-                                    <v-col
+                                    <!-- <v-col
                                        cols="1"
                                        class="tw-flex tw-justify-center tw-items-center"
                                     >
@@ -209,17 +225,20 @@
                                              ></v-btn
                                           >
                                        </div>
-                                    </v-col>
+                                    </v-col> -->
                                  </v-row>
                               </div>
-                              <div class="image tw-my-4">
+                              <!-- <div class="image tw-my-4">
                                  <img
                                     class="banner tw-object-cover"
                                     :src="imageUrl"
                                     alt=""
                                  />
-                              </div>
-                              <div v-html="body" class="content tw-break-words tw-overflow-hidden tw-mt-5" ></div>
+                              </div> -->
+                              <div
+                                 v-html="body"
+                                 class="content tw-break-words tw-overflow-hidden tw-mt-5"
+                              ></div>
                               <div
                                  class="like-comment-bar tw-flex tw-justify-between"
                               >
@@ -336,6 +355,8 @@ export default {
       CommentsCard,
       NavabarFront,
    },
+   // 
+   
    computed: {
       loggedInUserId() {
          return this.$store.getters.getForntLoggedInUserId;
@@ -385,6 +406,10 @@ export default {
          return this.commentsArray.length;
       },
    },
+//    beforeRouteLeave () {
+//   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+//   if (!answer) return false
+// },
    created() {
       //   console.log(this.userId);
       //   console.log(this.blogId);
@@ -592,19 +617,18 @@ export default {
 </script>
 <style scoped>
 .backgroundImage {
-   background-image: url("../../assets/Images/pexels-johannes-plenio-1435075 1.png");
+   /* background-image: url(this.imageUrl); */
    /* background-size: 100%; */
    width: 100%;
-   height: 190px;
+   /* height: 190px; */
    background-position: center;
    background-repeat: no-repeat;
    object-fit: cover;
 }
 @media screen and (max-width: 768px) {
-   .no-padding{
+   .no-padding {
       padding-top: 0 !important;
-   
-}
+   }
 }
 .overlay {
    position: fixed;
@@ -615,5 +639,8 @@ export default {
    /* height: 300px; */
    max-width: 100%;
    object-fit: cover;
+}
+.back-hue {
+   background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

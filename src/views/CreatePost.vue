@@ -137,6 +137,33 @@ export default {
          vm.prevRoute = from.fullPath;
       });
    },
+   // beforeRouteLeave(to, from, next) {
+   //    let formData = new FormData();
+   //    if (this.title) {
+   //       formData.append("name", this.title);
+   //    }
+   //    if (this.summary) {
+   //       formData.append("summary", this.summary);
+   //    }
+   //    // formData.append("excerpt", this.summary);
+   //    if (this.body) {
+   //       formData.append("body", this.body);
+   //    }
+   //    if (this.tagsArray) {
+   //       formData.append("tags", JSON.stringify(this.tagsArray));
+   //    }
+   //    if (this.selectedFile) {
+   //       formData.append("image", this.selectedFile);
+   //    }
+   //    axios.post(``);
+   //    // if (this.isLoadingCompleted) {
+   //    //    next();
+   //    // } else {
+   //    //    this.snackbar = true;
+   //    //    this.text = `Please wait while we are saving your post`;
+   //    //    next(false);
+   //    // }
+   // },
    created() {
       setTimeout(() => {
          this.isLoadingCompleted = true;
@@ -147,8 +174,13 @@ export default {
       VueEditor,
    },
    beforeMount() {
-    window.addEventListener("beforeunload", this.myfun)
-  },
+      window.addEventListener("beforeunload", this.myfun);
+   },
+   watcher: {
+      selectedFile(newValue) {
+         console.log(newValue);
+      }
+   },
    methods: {
       myfun() {
          // Write your business logic here
@@ -184,9 +216,20 @@ export default {
             formData.append("name", this.title);
             formData.append("excerpt", this.summary);
             formData.append("body", this.body);
-            formData.append("tags", JSON.stringify(this.tagsArray));
+            this.tagsArray.forEach((tag) => {
+               formData.append("tags[]", tag);
+            });
             formData.append("image", this.selectedFile);
             console.log(formData);
+            let obj = {
+               name: this.title,
+               excerpt: this.summary,
+               body: this.body,
+               tags: this.tagsArray,
+               image: this.selectedFile,
+            };
+            console.log(obj);
+            
             axios
                .post("/post/create", formData, {
                   headers: {
@@ -194,13 +237,16 @@ export default {
                   },
                })
                .then((res) => {
-                  console.log(JSON.parse(res.data.tags));
+                  console.log(res.data.tags);
                   this.snackbar = true;
                   this.text = "Post Created Successfully";
+                  console.log(1212);
+
                   this.$router.push(`/dashboard/post`);
+                  console.log(12142435423);
                });
-            // this.snackbar = true;
-            // this.text = `Post published successfully`;
+            this.snackbar = true;
+            this.text = `Post published successfully`;
          }
          // this.$router.push(`/`);
       },

@@ -29,6 +29,9 @@ export default new Vuex.Store({
     },
     frontLoggedInUser:{
       id:"",
+      isUserSubscribed:null,
+      name:"",
+      email:"",
     },
     drawer:false
   },
@@ -81,11 +84,20 @@ export default new Vuex.Store({
     getAuthorFacebook(state) {
       return state.authorDetails.authorFacebook;
     },
-    getForntLoggedInUserId(state) {
+    getFrontLoggedInUserId(state) {
       return state.frontLoggedInUser.id;
+    },
+    getFrontLoggedInUserSubscribed(state) {
+      return state.frontLoggedInUser.isUserSubscribed;
+    },
+    getFrontLoggedInUser(state) {
+      return state.frontLoggedInUser;
     }
   },
   mutations: {
+    setFrontLoggedInUserIsUserSubscribed(state, payload) {
+      state.frontLoggedInUser.isUserSubscribed = payload;
+    },
     setDrawer(state, payload) {
       state.drawer = payload;
     },
@@ -123,10 +135,15 @@ export default new Vuex.Store({
 
     },
     setFrontLoggedInUser(state, payload) {
-      state.frontLoggedInUser.id = payload;
+      state.frontLoggedInUser.id = payload.id;
+      state.frontLoggedInUser.name = payload.name;
+      state.frontLoggedInUser.email = payload.email;
     }
   },
   actions: {
+    setFrontLoggedInUserIsUserSubscribed(context, payload) {
+      context.commit('setFrontLoggedInUserIsUserSubscribed', payload);
+    },
     setDrawer(context, payload) {
       context.commit('setDrawer', payload);
     },

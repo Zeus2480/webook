@@ -13,7 +13,9 @@ module.exports = {
       },
       height:{
         'h-horizontal-img':'133px',
-        '30-vh':'30vh'
+        '30-vh':'30vh',
+        '50-vh':'50vh',
+        '40-vh':'40vh',
       },
       width:{
         'w-horizontal-img':'200px'

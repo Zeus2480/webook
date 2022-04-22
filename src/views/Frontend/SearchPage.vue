@@ -128,11 +128,11 @@ export default {
       };
    },
    computed: {
-      searchQueryCapital() {
-         return (
-            this.searchTerm.charAt(0).toUpperCase() + this.searchTerm.slice(1)
-         );
-      },
+         searchQueryCapital() {
+            return (
+               this.searchTerm.charAt(0).toUpperCase() + this.searchTerm.slice(1)
+            );
+         },
    },
    methods: {
       getSearchData() {
