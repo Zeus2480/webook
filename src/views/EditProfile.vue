@@ -128,7 +128,7 @@
                                  type="text"
                                  rows="3"
                                  v-model="instagram"
-                                 placeholder="Instagram Username"
+                                 placeholder="Instagram link"
                                  class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
                               />
                            </v-col>
@@ -139,7 +139,7 @@
                                  type="text"
                                  rows="3"
                                  v-model="facebook"
-                                 placeholder="Facebook Username"
+                                 placeholder="Facebook link"
                                  class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
                               />
                            </v-col>
@@ -150,7 +150,7 @@
                                  type="text"
                                  rows="3"
                                  v-model="twitter"
-                                 placeholder="Twitter Username"
+                                 placeholder="Twitter link"
                                  class="tw-w-full tw-border-solid tw-border-2 tw-border-gray-300 tw-px-2 tw-py-2 focus:tw-outline-none focus:tw-border-gray-500 tw-rounded-md"
                               />
                            </v-col>

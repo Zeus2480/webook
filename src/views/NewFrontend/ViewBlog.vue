@@ -386,14 +386,20 @@ export default {
    },
    methods: {
       subscribe(){
-         axios.post(`/user/${this.$route.params.userId}/subscribe`,{},{
-            headers:{
-               'Authorization': `Bearer `+localStorage.getItem('token')
-            }
-         }).then(()=>{
-            this.isUserSubscribed=!this.isUserSubscribed;
-            
-         })
+         if(localStorage.getItem("token")){
+
+            axios.post(`/user/${this.$route.params.userId}/subscribe`,{},{
+               headers:{
+                  'Authorization': `Bearer `+localStorage.getItem('token')
+               }
+            }).then(()=>{
+               this.isUserSubscribed=!this.isUserSubscribed;
+               
+            })
+         }
+         else{
+            this.$router.push("/login-reader");
+         }
       },
       checkUserSubscribed(){
          axios.get(`/user/${this.userId}/is_subscribe`, {
@@ -466,7 +472,7 @@ export default {
                   this.commentBody = "";
                });
          } else {
-            this.dialog = true;
+            this.$router.push('/login-reader');
          }
       },
       backNavigate() {
@@ -497,7 +503,7 @@ export default {
                   // this.likeCount = res.data.like;
                });
          } else {
-            this.dialog = true;
+            this.$router.push("/login-reader");
          }
 
          // if (this.isLiked) {
@@ -533,7 +539,7 @@ export default {
             });
       },
       getMoreBlogs() {
-         axios.get(`user/${this.userId}/posts`).then((res) => {
+         axios.get(`user/${this.userId}/publishedPosts`).then((res) => {
             this.moreArticles = res.data;
 
             if (this.moreArticles.length > 3) {

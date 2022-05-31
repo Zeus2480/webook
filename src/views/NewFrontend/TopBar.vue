@@ -34,8 +34,11 @@
             </div>
             <div class="tw-flex">
                <div class="tw-hidden md:tw-flex">
-                  <v-btn v-if="!isUserSubscribed" depressed class="tw-my-auto"
-                  @click="subscribe"
+                  <v-btn
+                     v-if="!isUserSubscribed"
+                     depressed
+                     class="tw-my-auto"
+                     @click="subscribe"
                      ><v-icon>mdi-plus</v-icon> Follow</v-btn
                   >
                   <v-btn
@@ -204,7 +207,11 @@
             </div>
             <div class="tw-flex tw-justify-center socials">
                <div class="tw-flex tw-mt-2 tw-my-auto">
-                  <v-btn @click="subscribe" v-if="!isUserSubscribed" depressed class="tw-my-auto"
+                  <v-btn
+                     @click="subscribe"
+                     v-if="!isUserSubscribed"
+                     depressed
+                     class="tw-my-auto"
                      ><v-icon>mdi-plus</v-icon> Follow</v-btn
                   >
                   <v-btn
@@ -293,19 +300,26 @@ export default {
 
    methods: {
       subscribe() {
-         axios
-            .post(
-               `/user/${this.$route.params.userId}/subscribe`,
-               {},
-               {
-                  headers: {
-                     Authorization: `Bearer ` + localStorage.getItem("token"),
-                  },
-               }
-            )
-            .then(() => {
-               this.isUserSubscribed = !this.isUserSubscribed;
-            });
+         if (localStorage.getItem("token")) {
+            axios
+               .post(
+                  `/user/${this.$route.params.userId}/subscribe`,
+                  {},
+                  {
+                     headers: {
+                        Authorization:
+                           `Bearer ` + localStorage.getItem("token"),
+                     },
+                  }
+               )
+               .then(() => {
+                  this.isUserSubscribed = !this.isUserSubscribed;
+                  this.$router.go();
+               });
+         }
+         else{
+            this.$router.push('/login-reader');
+         }
       },
       checkUserSubscribed() {
          console.log();
@@ -338,12 +352,12 @@ export default {
       },
       getLoggedInUserData() {
          if (localStorage.getItem("token")) {
-            if(!this.$store.getters.getFrontLoggedInUser.email){
-
+            if (!this.$store.getters.getFrontLoggedInUser.email) {
                axios
                   .get("/profile", {
                      headers: {
-                        Authorization: "Bearer " + localStorage.getItem("token"),
+                        Authorization:
+                           "Bearer " + localStorage.getItem("token"),
                      },
                   })
                   .then((res) => {
@@ -359,13 +373,13 @@ export default {
                         email: res.data.email,
                      });
                   });
-            }
-            else{
-               this.user.fullName = this.$store.getters.getFrontLoggedInUser.name;
-                     this.user.email = this.$store.getters.getFrontLoggedInUser.email;
-                     const fullName = this.user.fullName.split(" ");
-                     this.user.initials =
-                        fullName.shift().charAt(0) + fullName.pop().charAt(0);
+            } else {
+               this.user.fullName =
+                  this.$store.getters.getFrontLoggedInUser.name;
+               this.user.email = this.$store.getters.getFrontLoggedInUser.email;
+               const fullName = this.user.fullName.split(" ");
+               this.user.initials =
+                  fullName.shift().charAt(0) + fullName.pop().charAt(0);
             }
          }
       },
@@ -384,25 +398,27 @@ export default {
                .get(`/user/${this.$route.params.userId}/profile`)
                .then((res) => {
                   let tempObject = {
-                     authorName: res.data.name,
-                     authorImage: res.data.image_path,
-                     authorBio: res.data.bio,
-                     authorTwitter: res.data.youtube,
-                     authorInstagram: res.data.instagram,
-                     authorFacebook: res.data.facebook,
-                     authorSubscribers: res.data.subscribe,
-                     authorSLug: this.userId,
-                     authorSite: res.data.site,
+                     authorName: res.data.user.name,
+                     authorImage: res.data.user.image_path,
+                     authorBio: res.data.user.bio,
+                     authorTwitter: res.data.user.youtube,
+                     authorInstagram: res.data.user.instagram,
+                     authorFacebook: res.data.user.facebook,
+                     authorSubscribers: res.data.subscriber,
+                     authorSLug: this.$route.params.userId,
+                     authorSite: res.data.user.site,
                   };
+                  console.log(tempObject);
+                  
                   this.$store.dispatch("setAuthorProfile", tempObject);
-                  this.authorName = res.data.name;
-                  this.authorImage = res.data.image_path;
-                  this.authorBio = res.data.bio;
-                  this.authorSocials.facebook = res.data.facebook;
-                  this.authorSocials.twitter = res.data.youtube;
-                  this.authorSocials.instagram = res.data.instagram;
-                  this.authorSubscribers = res.data.subscribe;
-                  this.siteName = res.data.site;
+                  this.authorName = res.data.user.name;
+                  this.authorImage = res.data.user.image_path;
+                  this.authorBio = res.data.user.bio;
+                  this.authorSocials.facebook = res.data.user.facebook;
+                  this.authorSocials.twitter = res.data.user.youtube;
+                  this.authorSocials.instagram = res.data.user.instagram;
+                  this.authorSubscribers = res.data.subscriber;
+                  this.siteName = res.data.user.site;
                   console.log(this.siteName);
 
                   // this.$emit("siteName", 7);
@@ -441,7 +457,12 @@ export default {
             .then(() => {
                // this.loggedOut=true;
                localStorage.removeItem("token");
-
+               this.$store.dispatch("setFrontLoggedInUser", {
+                  id: "",
+                  name: "",
+                  email: "",
+                  isUserSubscribed: false,
+               });
                this.$router.push("/login-reader");
             });
       },

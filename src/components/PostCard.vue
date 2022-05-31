@@ -1,5 +1,5 @@
 <template>
-   <div class="tw-mb-3">
+   <div @click="openPost" class="tw-mb-3 tw-cursor-pointer">
       <!-- <v-card>
          <div class="tw-p-2">
             <div class="tw-flex">
@@ -255,7 +255,11 @@ export default {
             this.showPublish = true;
          }
       },
-      copyLink() {
+      openPost(){
+         this.$router.push(`/view/${this.$store.getters.getSlug}/${this.postId}`)
+      },
+      copyLink(e) {
+         e.stopPropagation();
          navigator.clipboard.writeText(
             `http://localhost:8080/view/${this.$store.getters.getSlug}/${this.postId}`
          );
