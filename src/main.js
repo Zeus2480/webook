@@ -7,7 +7,7 @@ import './assets/tailwind.css'
 import vuetify from './plugins/vuetify'
 import VueApexCharts from 'vue-apexcharts'
 import axios from 'axios'
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
+axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.use(VueApexCharts)
 
 Vue.component('apex-chart', VueApexCharts)
